@@ -2,7 +2,7 @@ plugins {
     `java-library`
     `maven-publish`
     id("com.github.spotbugs") version "6.5.11"
-    id("org.owasp.dependencycheck") version "12.1.8"
+    id("org.owasp.dependencycheck") version "13.0.0"
 }
 
 group = "org.relaxng"
