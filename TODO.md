@@ -1,0 +1,57 @@
+# TODO
+
+- Look at turning `BuildException` into type parameter.
+- Finish upgrading code to use Java 5 everywhere. (historical item)
+- Improve `pattern.StringNormalizer` implementation.
+- Improve possible element/attribute diagnostics when namespace count large.
+- Handle wildcards better in `possibleContent` and `possibleAttributes`.
+- Provide matcher interface giving possible values.
+- Diagnose missing namespace declaration.
+- Reuse schema prefixes in error messages when namespace prefix absent.
+- Use `IntersectionNameClassNormalizer` in `DuplicateAttributeDetector`.
+- Use `IntersectionNameClassNormalizer` in `Alphabet`.
+- Expose matcher via `Validator`/`ValidatorHandler` property.
+- Ignore `xmlns`/`xmlns:*` attributes in `ValidatorHandler`.
+- Support `feasible` feature for JAXP.
+- Support `check-id-idref` feature for JAXP.
+- Support `URIResolver`/`EntityResolver`/`Resolver` properties for JAXP.
+- Add `JingTask` resolver parameter support.
+- Review non-ASCII URI handling.
+- Validate URI literals in `CompactSyntax.jj` (`externalRef`, `include`).
+- Add resolver support in schematron transformer.
+- Add explicit target for regex category tests.
+- Reorganize schemas in source tree.
+- Move test `.xsl` files into `mod/*/test`.
+- Move Java test-only sources into test hierarchy.
+- Cleanup old VCS ignore metadata references.
+- Let `test` element in `mod.xml` specify extra jars.
+- Merge Jing changes from oNVDL.
+- Fix duplicate declaration and `xsd` prefix constraint checks.
+- Fix empty implicit grammar bug in compact syntax.
+- Check DTDinst `%` token parameter entity edge case.
+- Investigate XSV complaints on Trang mixed derivation example.
+- Improve float/double/Name handling in Trang DTD output module.
+- Publish Jing/Trang man pages online.
+- Add `validate` method on `Validator` to reduce thread complexity.
+- Add docs with hints for running jars.
+- Set Xerces properties: read DTD, skip validation.
+- Add option to control DTD parsing.
+- Reject options incompatible with detected schema language.
+- Require error handler in schema-created validator property map (or draconian default).
+- Consider renaming `Validator` to `ValidationHandlers`.
+- Allow `PropertyIds` to represent SAX properties/features.
+- Consider moving `com.thaiopensource.relaxng.util` to `com.thaiopensource.validate.driver`.
+- Add generic option for non-XML schema language input.
+- Make compact parser expose encoding info.
+- Warn for list containing single token.
+- Improve message for sequence of strings outside list.
+- Improve comments-in-strings handling.
+- Standardize error location format (Emacs-friendly).
+- Improve memoization performance for large choice/interleave/attribute groups.
+- Add option to recover from unknown datatype libraries.
+- Implement `ValidationContext.getBaseUri` in instance.
+- Support infoset modification for `ID`/`IDREF`/`IDREFS`.
+- Consider element pattern variant with name-to-content-model mapping.
+- Improve error message for wrong namespace URI.
+- Add verbose mode option.
+

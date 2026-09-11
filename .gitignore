@@ -1,7 +1,5 @@
 .DS_Store
-.ant-targets-build.xml
+.gradle/
 build/
 doc/
-modbuild.xml
-modules.xml
 *.iml
