@@ -6,6 +6,8 @@ Modernized build baseline for `jing-trang`.
 [![CodeQL](https://github.com/jurgenei/jing-trang/actions/workflows/codeql.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/codeql.yml)
 [![OWASP Dependency-Check](https://github.com/jurgenei/jing-trang/actions/workflows/dependency-check.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/dependency-check.yml)
 [![SpotBugs + FindSecBugs](https://github.com/jurgenei/jing-trang/actions/workflows/spotbugs-security.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/spotbugs-security.yml)
+[![Coverage](https://github.com/jurgenei/jing-trang/actions/workflows/coverage.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/coverage.yml)
+[![codecov](https://codecov.io/gh/jurgenei/jing-trang/graph/badge.svg)](https://codecov.io/gh/jurgenei/jing-trang)
 
 ## Build status
 
@@ -15,6 +17,7 @@ CI and security automation run in GitHub Actions:
 - `CodeQL`: `.github/workflows/codeql.yml`
 - `OWASP Dependency-Check`: `.github/workflows/dependency-check.yml`
 - `SpotBugs + FindSecBugs`: `.github/workflows/spotbugs-security.yml`
+- `Coverage + Codecov`: `.github/workflows/coverage.yml`
 - `Dependabot`: `.github/dependabot.yml`
 
 ## Requirements

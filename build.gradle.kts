@@ -51,6 +51,21 @@ dependencyLocking {
     lockAllConfigurations()
 }
 
+subprojects {
+    apply(plugin = "jacoco")
+
+    tasks.withType<org.gradle.api.tasks.testing.Test>().configureEach {
+        finalizedBy("jacocoTestReport")
+    }
+
+    tasks.withType<org.gradle.testing.jacoco.tasks.JacocoReport>().configureEach {
+        reports {
+            xml.required.set(true)
+            html.required.set(true)
+        }
+    }
+}
+
 dependencyCheck {
     formats = listOf(org.owasp.dependencycheck.reporting.ReportGenerator.Format.SARIF.toString())
     outputDirectory = layout.buildDirectory.dir("reports")
