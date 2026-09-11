@@ -2,6 +2,7 @@ plugins {
     `java-library`
     `maven-publish`
     id("com.github.spotbugs") version "6.5.11"
+    id("org.owasp.dependencycheck") version "12.1.8"
 }
 
 group = "org.relaxng"
@@ -32,7 +33,6 @@ java {
     withJavadocJar()
 }
 
-
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.13.4"))
     testImplementation("org.junit.jupiter:junit-jupiter")
@@ -49,6 +49,12 @@ configurations.configureEach {
 
 dependencyLocking {
     lockAllConfigurations()
+}
+
+dependencyCheck {
+    formats = listOf(org.owasp.dependencycheck.reporting.ReportGenerator.Format.SARIF.toString())
+    outputDirectory = layout.buildDirectory.dir("reports")
+    nvd.apiKey = providers.environmentVariable("NVD_API_KEY").orNull
 }
 
 tasks.withType<org.gradle.api.tasks.testing.Test>().configureEach {
