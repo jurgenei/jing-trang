@@ -13,17 +13,14 @@ permissions:
 jobs:
   dependency-check:
     runs-on: ubuntu-latest
+    env:
+      # Docker action executes $JAVA_HOME/bin/java inside container.
+      # Force container-valid path to avoid host-toolcache path failures.
+      JAVA_HOME: /usr
 
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-
-      - name: Setup Java
-        uses: actions/setup-java@v5
-        with:
-          distribution: temurin
-          java-version: "21"
-          cache: gradle
 
       - name: Dependency-Check scan
         uses: dependency-check/Dependency-Check_Action@main
@@ -36,7 +33,6 @@ jobs:
           out: "reports"
           args: >-
             --enableRetired
-            --scan .
 
       - name: Upload SARIF
         uses: github/codeql-action/upload-sarif@v4
