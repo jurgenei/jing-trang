@@ -1,5 +1,11 @@
+import org.gradle.api.tasks.SourceSetContainer
+import org.gradle.testing.jacoco.tasks.JacocoCoverageVerification
+import org.gradle.testing.jacoco.tasks.JacocoReport
+import java.math.BigDecimal
+
 plugins {
     `java-library`
+    jacoco
     `maven-publish`
     id("com.github.spotbugs") version "6.5.11"
     id("org.owasp.dependencycheck") version "12.1.8"
@@ -64,6 +70,55 @@ subprojects {
             html.required.set(true)
         }
     }
+}
+
+val coveredProjects = listOf(
+    project(":util"),
+    project(":resolver"),
+    project(":datatype"),
+    project(":regex-gen"),
+    project(":regex"),
+    project(":xsd-datatype"),
+    project(":legacy-infer")
+)
+
+val jacocoRootReport = tasks.register<JacocoReport>("jacocoRootReport") {
+    group = "verification"
+    description = "Generates an aggregate JaCoCo report for migrated and onboarded modules."
+    dependsOn(coveredProjects.map { it.tasks.named("test") })
+
+    executionData.from(coveredProjects.map { it.layout.buildDirectory.file("jacoco/test.exec") })
+    sourceDirectories.from(coveredProjects.map { it.extensions.getByType(SourceSetContainer::class.java).named("main").get().allSource.srcDirs })
+    classDirectories.from(coveredProjects.map { it.extensions.getByType(SourceSetContainer::class.java).named("main").get().output })
+
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
+}
+
+val jacocoRootCoverageVerification = tasks.register<JacocoCoverageVerification>("jacocoRootCoverageVerification") {
+    group = "verification"
+    description = "Checks aggregate line coverage for migrated and onboarded modules."
+    dependsOn(jacocoRootReport)
+
+    executionData.from(coveredProjects.map { it.layout.buildDirectory.file("jacoco/test.exec") })
+    sourceDirectories.from(coveredProjects.map { it.extensions.getByType(SourceSetContainer::class.java).named("main").get().allSource.srcDirs })
+    classDirectories.from(coveredProjects.map { it.extensions.getByType(SourceSetContainer::class.java).named("main").get().output })
+
+    violationRules {
+        rule {
+            limit {
+                counter = "LINE"
+                value = "COVEREDRATIO"
+                minimum = BigDecimal("0.20")
+            }
+        }
+    }
+}
+
+tasks.named("check") {
+    dependsOn(jacocoRootCoverageVerification)
 }
 
 dependencyCheck {

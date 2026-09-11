@@ -19,15 +19,14 @@ public class CategoryTest {
   private final Regex[] subCategoryPosRegexes = new Regex[subCategories.length()/2];
   private final Regex[] subCategoryNegRegexes = new Regex[subCategories.length()/2];
 
-  static public void main(String[] args) throws IOException, RegexSyntaxException,
-          ClassNotFoundException, IllegalAccessException, InstantiationException {
+  static public void main(String[] args) throws IOException, RegexSyntaxException, ReflectiveOperationException {
     if (args.length != 2) {
       System.err.println("usage: " + CategoryTest.class.getName() + " engineClass UnicodeData");
       System.exit(2);
     }
     BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream(args[1])));
-    Class cls = CategoryTest.class.getClassLoader().loadClass(args[0]);
-    RegexEngine engine = (RegexEngine)cls.newInstance();
+    Class<?> cls = CategoryTest.class.getClassLoader().loadClass(args[0]);
+    RegexEngine engine = (RegexEngine) cls.getDeclaredConstructor().newInstance();
     int nFail = new CategoryTest(engine).testAll(r);
     System.err.println(nFail + " tests failed");
     System.exit(nFail > 0 ? 1 : 0);
