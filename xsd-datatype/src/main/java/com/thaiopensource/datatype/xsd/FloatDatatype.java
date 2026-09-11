@@ -11,7 +11,7 @@ class FloatDatatype extends DoubleDatatype {
       return Float.NEGATIVE_INFINITY;
     if (str.equals("NaN"))
       return Float.NaN;
-    return new Float(str);
+    return Float.valueOf(str);
   }
 
   public boolean isLessThan(Object obj1, Object obj2) {

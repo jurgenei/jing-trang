@@ -64,7 +64,7 @@ class DoubleDatatype extends DatatypeBase implements OrderRelation {
       return Double.NEGATIVE_INFINITY;
     if (str.equals("NaN"))
       return Double.NaN;
-    return new Double(str);
+    return Double.valueOf(str);
   }
 
   OrderRelation getOrderRelation() {

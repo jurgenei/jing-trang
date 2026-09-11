@@ -24,26 +24,42 @@ public class TestDriver extends DefaultHandler {
   private Locator loc;
   private final RegexEngine engine;
 
+  static final class RunResult {
+    final int tests;
+    final int failures;
+
+    RunResult(int tests, int failures) {
+      this.tests = tests;
+      this.failures = failures;
+    }
+  }
+
   static public void main(String[] args) throws SAXException, IOException, ParserConfigurationException,
-          ClassNotFoundException, IllegalAccessException, InstantiationException {
+          ReflectiveOperationException {
     if (args.length != 2) {
       System.err.println("usage: TestDriver class testfile");
       System.exit(2);
     }
+    RunResult result = runSuite(args[0], UriOrFile.fileToUri(args[1]));
+    System.err.println(result.tests + " tests performed");
+    System.err.println(result.failures + " failures");
+    if (result.failures > 0)
+      System.exit(1);
+  }
+
+  static RunResult runSuite(String engineClassName, String testUri)
+          throws SAXException, IOException, ParserConfigurationException, ReflectiveOperationException {
     SAXParserFactory factory = SAXParserFactory.newInstance();
     factory.setNamespaceAware(true);
     factory.setValidating(false);
     XMLReader xr = factory.newSAXParser().getXMLReader();
-    Class cls = TestDriver.class.getClassLoader().loadClass(args[0]);
-    RegexEngine engine = (RegexEngine)cls.newInstance();
+    Class<?> cls = TestDriver.class.getClassLoader().loadClass(engineClassName);
+    RegexEngine engine = (RegexEngine) cls.getDeclaredConstructor().newInstance();
     TestDriver tester = new TestDriver(engine);
     xr.setContentHandler(tester);
-    InputSource in = new InputSource(UriOrFile.fileToUri(args[1]));
+    InputSource in = new InputSource(testUri);
     xr.parse(in);
-    System.err.println(tester.nTests + " tests performed");
-    System.err.println(tester.nFail + " failures");
-    if (tester.nFail > 0)
-      System.exit(1);
+    return new RunResult(tester.nTests, tester.nFail);
   }
 
   public TestDriver(RegexEngine engine) {
@@ -132,7 +148,7 @@ public class TestDriver extends DefaultHandler {
   static final private String ERROR_MARKER = ">>>>";
 
   static String display(String str, int pos) {
-    StringBuffer buf = new StringBuffer();
+    StringBuilder buf = new StringBuilder();
     for (int i = 0, len = str.length(); i < len; i++) {
       if (i == pos)
         buf.append(ERROR_MARKER);
