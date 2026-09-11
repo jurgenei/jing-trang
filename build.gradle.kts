@@ -82,7 +82,7 @@ val coveredProjects = listOf(
     project(":legacy-infer")
 )
 
-val jacocoRootReport by tasks.registering(JacocoReport::class) {
+val jacocoRootReport = tasks.register<JacocoReport>("jacocoRootReport") {
     group = "verification"
     description = "Generates an aggregate JaCoCo report for migrated and onboarded modules."
     dependsOn(coveredProjects.map { it.tasks.named("test") })
@@ -97,7 +97,7 @@ val jacocoRootReport by tasks.registering(JacocoReport::class) {
     }
 }
 
-val jacocoRootCoverageVerification by tasks.registering(JacocoCoverageVerification::class) {
+val jacocoRootCoverageVerification = tasks.register<JacocoCoverageVerification>("jacocoRootCoverageVerification") {
     group = "verification"
     description = "Checks aggregate line coverage for migrated and onboarded modules."
     dependsOn(jacocoRootReport)

@@ -19,7 +19,7 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-val regexGenerator by configurations.creating
+val regexGenerator = configurations.create("regexGenerator")
 
 dependencies {
     regexGenerator(project(":regex-gen"))
@@ -35,7 +35,7 @@ sourceSets {
     }
 }
 
-val generateNamingExceptions by tasks.registering(JavaExec::class) {
+val generateNamingExceptions = tasks.register<JavaExec>("generateNamingExceptions") {
     group = "build"
     description = "Generate NamingExceptions source used by regex translator"
     mainClass.set("com.thaiopensource.datatype.xsd.regex.java.gen.NamingExceptionsGen")
@@ -49,7 +49,7 @@ val generateNamingExceptions by tasks.registering(JavaExec::class) {
     })
 }
 
-val generateCategories by tasks.registering(JavaExec::class) {
+val generateCategories = tasks.register<JavaExec>("generateCategories") {
     group = "build"
     description = "Generate Unicode category source used by regex translator"
     mainClass.set("com.thaiopensource.datatype.xsd.regex.java.gen.CategoriesGen")
