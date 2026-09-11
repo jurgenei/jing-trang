@@ -7,6 +7,7 @@ import org.relaxng.datatype.DatatypeException;
 import org.relaxng.datatype.DatatypeLibrary;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -81,5 +82,16 @@ public class DatatypeLibraryImplTest {
       assertTrue(message.contains("3"));
       assertTrue(message.contains("4"));
     }
+  }
+
+  @Test
+  public void testUnknownDatatypeRejected() {
+    assertThrows(DatatypeException.class, () -> lib.createDatatype("notAType"));
+  }
+
+  @Test
+  public void testRegexDatatypeFailsWithoutRegexEngine() {
+    DatatypeLibrary withoutRegex = new DatatypeLibraryImpl(null);
+    assertThrows(DatatypeException.class, () -> withoutRegex.createDatatypeBuilder("language"));
   }
 }

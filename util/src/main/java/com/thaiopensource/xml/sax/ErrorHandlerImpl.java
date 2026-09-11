@@ -14,7 +14,7 @@ import com.thaiopensource.util.UriOrFile;
 
 public class ErrorHandlerImpl implements ErrorHandler {
   private final PrintWriter err;
-  
+
   private final String bundleName
     = "com.thaiopensource.xml.sax.resources.Messages";
 
@@ -84,9 +84,9 @@ public class ErrorHandlerImpl implements ErrorHandler {
   private String formatLocation(SAXParseException e) {
     String systemId = e.getSystemId();
     int n = e.getLineNumber();
-    Integer lineNumber = n >= 0 ? new Integer(n) : null;
+    Integer lineNumber = n >= 0 ? Integer.valueOf(n) : null;
     n = e.getColumnNumber();
-    Integer columnNumber = n >= 0 ? new Integer(n) : null;
+    Integer columnNumber = n >= 0 ? Integer.valueOf(n) : null;
     if (systemId != null) {
       systemId = UriOrFile.uriToUriOrFile(systemId);
       if (lineNumber != null) {

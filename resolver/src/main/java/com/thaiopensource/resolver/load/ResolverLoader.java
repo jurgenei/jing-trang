@@ -23,7 +23,7 @@ public class ResolverLoader {
             throw new ResolverLoadException("no class loader");
         }
       }
-      obj = loader.loadClass(className).newInstance();
+      obj = loader.loadClass(className).getDeclaredConstructor().newInstance();
     }
     catch (Exception e) {
       throw new ResolverLoadException(e);

@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 public class NamingExceptionsGen {
   static public void main(String[] args) throws IOException {
@@ -50,21 +50,21 @@ public class NamingExceptionsGen {
     boolean excluding = false;
     char excludeMin = 0;
     char excludeMax = 0;
-    List includeList = new Vector();
-    List excludeRangeList = new Vector();
+    List<Character> includeList = new ArrayList<>();
+    List<Character> excludeRangeList = new ArrayList<>();
     for (int i = 0; i < 65536; i++) {
       char ch = (char)i;
       buf[0] = ch;
       String s = new String(buf);
       boolean isName = isStart ? Naming.isName(s) : Naming.isNmtoken(s);
       if (isName && excluding) {
-        excludeRangeList.add(new Character(excludeMin));
-        excludeRangeList.add(new Character(excludeMax));
+        excludeRangeList.add(Character.valueOf(excludeMin));
+        excludeRangeList.add(Character.valueOf(excludeMax));
         excluding = false;
       }
       if (isName != isApproxName(ch, isStart)) {
         if (isName)
-          includeList.add(new Character(ch));
+          includeList.add(Character.valueOf(ch));
         else {
           if (!excluding) {
             excluding = true;
@@ -75,8 +75,8 @@ public class NamingExceptionsGen {
       }
     }
     if (excluding) {
-      excludeRangeList.add(new Character(excludeMin));
-      excludeRangeList.add(new Character(excludeMax));
+      excludeRangeList.add(Character.valueOf(excludeMin));
+      excludeRangeList.add(Character.valueOf(excludeMax));
     }
     String prefix = isStart ? "NMSTRT" : "NMCHAR";
     genList(prefix + "_INCLUDES", includeList, w, lineSep);
@@ -93,7 +93,7 @@ public class NamingExceptionsGen {
   static private final int CHARS_PER_LINE = 10;
   static private final String INDENT = "  ";
 
-  static private void genList(String varName, List includeList, Writer w, String lineSep) throws IOException {
+  static private void genList(String varName, List<Character> includeList, Writer w, String lineSep) throws IOException {
     w.write(INDENT);
     w.write("static final String ");
     w.write(varName);
@@ -104,7 +104,7 @@ public class NamingExceptionsGen {
     w.write('"');
     for (int i = 0, len = includeList.size(); i < len; i++) {
       w.write("\\u");
-      w.write(hex(((Character)includeList.get(i)).charValue()));
+      w.write(hex(includeList.get(i).charValue()));
       if (i % CHARS_PER_LINE == CHARS_PER_LINE - 1 && i + 1 != len) {
         w.write("\" +");
         w.write(lineSep);

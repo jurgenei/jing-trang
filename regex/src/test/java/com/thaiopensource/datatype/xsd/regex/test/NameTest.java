@@ -11,17 +11,20 @@ public class NameTest {
   private Regex nameRegex;
   private Regex nameStartRegex;
 
-  public static void main(String[] args) throws IllegalAccessException, InstantiationException, ClassNotFoundException, RegexSyntaxException {
+  public static void main(String[] args) throws ReflectiveOperationException, RegexSyntaxException {
       if (args.length != 1) {
       System.err.println("usage: " + NameTest.class.getName() + " engineClass");
       System.exit(2);
     }
-
-    Class cls = NameTest.class.getClassLoader().loadClass(args[0]);
-    RegexEngine engine = (RegexEngine)cls.newInstance();
-    int nFail = new NameTest(engine).run();
+    int nFail = runWithEngineClassName(args[0]);
     System.err.println(nFail + " tests failed");
     System.exit(nFail > 0 ? 1 : 0);
+  }
+
+  static int runWithEngineClassName(String className) throws ReflectiveOperationException, RegexSyntaxException {
+    Class<?> cls = NameTest.class.getClassLoader().loadClass(className);
+    RegexEngine engine = (RegexEngine) cls.getDeclaredConstructor().newInstance();
+    return new NameTest(engine).run();
   }
 
   NameTest(RegexEngine engine) throws RegexSyntaxException {
