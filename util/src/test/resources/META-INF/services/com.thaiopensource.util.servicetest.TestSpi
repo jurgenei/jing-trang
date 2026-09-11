@@ -1,0 +1,6 @@
+# service provider list for Service test parser
+
+com.thaiopensource.util.servicetest.TestSpiImplA
+missing.ProviderClass
+com.thaiopensource.util.servicetest.TestSpiImplB
+
