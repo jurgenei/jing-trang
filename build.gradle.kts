@@ -5,7 +5,6 @@ import java.math.BigDecimal
 
 plugins {
     `java-library`
-    jacoco
     `maven-publish`
     id("com.github.spotbugs") version "6.5.11"
     id("org.owasp.dependencycheck") version "13.0.0"
@@ -82,7 +81,7 @@ val coveredProjects = listOf(
     project(":legacy-infer")
 )
 
-val jacocoRootReport = tasks.register<JacocoReport>("jacocoRootReport") {
+val jacocoRootReport by tasks.registering(JacocoReport::class) {
     group = "verification"
     description = "Generates an aggregate JaCoCo report for migrated and onboarded modules."
     dependsOn(coveredProjects.map { it.tasks.named("test") })
@@ -97,7 +96,7 @@ val jacocoRootReport = tasks.register<JacocoReport>("jacocoRootReport") {
     }
 }
 
-val jacocoRootCoverageVerification = tasks.register<JacocoCoverageVerification>("jacocoRootCoverageVerification") {
+val jacocoRootCoverageVerification by tasks.registering(JacocoCoverageVerification::class) {
     group = "verification"
     description = "Checks aggregate line coverage for migrated and onboarded modules."
     dependsOn(jacocoRootReport)
