@@ -22,6 +22,14 @@ CI and security automation run in GitHub Actions:
 - Git
 - JDK 21+
 
+## Project layout
+
+- `util/`, `resolver/`, `datatype/`, `regex-gen/`, `regex/`, `xsd-datatype/`: migrated Gradle subprojects using standard layout (`src/main/java`, `src/main/resources`, `src/test/java`, `src/test/resources`).
+- `samples/`: runnable sample assets and examples.
+- `src/main/legacy/mod/`: remaining modules pending migration into top-level subprojects.
+
+Legacy TestNG usage has been removed from migrated modules; tests run on JUnit Jupiter.
+
 ## Build
 
 ```bash
