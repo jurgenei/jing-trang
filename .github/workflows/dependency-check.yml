@@ -2,9 +2,7 @@ name: OWASP Dependency-Check
 
 on:
   push:
-    branches: [ "**" ]
   pull_request:
-    branches: [ "**" ]
   schedule:
     - cron: "37 2 * * 1"
 
@@ -29,10 +27,12 @@ jobs:
 
       - name: Dependency-Check scan
         uses: dependency-check/Dependency-Check_Action@main
+        env:
+          NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
         with:
           project: "jing-trang"
           path: "."
-          format: "HTML,JSON,SARIF"
+          format: "SARIF"
           out: "reports"
           args: >-
             --enableRetired
@@ -49,4 +49,3 @@ jobs:
         with:
           name: dependency-check-reports
           path: reports
-
