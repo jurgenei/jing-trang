@@ -2,13 +2,18 @@
 
 Modernized build baseline for `jing-trang`.
 
-[![CI](https://github.com/jurgenei/jing-trang/actions/workflows/ci.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/ci.yml)
+[![Build](https://github.com/jurgenei/jing-trang/actions/workflows/ci.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/ci.yml)
+[![Release](https://github.com/jurgenei/jing-trang/actions/workflows/release.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/release.yml)
+[![Coverage CI](https://github.com/jurgenei/jing-trang/actions/workflows/coverage.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/coverage.yml)
 [![CodeQL](https://github.com/jurgenei/jing-trang/actions/workflows/codeql.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/codeql.yml)
-[![OWASP Dependency-Check](https://github.com/jurgenei/jing-trang/actions/workflows/dependency-check.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/dependency-check.yml)
-[![SpotBugs + FindSecBugs](https://github.com/jurgenei/jing-trang/actions/workflows/spotbugs-security.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/spotbugs-security.yml)
-[![Coverage](https://github.com/jurgenei/jing-trang/actions/workflows/coverage.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/coverage.yml)
-[![codecov](https://codecov.io/gh/jurgenei/jing-trang/graph/badge.svg)](https://codecov.io/gh/jurgenei/jing-trang)
-[![Dependabot](https://img.shields.io/badge/dependabot-enabled-025E8C?logo=dependabot)](https://github.com/jurgenei/jing-trang/network/updates)
+[![Dependency Check](https://github.com/jurgenei/jing-trang/actions/workflows/dependency-check.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/dependency-check.yml)
+[![SpotBugs Security](https://github.com/jurgenei/jing-trang/actions/workflows/spotbugs-security.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/spotbugs-security.yml)
+[![Dependabot](https://img.shields.io/badge/dependabot-enabled-025E8C?logo=dependabot)](https://github.com/jurgenei/jing-trang/security/dependabot)
+[![Coverage](https://codecov.io/gh/jurgenei/jing-trang/graph/badge.svg?branch=main)](https://codecov.io/gh/jurgenei/jing-trang?branch=main)
+[![Maven Central](https://img.shields.io/maven-central/v/org.relaxng/jing-trang.svg)](https://search.maven.org/artifact/org.relaxng/jing-trang)
+[![License](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg)](LICENCE.md)
+[![Java](https://img.shields.io/badge/java-21+-green.svg)](https://www.oracle.com/java/)
+[![Gradle](https://img.shields.io/badge/gradle-9.5+-blue.svg)](https://gradle.org/)
 
 ## Build status
 
@@ -68,6 +73,56 @@ Optional explicit snapshot flag:
 ```bash
 ./gradlew publish -Psnapshot=true
 ```
+
+## Maven Central publishing (bundle flow)
+
+`jing-trang` now supports same Central bundle flow used by `xml-sax-sexpr`:
+
+```bash
+./gradlew clean packageCentralBundle
+```
+
+Bundle output:
+
+- `build/central-bundle/*-central-bundle.zip`
+
+Release workflow:
+
+- `.github/workflows/release.yml`
+
+### Release checklist
+
+1. Push branch so CI + Codecov recompute coverage.
+
+```bash
+git push origin <branch>
+```
+
+2. Configure GitHub repository secrets for Maven Central + signing.
+
+- `MAVEN_CENTRAL_USERNAME`
+- `MAVEN_CENTRAL_PASSWORD`
+- `SIGNING_KEY`
+- `SIGNING_PASSWORD`
+- optional: `SIGNING_KEY_ID`
+
+3. Publish release from tag (`v*`) or `workflow_dispatch`.
+
+```bash
+git tag v<version>
+git push origin v<version>
+```
+
+Workflow builds signed bundle and uploads to Sonatype Central Publisher API (`nameSpace=org.relaxng`).
+
+## Documentation and references
+
+- `jing-trang` fork: [https://github.com/jurgenei/jing-trang](https://github.com/jurgenei/jing-trang)
+- upstream `jing-trang`: [https://github.com/relaxng/jing-trang](https://github.com/relaxng/jing-trang)
+- RELAX NG home: [https://relaxng.org/](https://relaxng.org/)
+- RELAX NG compact tutorial/spec: [https://relaxng.org/compact-tutorial-20030326.html](https://relaxng.org/compact-tutorial-20030326.html)
+- OASIS RELAX NG specification: [https://www.oasis-open.org/committees/relax-ng/spec-20011203.html](https://www.oasis-open.org/committees/relax-ng/spec-20011203.html)
+- Jing docs (James Clark): [https://www.thaiopensource.com/relaxng/jing.html](https://www.thaiopensource.com/relaxng/jing.html)
 
 ## Notes
 

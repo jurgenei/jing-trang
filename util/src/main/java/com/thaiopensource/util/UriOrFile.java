@@ -12,7 +12,9 @@ public class UriOrFile {
     String scheme = getScheme(uriOrFile);
     // if it has a schema that isn't a single letter treat is as a URI,
     // otherwise treat it as a file and convert it to a URI
-    return scheme != null && scheme.length() > 1 ? uriOrFile : fileToUri(uriOrFile);
+    if (scheme != null && scheme.length() > 1)
+      return uriOrFile;
+    return fileToUri(uriOrFile);
   }
 
   private static String getScheme(String str) {
@@ -60,10 +62,8 @@ public class UriOrFile {
       try {
         return new File(new URI(uri)).toString();
       }
-      // not a valid URI
-      catch (URISyntaxException e) { }
-      // not a valid file URI
-      catch (IllegalArgumentException e) { }
+      // not a valid URI or file URI
+      catch (URISyntaxException | IllegalArgumentException e) { }
     }
     return uri;
   }

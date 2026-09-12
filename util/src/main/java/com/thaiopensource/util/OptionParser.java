@@ -1,5 +1,7 @@
 package com.thaiopensource.util;
 
+import java.util.Arrays;
+
 public class OptionParser {
   private final String optionSpec;
   private char optionChar = 0;
@@ -16,8 +18,7 @@ public class OptionParser {
 
   public OptionParser(String optionSpec, String[] args) {
     this.optionSpec = optionSpec;
-    this.args = new String[args.length];
-    System.arraycopy(args, 0, this.args, 0, args.length);
+    this.args = args.clone();
   }
 
   public char getOptionChar() {
@@ -25,7 +26,7 @@ public class OptionParser {
   }
 
   public String getOptionCharString() {
-    return new String(new char[]{optionChar});
+    return Character.toString(optionChar);
   }
 
   public String getOptionArg() {
@@ -74,17 +75,13 @@ public class OptionParser {
   }
 
   public String[] getRemainingArgs() {
-    String[] tem = new String[args.length - argIndex];
-    System.arraycopy(args, argIndex, tem, 0, tem.length);
-    return tem;
+    return Arrays.copyOfRange(args, argIndex, args.length);
   }
 
   public static void main(String[] args) {
     String optSpec = args[0];
-    String[] tem = new String[args.length - 1];
-    System.arraycopy(args, 1, tem, 0, tem.length);
-    args = tem;
-    OptionParser opts = new OptionParser(optSpec, args);
+    String[] remaining = Arrays.copyOfRange(args, 1, args.length);
+    OptionParser opts = new OptionParser(optSpec, remaining);
     try {
       while (opts.moveToNextOption()) {
 	System.err.print("option " + opts.getOptionChar());
@@ -94,9 +91,8 @@ public class OptionParser {
 	else
 	  System.err.println(" arg=" + arg);
       }
-      args = opts.getRemainingArgs();
-      for (int i = 0; i < args.length; i++)
-	System.err.println("arg=" + args[i]);
+      for (String arg : opts.getRemainingArgs())
+	System.err.println("arg=" + arg);
     }
     catch (OptionParser.MissingArgumentException e) {
       System.err.println("missing argument for option " + opts.getOptionChar());
