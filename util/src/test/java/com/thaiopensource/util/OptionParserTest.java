@@ -57,5 +57,15 @@ class OptionParserTest {
     OptionParser parser = new OptionParser("a:", new String[]{"-a"});
     assertThrows(OptionParser.MissingArgumentException.class, parser::moveToNextOption);
   }
+
+  @Test
+  void constructorDefensivelyCopiesArgs() throws Exception {
+    String[] source = new String[]{"-a"};
+    OptionParser parser = new OptionParser("a", source);
+    source[0] = "--";
+
+    assertEquals(true, parser.moveToNextOption());
+    assertEquals('a', parser.getOptionChar());
+  }
 }
 

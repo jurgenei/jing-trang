@@ -34,4 +34,10 @@ public class UriOrFileTest {
   public void testToUri(String file) {
     assertEquals(new File(file).getAbsoluteFile().toURI().toString(), UriOrFile.toUri(file));
   }
+
+  @org.junit.jupiter.api.Test
+  public void testInvalidFileUriReturnsOriginal() {
+    String invalid = "file://[broken";
+    assertEquals(invalid, UriOrFile.uriToUriOrFile(invalid));
+  }
 }
