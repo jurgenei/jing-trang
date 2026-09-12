@@ -5,8 +5,8 @@ import java.math.BigDecimal
 
 plugins {
     `java-library`
-    jacoco
     `maven-publish`
+    jacoco
     id("com.github.spotbugs") version "6.5.11"
     id("org.owasp.dependencycheck") version "13.0.0"
 }
@@ -93,7 +93,9 @@ val jacocoRootReport = tasks.register<JacocoReport>("jacocoRootReport") {
 
     reports {
         xml.required.set(true)
+        xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/jacocoRootReport/jacocoRootReport.xml"))
         html.required.set(true)
+        html.outputLocation.set(layout.buildDirectory.dir("reports/jacoco/jacocoRootReport/html"))
     }
 }
 
@@ -189,4 +191,3 @@ tasks.register("snapshot") {
     description = "Alias for releaseSnapshot"
     dependsOn("releaseSnapshot")
 }
-
