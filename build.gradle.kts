@@ -17,7 +17,7 @@ plugins {
     id("org.owasp.dependencycheck") version "13.0.0"
 }
 
-group = "name.jurgenei"
+group = "org.relaxng"
 
 val xmlVersionFile = file("src/main/resources/version.xml")
 val baseVersion = if (xmlVersionFile.exists()) {
@@ -208,6 +208,18 @@ publishing {
 }
 
 signing {
+    tasks.withType<org.gradle.plugins.signing.Sign>().configureEach {
+        onlyIf {
+            !gradle.startParameter.taskNames.any { name -> name.contains("publishToMavenLocal") }
+        }
+    }
+
+    setRequired {
+        gradle.taskGraph.allTasks.any { task ->
+            task.name.startsWith("publish") && !task.name.contains("MavenLocal")
+        }
+    }
+
     val signingKey = providers.gradleProperty("signingKey").orNull
     val signingPassword = providers.gradleProperty("signingPassword").orNull
     val signingKeyId = providers.gradleProperty("signingKeyId").orNull
@@ -226,19 +238,30 @@ signing {
 }
 
 val groupPath = project.group.toString().replace('.', '/')
-val artifactId = "jing-trang"
+val centralArtifactIds = listOf("jing", "trang")
 
 val stageCentralBundleRepo = tasks.register<Sync>("stageCentralBundleRepo") {
-    dependsOn(tasks.named("publishMavenJavaPublicationToMavenLocal"))
+    dependsOn(
+        tasks.named("publishMavenJavaPublicationToMavenLocal"),
+        project(":jing").tasks.named("publishMavenJavaPublicationToMavenLocal"),
+        project(":trang").tasks.named("publishMavenJavaPublicationToMavenLocal")
+    )
 
-    val artifactBaseDir = file("${System.getProperty("user.home")}/.m2/repository/$groupPath/$artifactId")
-    val artifactVersionDir = file("$artifactBaseDir/${project.version}")
-    from(artifactVersionDir)
-    into(layout.buildDirectory.dir("central-staging-repo/$groupPath/$artifactId/${project.version}"))
+    centralArtifactIds.forEach { artifactId ->
+        val artifactBaseDir = file("${System.getProperty("user.home")}/.m2/repository/$groupPath/$artifactId")
+        val artifactVersionDir = file("$artifactBaseDir/${project.version}")
+        from(artifactVersionDir)
+        into(layout.buildDirectory.dir("central-staging-repo/$groupPath/$artifactId/${project.version}"))
+    }
 
     doFirst {
-        if (!artifactVersionDir.exists()) {
-            throw GradleException("Expected local Maven artifact version directory not found: $artifactVersionDir")
+        centralArtifactIds.forEach { artifactId ->
+            val artifactVersionDir = file(
+                "${System.getProperty("user.home")}/.m2/repository/$groupPath/$artifactId/${project.version}"
+            )
+            if (!artifactVersionDir.exists()) {
+                throw GradleException("Expected local Maven artifact version directory not found: $artifactVersionDir")
+            }
         }
     }
 }
@@ -248,13 +271,13 @@ val generateCentralBundleChecksums = tasks.register("generateCentralBundleChecks
     notCompatibleWithConfigurationCache("Generates checksum files by scanning staged output directory at execution time.")
 
     doLast {
-        val stagedVersionDir = layout.buildDirectory
-            .dir("central-staging-repo/$groupPath/$artifactId/${project.version}")
+        val stagedRepoDir = layout.buildDirectory
+            .dir("central-staging-repo/$groupPath")
             .get()
             .asFile
 
-        if (!stagedVersionDir.exists()) {
-            throw GradleException("Expected staged version directory not found: $stagedVersionDir")
+        if (!stagedRepoDir.exists()) {
+            throw GradleException("Expected staged repo directory not found: $stagedRepoDir")
         }
 
         fun checksum(file: java.io.File, algorithm: String): String {
@@ -270,7 +293,7 @@ val generateCentralBundleChecksums = tasks.register("generateCentralBundleChecks
             return digest.digest().joinToString("") { "%02x".format(it.toInt() and 0xff) }
         }
 
-        stagedVersionDir.walkTopDown()
+        stagedRepoDir.walkTopDown()
             .filter { it.isFile && !it.name.endsWith(".md5") && !it.name.endsWith(".sha1") }
             .forEach { file ->
                 file.resolveSibling("${file.name}.md5").writeText("${checksum(file, "MD5")}\n")
@@ -281,40 +304,8 @@ val generateCentralBundleChecksums = tasks.register("generateCentralBundleChecks
 
 tasks.register<Zip>("packageCentralBundle") {
     dependsOn(generateCentralBundleChecksums)
-    archiveBaseName.set(artifactId)
+    archiveBaseName.set("jing-trang")
     archiveVersion.set(project.version.toString())
     archiveClassifier.set("central-bundle")
     destinationDirectory.set(layout.buildDirectory.dir("central-bundle"))
-    from(layout.buildDirectory.dir("central-staging-repo"))
-}
-
-tasks.register("release") {
-    group = "release"
-    description = "Replacement for release.py default command: clean + build"
-    dependsOn("clean", "build")
-}
-
-tasks.register("releaseBuild") {
-    group = "release"
-    description = "Replacement for release.py build command"
-    dependsOn("release")
-}
-
-tasks.register("publishRelease") {
-    group = "release"
-    description = "Replacement for release.py publish command"
-    dependsOn("publish")
-}
-
-tasks.register("releaseSnapshot") {
-    group = "release"
-    description = "Replacement for release.py snapshot command (publishes with -SNAPSHOT version)"
-    dependsOn("publish")
-}
-
-tasks.register("snapshot") {
-    group = "release"
-    description = "Alias for releaseSnapshot"
-    dependsOn("releaseSnapshot")
-}
-
+    from(layout.buildDirectory.dir("central-staging-repo"))}

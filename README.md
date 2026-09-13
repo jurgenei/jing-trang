@@ -1,23 +1,19 @@
-# jing-trang
-
-Modernized build baseline for `jing-trang`.
-
+CI](https://github.com/jurgenei/jing-trang/actions/workflows/ci.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/jurgenei/jing-trang/actions/workflows/codeql.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/codeql.yml)
+[![OWASP Dependency-Check](https://github.com/jurgenei/jing-trang/actions/workflows/dependency-check.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/dependency-check.yml)
+[![SpotBugs + FindSecBugs](https://github.com/jurgenei/jing-trang/actions/workflows/spotbugs-security.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/spotbugs-security.yml)
 [![Build](https://github.com/jurgenei/jing-trang/actions/workflows/ci.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/ci.yml)
 [![Release](https://github.com/jurgenei/jing-trang/actions/workflows/release.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/release.yml)
-[![Coverage CI](https://github.com/jurgenei/jing-trang/actions/workflows/coverage.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/coverage.yml)
-[![CodeQL](https://github.com/jurgenei/jing-trang/actions/workflows/codeql.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/codeql.yml)
-[![Dependency Check](https://github.com/jurgenei/jing-trang/actions/workflows/dependency-check.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/dependency-check.yml)
+[![Coverage CI](https://github.com/jurgenei/jing-trang/actions/workflows/coverage.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/coverageworkflows/coverage.yml)
+[![codecov](https://codecov.io/gh/jurgenei/jing-trang/graph/badge.svg)](https://codecov.io/gh/jurgenei/jing-trang)
+Dependency Check](https://github.com/jurgenei/jing-trang/actions/workflows/dependency-check.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/dependency-check.yml)
 [![SpotBugs Security](https://github.com/jurgenei/jing-trang/actions/workflows/spotbugs-security.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/spotbugs-security.yml)
 [![Dependabot](https://img.shields.io/badge/dependabot-enabled-025E8C?logo=dependabot)](https://github.com/jurgenei/jing-trang/security/dependabot)
 [![Coverage](https://codecov.io/gh/jurgenei/jing-trang/graph/badge.svg?branch=main)](https://codecov.io/gh/jurgenei/jing-trang?branch=main)
 [![Maven Central](https://img.shields.io/maven-central/v/org.relaxng/jing-trang.svg)](https://search.maven.org/artifact/org.relaxng/jing-trang)
 [![License](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg)](LICENCE.md)
 [![Java](https://img.shields.io/badge/java-21+-green.svg)](https://www.oracle.com/java/)
-[![Gradle](https://img.shields.io/badge/gradle-9.5+-blue.svg)](https://gradle.org/)
-
-## Build status
-
-CI and security automation run in GitHub Actions:
+[![Gradle](https://img.shields.io/badge/gradle-9.5+-blue.svg)](https://gradle.org/
 
 - `CI`: `.github/workflows/ci.yml`
 - `CodeQL`: `.github/workflows/codeql.yml`
@@ -38,6 +34,17 @@ CI and security automation run in GitHub Actions:
 - `src/main/legacy/mod/`: remaining modules pending migration into top-level subprojects.
 
 Legacy TestNG usage has been removed from migrated modules; tests run on JUnit Jupiter.
+
+## Maven coordinates
+
+Split artifacts:
+
+- `org.relaxng:jing:<version>`
+- `org.relaxng:trang:<version>`
+
+Compatibility artifact retained:
+
+- `org.relaxng:jing-trang:<version>`
 
 ## Build
 
@@ -72,9 +79,7 @@ Optional explicit snapshot flag:
 
 ```bash
 ./gradlew publish -Psnapshot=true
-```
-
-## Maven Central publishing (bundle flow)
+```## Maven Central publishing (bundle flow)
 
 `jing-trang` now supports same Central bundle flow used by `xml-sax-sexpr`:
 
@@ -124,8 +129,4 @@ Workflow builds signed bundle and uploads to Sonatype Central Publisher API (`na
 - OASIS RELAX NG specification: [https://www.oasis-open.org/committees/relax-ng/spec-20011203.html](https://www.oasis-open.org/committees/relax-ng/spec-20011203.html)
 - Jing docs (James Clark): [https://www.thaiopensource.com/relaxng/jing.html](https://www.thaiopensource.com/relaxng/jing.html)
 
-## Notes
-
-- This migration slice removes Travis usage and switches project automation to GitHub Actions.
-- Full Ant/Maven/GCJ decommission and full module migration continue in following slices.
 
