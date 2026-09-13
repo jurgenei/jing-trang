@@ -238,7 +238,7 @@ signing {
 }
 
 val groupPath = project.group.toString().replace('.', '/')
-val centralArtifactIds = listOf("jing", "trang")
+val centralArtifactIds = listOf("jing-trang", "jing", "trang")
 
 val stageCentralBundleRepo = tasks.register<Sync>("stageCentralBundleRepo") {
     dependsOn(

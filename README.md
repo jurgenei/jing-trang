@@ -1,26 +1,19 @@
-[![CI](https://github.com/jurgenei/jing-trang/actions/workflows/ci.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/ci.yml)
-[![CodeQL](https://github.com/jurgenei/jing-trang/actions/workflows/codeql.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/codeql.yml)
-[![OWASP Dependency-Check](https://github.com/jurgenei/jing-trang/actions/workflows/dependency-check.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/dependency-check.yml)
-[![SpotBugs + FindSecBugs](https://github.com/jurgenei/jing-trang/actions/workflows/spotbugs-security.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/spotbugs-security.yml)
+# jing-trang
+
+Modernized build baseline for `jing-trang`.
+
 [![Build](https://github.com/jurgenei/jing-trang/actions/workflows/ci.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/ci.yml)
 [![Release](https://github.com/jurgenei/jing-trang/actions/workflows/release.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/release.yml)
-[![Coverage CI](https://github.com/jurgenei/jing-trang/actions/workflows/coverage.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/coverageworkflows/coverage.yml)
-[![codecov](https://codecov.io/gh/jurgenei/jing-trang/graph/badge.svg)](https://codecov.io/gh/jurgenei/jing-trang)
+[![Coverage CI](https://github.com/jurgenei/jing-trang/actions/workflows/coverage.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/coverage.yml)
+[![CodeQL](https://github.com/jurgenei/jing-trang/actions/workflows/codeql.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/codeql.yml)
 [![Dependency Check](https://github.com/jurgenei/jing-trang/actions/workflows/dependency-check.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/dependency-check.yml)
 [![SpotBugs Security](https://github.com/jurgenei/jing-trang/actions/workflows/spotbugs-security.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/spotbugs-security.yml)
 [![Dependabot](https://img.shields.io/badge/dependabot-enabled-025E8C?logo=dependabot)](https://github.com/jurgenei/jing-trang/security/dependabot)
 [![Coverage](https://codecov.io/gh/jurgenei/jing-trang/graph/badge.svg?branch=main)](https://codecov.io/gh/jurgenei/jing-trang?branch=main)
-[![Maven Central](https://img.shields.io/maven-central/v/org.relaxng/jing-trang.svg)](https://search.maven.org/artifact/org.relaxng/jing-trang)
+[![Maven Central](https://img.shields.io/maven-central/v/name.jurgenei/jing-trang.svg)](https://search.maven.org/artifact/name.jurgenei/jing-trang/20260913/jar)
 [![License](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg)](LICENCE.md)
 [![Java](https://img.shields.io/badge/java-21+-green.svg)](https://www.oracle.com/java/)
 [![Gradle](https://img.shields.io/badge/gradle-9.5+-blue.svg)](https://gradle.org/)
-
-- `CI`: `.github/workflows/ci.yml`
-- `CodeQL`: `.github/workflows/codeql.yml`
-- `OWASP Dependency-Check`: `.github/workflows/dependency-check.yml`
-- `SpotBugs + FindSecBugs`: `.github/workflows/spotbugs-security.yml`
-- `Coverage + Codecov`: `.github/workflows/coverage.yml`
-- `Dependabot`: `.github/dependabot.yml`
 
 ## Requirements
 
@@ -29,59 +22,29 @@
 
 ## Project layout
 
-- `util/`, `resolver/`, `datatype/`, `regex-gen/`, `regex/`, `xsd-datatype/`: migrated Gradle subprojects using standard layout (`src/main/java`, `src/main/resources`, `src/test/java`, `src/test/resources`).
-- `samples/`: runnable sample assets and examples.
-- `src/main/legacy/mod/`: remaining modules pending migration into top-level subprojects.
-
-Legacy TestNG usage has been removed from migrated modules; tests run on JUnit Jupiter.
+- `util/`, `resolver/`, `datatype/`, `regex-gen/`, `regex/`, `xsd-datatype/`: migrated Gradle subprojects
+- `jing/`: validator artifact packaging (`name.jurgenei:jing`)
+- `trang/`: converter artifact packaging (`name.jurgenei:trang`)
+- `src/main/legacy/mod/`: remaining legacy module sources used by split artifacts
 
 ## Maven coordinates
 
-Split artifacts:
+Current release version is `20260913`.
 
-- `org.relaxng:jing:<version>`
-- `org.relaxng:trang:<version>`
+- Aggregator: `name.jurgenei:jing-trang:20260913`
+- Validator: `name.jurgenei:jing:20260913`
+- Converter: `name.jurgenei:trang:20260913`
 
-Compatibility artifact retained:
+All three artifacts are staged into one Maven Central bundle.
 
-- `org.relaxng:jing-trang:<version>`
-
-## Build
+## Build and test
 
 ```bash
 ./gradlew clean build
-```
-
-## Test
-
-```bash
 ./gradlew test
 ```
 
-## Security scans
-
-```bash
-./gradlew spotbugsMain spotbugsTest
-```
-
-## Release commands
-
-`release.py` functionality moved into Gradle tasks:
-
-```bash
-./gradlew release
-./gradlew releaseBuild
-./gradlew publishRelease
-./gradlew releaseSnapshot
-```
-
-Optional explicit snapshot flag:
-
-```bash
-./gradlew publish -Psnapshot=true
-```## Maven Central publishing (bundle flow)
-
-`jing-trang` now supports same Central bundle flow used by `xml-sax-sexpr`:
+## Maven Central publishing
 
 ```bash
 ./gradlew clean packageCentralBundle
@@ -95,30 +58,7 @@ Release workflow:
 
 - `.github/workflows/release.yml`
 
-### Release checklist
-
-1. Push branch so CI + Codecov recompute coverage.
-
-```bash
-git push origin <branch>
-```
-
-2. Configure GitHub repository secrets for Maven Central + signing.
-
-- `MAVEN_CENTRAL_USERNAME`
-- `MAVEN_CENTRAL_PASSWORD`
-- `SIGNING_KEY`
-- `SIGNING_PASSWORD`
-- optional: `SIGNING_KEY_ID`
-
-3. Publish release from tag (`v*`) or `workflow_dispatch`.
-
-```bash
-git tag v<version>
-git push origin v<version>
-```
-
-Workflow builds signed bundle and uploads to Sonatype Central Publisher API (`nameSpace=org.relaxng`).
+Workflow uploads bundle to Sonatype Central Publisher API with namespace `name.jurgenei`.
 
 ## Documentation and references
 
