@@ -67,6 +67,5 @@ Workflow uploads bundle to Sonatype Central Publisher API with namespace `name.j
 - RELAX NG home: [https://relaxng.org/](https://relaxng.org/)
 - RELAX NG compact tutorial/spec: [https://relaxng.org/compact-tutorial-20030326.html](https://relaxng.org/compact-tutorial-20030326.html)
 - OASIS RELAX NG specification: [https://www.oasis-open.org/committees/relax-ng/spec-20011203.html](https://www.oasis-open.org/committees/relax-ng/spec-20011203.html)
-- Jing docs (James Clark): [https://www.thaiopensource.com/relaxng/jing.html](https://www.thaiopensource.com/relaxng/jing.html)
 
 
