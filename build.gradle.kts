@@ -17,7 +17,7 @@ plugins {
     id("org.owasp.dependencycheck") version "13.0.0"
 }
 
-group = "org.relaxng"
+group = "name.jurgenei"
 
 val xmlVersionFile = file("src/main/resources/version.xml")
 val baseVersion = if (xmlVersionFile.exists()) {
