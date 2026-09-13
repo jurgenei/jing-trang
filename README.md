@@ -1,4 +1,4 @@
-CI](https://github.com/jurgenei/jing-trang/actions/workflows/ci.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/ci.yml)
+[![CI](https://github.com/jurgenei/jing-trang/actions/workflows/ci.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/jurgenei/jing-trang/actions/workflows/codeql.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/codeql.yml)
 [![OWASP Dependency-Check](https://github.com/jurgenei/jing-trang/actions/workflows/dependency-check.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/dependency-check.yml)
 [![SpotBugs + FindSecBugs](https://github.com/jurgenei/jing-trang/actions/workflows/spotbugs-security.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/spotbugs-security.yml)
@@ -6,14 +6,14 @@ CI](https://github.com/jurgenei/jing-trang/actions/workflows/ci.yml/badge.svg)](
 [![Release](https://github.com/jurgenei/jing-trang/actions/workflows/release.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/release.yml)
 [![Coverage CI](https://github.com/jurgenei/jing-trang/actions/workflows/coverage.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/coverageworkflows/coverage.yml)
 [![codecov](https://codecov.io/gh/jurgenei/jing-trang/graph/badge.svg)](https://codecov.io/gh/jurgenei/jing-trang)
-Dependency Check](https://github.com/jurgenei/jing-trang/actions/workflows/dependency-check.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/dependency-check.yml)
+[![Dependency Check](https://github.com/jurgenei/jing-trang/actions/workflows/dependency-check.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/dependency-check.yml)
 [![SpotBugs Security](https://github.com/jurgenei/jing-trang/actions/workflows/spotbugs-security.yml/badge.svg)](https://github.com/jurgenei/jing-trang/actions/workflows/spotbugs-security.yml)
 [![Dependabot](https://img.shields.io/badge/dependabot-enabled-025E8C?logo=dependabot)](https://github.com/jurgenei/jing-trang/security/dependabot)
 [![Coverage](https://codecov.io/gh/jurgenei/jing-trang/graph/badge.svg?branch=main)](https://codecov.io/gh/jurgenei/jing-trang?branch=main)
 [![Maven Central](https://img.shields.io/maven-central/v/org.relaxng/jing-trang.svg)](https://search.maven.org/artifact/org.relaxng/jing-trang)
 [![License](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg)](LICENCE.md)
 [![Java](https://img.shields.io/badge/java-21+-green.svg)](https://www.oracle.com/java/)
-[![Gradle](https://img.shields.io/badge/gradle-9.5+-blue.svg)](https://gradle.org/
+[![Gradle](https://img.shields.io/badge/gradle-9.5+-blue.svg)](https://gradle.org/)
 
 - `CI`: `.github/workflows/ci.yml`
 - `CodeQL`: `.github/workflows/codeql.yml`
