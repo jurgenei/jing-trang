@@ -107,6 +107,26 @@ publishing {
                 name.set("trang")
                 description.set("Schema converter")
                 url.set("https://github.com/jurgenei/jing-trang")
+
+                licenses {
+                    license {
+                        name.set("BSD 3-Clause License")
+                        url.set("https://opensource.org/license/bsd-3-clause")
+                    }
+                }
+
+                developers {
+                    developer {
+                        id.set("jurgenei")
+                        name.set("Jurgen Hildebrand")
+                    }
+                }
+
+                scm {
+                    connection.set("scm:git:https://github.com/jurgenei/jing-trang.git")
+                    developerConnection.set("scm:git:ssh://git@github.com/jurgenei/jing-trang.git")
+                    url.set("https://github.com/jurgenei/jing-trang")
+                }
             }
         }
     }
