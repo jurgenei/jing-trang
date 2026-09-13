@@ -247,11 +247,14 @@ val stageCentralBundleRepo = tasks.register<Sync>("stageCentralBundleRepo") {
         project(":trang").tasks.named("publishMavenJavaPublicationToMavenLocal")
     )
 
+    into(layout.buildDirectory.dir("central-staging-repo"))
+
     centralArtifactIds.forEach { artifactId ->
         val artifactBaseDir = file("${System.getProperty("user.home")}/.m2/repository/$groupPath/$artifactId")
         val artifactVersionDir = file("$artifactBaseDir/${project.version}")
-        from(artifactVersionDir)
-        into(layout.buildDirectory.dir("central-staging-repo/$groupPath/$artifactId/${project.version}"))
+        from(artifactVersionDir) {
+            into("$groupPath/$artifactId/${project.version}")
+        }
     }
 
     doFirst {
