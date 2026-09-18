@@ -28,7 +28,7 @@ dependencies {
     implementation(project(":legacy-infer"))
 
     implementation("xml-resolver:xml-resolver:1.2")
-    implementation("net.sf.saxon:Saxon-HE:12.5")
+    implementation("net.sf.saxon:Saxon-HE:13.0")
     implementation("xalan:xalan:2.7.3")
     implementation("xerces:xercesImpl:2.12.2")
 }
