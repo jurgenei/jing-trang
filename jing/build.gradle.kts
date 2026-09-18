@@ -37,7 +37,7 @@ dependencies {
 val javacc = configurations.create("javacc")
 
 dependencies {
-    javacc("net.java.dev.javacc:javacc:4.0")
+    javacc("net.java.dev.javacc:javacc:7.0.13")
 }
 
 val generateCompactSyntax = tasks.register<JavaExec>("generateCompactSyntax") {
