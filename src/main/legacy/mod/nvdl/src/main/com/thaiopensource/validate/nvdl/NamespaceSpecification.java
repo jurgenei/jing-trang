@@ -5,10 +5,10 @@ import java.util.StringTokenizer;
 /**
  * Stores information about a namespace specification.
  * A namespace is specified with a namespace pattern and a wildcard.
- * The wildcard can be present in multiple places in the namespace 
+ * The wildcard can be present in multiple places in the namespace
  * specification and each occurrence of the wildcard can be replaced with
  * an arbitrary sequence of characters.
- * 
+ *
  * @author george
  */
 class NamespaceSpecification {
@@ -16,7 +16,7 @@ class NamespaceSpecification {
    * Default value for wildcard.
    */
   public static String DEFAULT_WILDCARD = "*";
-  
+
   /**
    * Constant for any namespace.
    */
@@ -26,12 +26,12 @@ class NamespaceSpecification {
    * The namespace pattern, may contain one or more occurrences of the wildcard.
    */
   String ns="\0";
-  
+
   /**
    * The wildcard character, by default it is *.
    */
   String wildcard = DEFAULT_WILDCARD;
-    
+
   /**
    * Creates a namespace specification from a namespace pattern
    * using the default wildcard, that is *.
@@ -40,7 +40,7 @@ class NamespaceSpecification {
   public NamespaceSpecification(String ns) {
     this(ns, DEFAULT_WILDCARD);
   }
-  
+
   /**
    * Creates a namespace specification from a namespace pattern
    * and a given wildcard.
@@ -53,7 +53,7 @@ class NamespaceSpecification {
   }
 
   /**
-   * Check if this namespace specification competes with 
+   * Check if this namespace specification competes with
    * another namespace specification.
    * @param other The namespace specification we need to check if
    * it competes with this namespace specification.
@@ -64,9 +64,9 @@ class NamespaceSpecification {
     if ("".equals(other.wildcard)) {
       return covers(other.ns);
     }
-    // split the namespaces at wildcards     
+    // split the namespaces at wildcards
     String[] otherParts = split(other.ns, other.wildcard);
-    
+
     // if the given namepsace specification does not use its wildcard
     // then we just look if the current namespace specification covers it
     if (otherParts.length == 1) {
@@ -77,15 +77,15 @@ class NamespaceSpecification {
       return other.covers(ns);
     }
     // also for the current namespace specification
-    String[] parts = split(ns, wildcard); 
+    String[] parts = split(ns, wildcard);
     // now check if the current namespace specification is just an URI
     if (parts.length == 1) {
       return other.covers(ns);
     }
     // now each namespace specification contains wildcards
-    // suppose we have 
-    // ns   = a1*a2*...*an 
-    // and 
+    // suppose we have
+    // ns   = a1*a2*...*an
+    // and
     // other.ns = b1*b2*...*bm
     // then we only need to check matchPrefix(a1, b1) and matchPrefix(an, bn) where
     // matchPrefix(a, b) means a starts with b or b starts with a.
@@ -119,7 +119,7 @@ class NamespaceSpecification {
 
   /**
    * Checks if a namespace specification covers a specified URI.
-   * any namespace pattern covers only the any namespace uri. 
+   * any namespace pattern covers only the any namespace uri.
    * @param uri The uri to be checked.
    * @return true if the namespace pattern covers the specified uri.
    */
@@ -129,7 +129,7 @@ class NamespaceSpecification {
     if (ANY_NAMESPACE.equals(ns) || "".equals(wildcard)) {
       return ns.equals(uri);
     }
-    String[] parts = split(ns, wildcard);    
+    String[] parts = split(ns, wildcard);
     // no wildcard
     if (parts.length == 1) {
       return ns.equals(uri);
@@ -154,7 +154,7 @@ class NamespaceSpecification {
         return false;
       }
       start = match + parts[i].length();
-    }    
+    }
     return true;
   }
 
@@ -162,13 +162,12 @@ class NamespaceSpecification {
    * Checks for equality with another Namespace specification.
    */
   public boolean equals(Object obj) {
-    if (obj instanceof NamespaceSpecification) {
-      NamespaceSpecification other = (NamespaceSpecification)obj;
+    if (obj instanceof NamespaceSpecification other) {
       return ns.equals(other.ns) && wildcard.equals(other.wildcard);
-    }    
+    }
     return false;
   }
-  
+
   /**
    * Get a hashcode for this namespace specification.
    */

@@ -23,7 +23,7 @@ class TestDriver {
 
   private ValidationDriver driver;
   private ErrorHandlerImpl eh;
-  private Localizer localizer = new Localizer(TestDriver.class);
+  private final Localizer localizer = new Localizer(TestDriver.class);
   private int nTests = 0;
 
   public int doMain(String[] args) throws IOException {
@@ -71,7 +71,7 @@ class TestDriver {
   private static final String INCORRECT_SCHEMA_NAME = "i.rng";
   private static final String VALID_INSTANCE_SUFFIX = ".v.xml";
   private static final String INVALID_INSTANCE_SUFFIX = ".i.xml";
-  
+
   public int runTestSuite(File dir) throws IOException {
     int result = 0;
     String[] subdirs = dir.list();

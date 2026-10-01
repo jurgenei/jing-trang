@@ -91,7 +91,7 @@ class ValidatorHandlerImpl extends ValidatorHandler2 {
       contentHandler.endElement(namespaceURI, localName, qName);
   }
 
-  public void characters(char ch[], int start, int length) throws SAXException {
+  public void characters(char[] ch, int start, int length) throws SAXException {
     if (bufferingCharacters) {
       charBuf.append(ch, start, length);
       return;

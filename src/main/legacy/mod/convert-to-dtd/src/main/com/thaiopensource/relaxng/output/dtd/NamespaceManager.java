@@ -36,7 +36,7 @@ class NamespaceManager {
     for (String ns : unassignedNamespaceUris) {
       for (; ;) {
         ++n;
-        String prefix = "ns" + Integer.toString(n);
+        String prefix = "ns" + n;
         if (!usedPrefixes.contains(prefix)) {
           namespaceUriMap.put(ns, prefix);
           break;

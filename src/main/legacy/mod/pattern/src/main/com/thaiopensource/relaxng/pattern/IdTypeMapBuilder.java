@@ -36,38 +36,21 @@ public class IdTypeMapBuilder {
     }
   }
 
-  private static class PossibleConflict {
-    private final NameClass elementNameClass;
-    private final NameClass attributeNameClass;
-    private final Locator locator;
-
-    private PossibleConflict(NameClass elementNameClass, NameClass attributeNameClass, Locator locator) {
-      this.elementNameClass = elementNameClass;
-      this.attributeNameClass = attributeNameClass;
-      this.locator = locator;
-    }
+  private record PossibleConflict(NameClass elementNameClass, NameClass attributeNameClass, Locator locator) {
   }
 
-  private static class ScopedName {
-    private final Name elementName;
-    private final Name attributeName;
-
-    private ScopedName(Name elementName, Name attributeName) {
-      this.elementName = elementName;
-      this.attributeName = attributeName;
-    }
+  private record ScopedName(Name elementName, Name attributeName) {
 
     public int hashCode() {
-      return elementName.hashCode() ^ attributeName.hashCode();
-    }
+        return elementName.hashCode() ^ attributeName.hashCode();
+      }
 
-    public boolean equals(Object obj) {
-      if (!(obj instanceof ScopedName))
-        return false;
-      ScopedName other = (ScopedName)obj;
-      return elementName.equals(other.elementName) && attributeName.equals(other.attributeName);
+      public boolean equals(Object obj) {
+        if (!(obj instanceof ScopedName(Name name, Name attributeName1)))
+          return false;
+        return elementName.equals(name) && attributeName.equals(attributeName1);
+      }
     }
-  }
 
   private static class IdTypeMapImpl implements IdTypeMap {
     private final Map<ScopedName, Integer> table = new HashMap<ScopedName, Integer>();
@@ -165,7 +148,7 @@ public class IdTypeMapBuilder {
           error("id_attribute_name_class", p.getLocator());
           return VoidValue.VOID;
         }
-        elementNameClass.accept(new ElementNameClassVisitor(((SimpleNameClass)attributeNameClass).getName(),
+        elementNameClass.accept(new ElementNameClassVisitor(((SimpleNameClass)attributeNameClass).name(),
                                                             locator,
                                                             idType));
       }
@@ -290,8 +273,8 @@ public class IdTypeMapBuilder {
       for (PossibleConflict pc : possibleConflicts) {
         if (pc.elementNameClass instanceof SimpleNameClass
             && pc.attributeNameClass instanceof SimpleNameClass) {
-          Name elementName = ((SimpleNameClass)pc.elementNameClass).getName();
-          Name attributeName = ((SimpleNameClass)pc.attributeNameClass).getName();
+          Name elementName = ((SimpleNameClass)pc.elementNameClass).name();
+          Name attributeName = ((SimpleNameClass)pc.attributeNameClass).name();
           int idType = idTypeMap.getIdType(elementName,
                                            attributeName);
           if (idType != Datatype.ID_TYPE_NULL)

@@ -1,7 +1,7 @@
 package com.thaiopensource.util;
 
 public interface PropertyMap {
-  public static final PropertyMap EMPTY = new PropertyMap() {
+  PropertyMap EMPTY = new PropertyMap() {
     public <T> T get(PropertyId<T> pid) {
       return null;
     }

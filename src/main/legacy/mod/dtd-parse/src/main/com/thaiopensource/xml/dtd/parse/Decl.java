@@ -39,7 +39,7 @@ class Decl {
   static final int IGNORE_SECTION = 7; // params + value
   static final int COMMENT = 8; // value
   static final int PROCESSING_INSTRUCTION = 9; // value
-  
+
   Decl(int type) {
     this.type = type;
   }
@@ -51,9 +51,8 @@ class Decl {
   Vector decls;
 
   public boolean equals(Object obj) {
-    if (obj == null || !(obj instanceof Decl))
+    if (obj == null || !(obj instanceof Decl other))
       return false;
-    Decl other = (Decl)obj;
     if (this.type != other.type)
       return false;
     if (this.entity != other.entity)
@@ -82,7 +81,7 @@ class Decl {
     NameSpec nameSpec = Param.paramsToNameSpec(ps);
     return new AttlistDecl(nameSpec, Param.paramsToAttributeGroup(ps));
   }
-    
+
   TopLevel createEntityDecl(DtdBuilder db) {
     ParamStream ps = new ParamStream(params);
     ps.advance();
@@ -113,7 +112,7 @@ class Decl {
       entity.modelGroup = entity.toModelGroup();
       return new ModelGroupDef(name, entity.modelGroup);
     case Entity.SEMANTIC_ATTRIBUTE_GROUP:
-      entity.attributeGroup = 
+      entity.attributeGroup =
 	Param.paramsToAttributeGroup(entity.parsed);
       return new AttributeGroupDef(name, entity.attributeGroup);
     case Entity.SEMANTIC_DATATYPE:
@@ -247,7 +246,7 @@ class Decl {
     }
     return false;
   }
-  
+
   NotationDecl createNotationDecl(DtdBuilder db) {
     ParamStream ps = new ParamStream(params);
     ps.advance();

@@ -1,24 +1,24 @@
 /**
  * Copyright (c) 2001, Thai Open Source Software Center Ltd
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  *     Redistributions of source code must retain the above copyright
  *     notice, this list of conditions and the following disclaimer.
- * 
+ *
  *     Redistributions in binary form must reproduce the above copyright
  *     notice, this list of conditions and the following disclaimer in
  *     the documentation and/or other materials provided with the
  *     distribution.
- * 
+ *
  *     Neither the name of the Thai Open Source Software Center Ltd nor
  *     the names of its contributors may be used to endorse or promote
  *     products derived from this software without specific prior written
  *     permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -35,6 +35,8 @@ package org.relaxng.datatype.helpers;
 
 import org.relaxng.datatype.DatatypeLibraryFactory;
 import org.relaxng.datatype.DatatypeLibrary;
+
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
 import java.util.Vector;
@@ -48,7 +50,7 @@ import java.net.URL;
 
 /**
  * Discovers the datatype library implementation from the classpath.
- * 
+ *
  * <p>
  * The call of the createDatatypeLibrary method finds an implementation
  * from a given datatype library URI at run-time.
@@ -215,13 +217,8 @@ public class DatatypeLibraryLoader implements DatatypeLibraryFactory {
 	    try {
 	      InputStream in = url.openStream();
 	      Reader r;
-	      try {
-		r = new InputStreamReader(in, "UTF-8");
-	      }
-	      catch (UnsupportedEncodingException e) {
-		r = new InputStreamReader(in, "UTF8");
-	      }
-	      r = new BufferedReader(r);
+        r = new InputStreamReader(in, StandardCharsets.UTF_8);
+        r = new BufferedReader(r);
 	      Vector tokens = new Vector();
 	      StringBuffer tokenBuf = new StringBuffer();
 	      int state = START;
@@ -262,6 +259,6 @@ public class DatatypeLibraryLoader implements DatatypeLibraryFactory {
 	    }
 	  }
 	}
-  
+
 }
 

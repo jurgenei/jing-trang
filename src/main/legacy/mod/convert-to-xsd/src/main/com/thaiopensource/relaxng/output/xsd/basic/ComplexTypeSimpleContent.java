@@ -17,9 +17,8 @@ public class ComplexTypeSimpleContent extends ComplexTypeAllowedContent {
   }
 
   public boolean equals(Object obj) {
-    if (!(obj instanceof ComplexTypeSimpleContent))
+    if (!(obj instanceof ComplexTypeSimpleContent other))
       return false;
-    ComplexTypeSimpleContent other = (ComplexTypeSimpleContent)obj;
     return this.getAttributeUses().equals(other.getAttributeUses()) && this.simpleType.equals(other.simpleType);
   }
 

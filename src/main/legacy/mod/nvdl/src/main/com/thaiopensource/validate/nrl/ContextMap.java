@@ -60,9 +60,8 @@ class ContextMap {
   }
 
   public boolean equals(Object obj) {
-    if (!(obj instanceof ContextMap))
+    if (!(obj instanceof ContextMap other))
       return false;
-    ContextMap other = (ContextMap)obj;
     if (!Equal.equal(this.rootValue, other.rootValue)
         || !Equal.equal(this.otherValue, other.otherValue))
       return false;

@@ -39,9 +39,9 @@ public class ResolverEntityManager extends EntityManager {
     if (isParameterEntity)
       entityName = "%" + entityName;
     try {
-      resolver.resolve(new ExternalEntityIdentifier(xid.getSystemId(),
-                                                    xid.getBaseUri(),
-                                                    xid.getPublicId(),
+      resolver.resolve(new ExternalEntityIdentifier(xid.systemId(),
+                                                    xid.baseUri(),
+                                                    xid.publicId(),
                                                     entityName),
                        input);
       return open(input);

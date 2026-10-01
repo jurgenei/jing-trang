@@ -40,9 +40,6 @@ public class CombineValidator implements Validator {
       dtdHandler = new ForkDTDHandler(d1, d2);
     else if (d1 != null)
       dtdHandler = d1;
-    else if (d2 != null)
-      dtdHandler = d2;
-    else
-      dtdHandler = null;
+    else dtdHandler = d2;
   }
 }

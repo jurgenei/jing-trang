@@ -231,7 +231,7 @@ class ValidatorImpl extends ParserConfigurationSettings implements Validator, Co
     // do nothing
   }
 
-  public void characters(char ch[], int start, int length)
+  public void characters(char[] ch, int start, int length)
           throws SAXException {
     try {
       schemaValidator.characters(new XMLString(ch, start, length), null);
@@ -241,7 +241,7 @@ class ValidatorImpl extends ParserConfigurationSettings implements Validator, Co
     }
   }
 
-  public void ignorableWhitespace(char ch[], int start, int length)
+  public void ignorableWhitespace(char[] ch, int start, int length)
           throws SAXException {
     try {
       schemaValidator.ignorableWhitespace(new XMLString(ch, start, length), null);
@@ -332,10 +332,9 @@ class ValidatorImpl extends ParserConfigurationSettings implements Validator, Co
   public String getXMLVersion() {
     return "1.0";
   }
-  
+
   static SAXException toSAXException(XNIException e) {
-    if (e instanceof XMLParseException) {
-      XMLParseException pe = (XMLParseException)e;
+    if (e instanceof XMLParseException pe) {
       return new SAXParseException(pe.getMessage(),
                                    pe.getPublicId(),
                                    pe.getExpandedSystemId(),

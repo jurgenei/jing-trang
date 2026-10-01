@@ -34,16 +34,7 @@ class ValidatorImpl extends DefaultHandler implements Validator, Path, PatternMa
     }
   }
 
-  static class ActivePattern {
-    final int rootDepth;
-    final Pattern pattern;
-    final SelectionHandler handler;
-
-    ActivePattern(int rootDepth, Pattern pattern, SelectionHandler handler) {
-      this.rootDepth = rootDepth;
-      this.pattern = pattern;
-      this.handler = handler;
-    }
+  record ActivePattern(int rootDepth, Pattern pattern, SelectionHandler handler) {
   }
 
   static class OpenElement {
@@ -201,7 +192,7 @@ class ValidatorImpl extends DefaultHandler implements Validator, Path, PatternMa
     }
   }
 
-  public void characters(char ch[], int start, int length)
+  public void characters(char[] ch, int start, int length)
           throws SAXException {
     try {
       for (int i = 0, len = valueHandlers.size(); i < len; i++)
@@ -212,7 +203,7 @@ class ValidatorImpl extends DefaultHandler implements Validator, Path, PatternMa
     }
   }
 
-  public void ignorableWhitespace(char ch[], int start, int length)
+  public void ignorableWhitespace(char[] ch, int start, int length)
           throws SAXException {
     characters(ch, start, length);
   }

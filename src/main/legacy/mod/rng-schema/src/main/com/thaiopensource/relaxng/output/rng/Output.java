@@ -78,7 +78,7 @@ class Output implements PatternVisitor<VoidValue>, NameClassVisitor<VoidValue>, 
     this.datatypeLibrary = datatypeLibrary;
     this.prefixMap = prefixMap;
     OutputDirectory.Stream stream = od.open(sourceUri, encoding);
-    this.xw = new XmlWriter(stream.getWriter(), stream.getEncoding(), stream.getCharRepertoire(),
+    this.xw = new XmlWriter(stream.writer(), stream.encoding(), stream.charRepertoire(),
                             od.getLineSeparator(), od.getIndent(), getTopLevelAttributes());
   }
 
@@ -136,9 +136,8 @@ class Output implements PatternVisitor<VoidValue>, NameClassVisitor<VoidValue>, 
   private boolean tryNameAttribute(NameClass nc, boolean isAttribute) {
     if (hasAnnotations(nc))
       return false;
-    if (!(nc instanceof NameNameClass))
+    if (!(nc instanceof NameNameClass nnc))
       return false;
-    NameNameClass nnc = (NameNameClass)nc;
     String ns = nnc.getNamespaceUri();
     if (ns == NameClass.INHERIT_NS) {
       if (isAttribute || lookupPrefix("") != null)
@@ -462,8 +461,7 @@ class Output implements PatternVisitor<VoidValue>, NameClassVisitor<VoidValue>, 
   private void annotationChildren(List<? extends AnnotationChild> list, boolean haveDefaultNamespace) {
     for (int i = 0, len = list.size(); i < len; i++) {
       AnnotationChild child = list.get(i);
-      if (child instanceof ElementAnnotation) {
-        ElementAnnotation elem = (ElementAnnotation)child;
+      if (child instanceof ElementAnnotation elem) {
         String name = elem.getLocalName();
         String prefix = elem.getPrefix();
         if (prefix == null) {

@@ -151,9 +151,7 @@ public class ValidatorPatternBuilder extends PatternBuilder {
       if (p2 == notAllowed)
         return p1;
     }
-    if (p1 instanceof AfterPattern && p2 instanceof AfterPattern) {
-      AfterPattern ap1 = (AfterPattern)p1;
-      AfterPattern ap2 = (AfterPattern)p2;
+    if (p1 instanceof AfterPattern ap1 && p2 instanceof AfterPattern ap2) {
       if (ap1.getOperand1() == ap2.getOperand1())
         return makeAfter(ap1.getOperand1(), makeChoice(ap1.getOperand2(), ap2.getOperand2()));
       if (ap1.getOperand1() == notAllowed)

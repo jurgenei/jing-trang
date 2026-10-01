@@ -24,14 +24,7 @@ public class InferHandler extends DefaultHandler {
   private final Schema schema = new Schema();
   private final Set<String> assignedPrefixes = new HashSet<String>();
 
-  private static class OpenElement {
-    final OpenElement parent;
-    final ElementDeclInferrer inferrer;
-
-    public OpenElement(OpenElement parent, ElementDeclInferrer inferrer) {
-      this.parent = parent;
-      this.inferrer = inferrer;
-    }
+  private record OpenElement(OpenElement parent, ElementDeclInferrer inferrer) {
   }
 
   public void startElement(String uri, String localName,
@@ -80,7 +73,7 @@ public class InferHandler extends DefaultHandler {
     return new Name(uri, localName);
   }
 
-  public void characters(char ch[], int start, int length)
+  public void characters(char[] ch, int start, int length)
           throws SAXException {
     if (openElement.inferrer.wantValue())
       textBuffer.append(ch, start, length);

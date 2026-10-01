@@ -25,9 +25,8 @@ public class ComplexTypeComplexContent extends ComplexTypeAllowedContent {
   }
 
   public boolean equals(Object obj) {
-    if (!(obj instanceof ComplexTypeComplexContent))
+    if (!(obj instanceof ComplexTypeComplexContent other))
       return false;
-    ComplexTypeComplexContent other = (ComplexTypeComplexContent)obj;
     if (particle == null) {
       if (other.particle != null)
         return false;

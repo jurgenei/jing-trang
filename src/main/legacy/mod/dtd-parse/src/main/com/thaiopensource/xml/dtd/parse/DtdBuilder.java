@@ -78,7 +78,7 @@ class DtdBuilder {
 	 e.hasMoreElements();)
       ((Entity)e.nextElement()).unexpandEntities();
   }
-  
+
   void createDecls() {
     new AtomParser(this,
 		   new AtomStream(atoms),
@@ -90,7 +90,7 @@ class DtdBuilder {
     /* A parameter entity such as
 
        <!ENTITY % n.foo "foo">
- 
+
        where n.foo is referenced only in model groups could either be
        a name spec for an undefined element or a model group. If the
        element name "foo" is always referenced via n.foo, then we
@@ -142,17 +142,17 @@ class DtdBuilder {
     int n = v.size();
     for (int i = 0; i < n; i++) {
       Atom a = (Atom)v.elementAt(i);
-      Entity e = a.getEntity();
+      Entity e = a.entity();
       if (e != null)
 	dumpEntity(e.name, e.atoms);
-      else if (a.getTokenType() != Tokenizer.TOK_PROLOG_S) {
+      else if (a.tokenType() != Tokenizer.TOK_PROLOG_S) {
 	System.out.print("<t>");
-	dumpString(a.getToken());
+	dumpString(a.token());
 	System.out.println("</t>");
       }
     }
   }
-  
+
   private static void dumpString(String s) {
     int n = s.length();
     for (int i = 0; i < n; i++)

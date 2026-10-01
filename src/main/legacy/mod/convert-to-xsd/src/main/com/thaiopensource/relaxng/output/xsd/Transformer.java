@@ -69,9 +69,8 @@ class Transformer extends SchemaTransformer {
     String builtinTypeName = ((SimpleTypeRestriction)first).getName();
     List<Facet> facets = new Vector<Facet>();
     for (SimpleType child : transformedChildren) {
-      if (!(child instanceof SimpleTypeRestriction))
+      if (!(child instanceof SimpleTypeRestriction restriction))
         return null;
-      SimpleTypeRestriction restriction = (SimpleTypeRestriction)child;
       if (!restriction.getName().equals(builtinTypeName))
         return null;
       if (restriction.getFacets().isEmpty())
@@ -310,15 +309,9 @@ class Transformer extends SchemaTransformer {
     return firstIndex;
   }
 
-  static class AttributeInfo {
-    final Map<Name, SingleAttributeUse> map;
-    final Wildcard wildcard;
-    final static Map<Name, SingleAttributeUse> EMPTY_MAP = Collections.emptyMap();
+  record AttributeInfo(Map<Name, SingleAttributeUse> map, Wildcard wildcard) {
+      final static Map<Name, SingleAttributeUse> EMPTY_MAP = Collections.emptyMap();
 
-    AttributeInfo(Map<Name, SingleAttributeUse> map, Wildcard wildcard) {
-      this.map = map;
-      this.wildcard = wildcard;
-    }
   }
 
   class AttributeMapper extends AbstractAttributeUseVisitor<AttributeInfo> {
@@ -478,7 +471,7 @@ class Transformer extends SchemaTransformer {
     for (Particle child : ((ParticleAll)particle).getChildren()) {
       if (child instanceof ParticleRepeat) {
         Occurs occur = ((ParticleRepeat)child).getOccurs();
-        if (occur.getMin() > 1 || occur.getMax() > 1)
+        if (occur.min() > 1 || occur.max() > 1)
           return false;
         child = ((ParticleRepeat)child).getChild();
       }

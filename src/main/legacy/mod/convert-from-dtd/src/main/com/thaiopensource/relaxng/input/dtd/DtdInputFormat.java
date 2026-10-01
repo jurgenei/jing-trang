@@ -29,26 +29,21 @@ import java.io.IOException;
 import java.util.Map;
 
 public class DtdInputFormat implements InputFormat {
-  static private class NamespaceDeclParamFactory implements ParamFactory {
-    private final Map<String, String> prefixMap;
+    private record NamespaceDeclParamFactory(Map<String, String> prefixMap) implements ParamFactory {
 
-    NamespaceDeclParamFactory(Map<String, String> prefixMap) {
-      this.prefixMap = prefixMap;
-    }
-
-    public Param createParam(String name) {
-      if (!name.startsWith("xmlns:"))
-        return null;
-      final String prefix = name.substring(6);
-      if (!Naming.isNcname(prefix))
-        return null;
-      return new AbsoluteUriParam() {
-        public void setAbsoluteUri(String uri) {
-          prefixMap.put(prefix, uri);
+        public Param createParam(String name) {
+            if (!name.startsWith("xmlns:"))
+                return null;
+            final String prefix = name.substring(6);
+            if (!Naming.isNcname(prefix))
+                return null;
+            return new AbsoluteUriParam() {
+                public void setAbsoluteUri(String uri) {
+                    prefixMap.put(prefix, uri);
+                }
+            };
         }
-      };
     }
-  }
 
   static private abstract class DeclPatternParam extends AbstractParam {
     private final Localizer localizer;

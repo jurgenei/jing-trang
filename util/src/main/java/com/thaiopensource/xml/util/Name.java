@@ -4,7 +4,7 @@ public final class Name {
   final private String namespaceUri;
   final private String localName;
   final private int hc;
-  
+
   public Name(String namespaceUri, String localName) {
     this.namespaceUri = namespaceUri;
     this.localName = localName;
@@ -20,9 +20,8 @@ public final class Name {
   }
 
   public boolean equals(Object obj) {
-    if (!(obj instanceof Name))
+    if (!(obj instanceof Name other))
       return false;
-    Name other = (Name)obj;
     return (this.hc == other.hc
 	    && this.namespaceUri.equals(other.namespaceUri)
 	    && this.localName.equals(other.localName));

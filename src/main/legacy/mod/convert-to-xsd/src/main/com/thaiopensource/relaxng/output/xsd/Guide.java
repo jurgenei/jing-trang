@@ -21,9 +21,7 @@ class Guide {
   }
 
   boolean getGroupEnableAbstractElement(String name) {
-    return nonDefaultGroupSet.contains(name)
-            ? !defaultGroupEnableAbstractElements
-            : defaultGroupEnableAbstractElements;
+    return nonDefaultGroupSet.contains(name) != defaultGroupEnableAbstractElements;
   }
 
   boolean getDefaultGroupEnableAbstractElements() {

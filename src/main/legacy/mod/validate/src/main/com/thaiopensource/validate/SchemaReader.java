@@ -12,7 +12,7 @@ import java.io.IOException;
  * concurrently from multiple threads.
  */
 public interface SchemaReader {
-  public static final String BASE_URI = "http://www.thaiopensource.com/validate/";
+  String BASE_URI = "http://www.thaiopensource.com/validate/";
   /**
    * Creates a <code>Schema</code> by reading it from an <code>InputSource</code>.
    *

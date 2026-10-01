@@ -137,7 +137,7 @@ publishing {
 }
 
 signing {
-    tasks.withType<org.gradle.plugins.signing.Sign>().configureEach {
+    tasks.withType<Sign>().configureEach {
         onlyIf {
             !gradle.startParameter.taskNames.any { name -> name.contains("publishToMavenLocal") }
         }

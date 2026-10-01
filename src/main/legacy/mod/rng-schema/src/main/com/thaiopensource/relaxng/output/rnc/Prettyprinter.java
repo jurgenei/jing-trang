@@ -3,7 +3,7 @@ package com.thaiopensource.relaxng.output.rnc;
 import java.io.IOException;
 
 interface Prettyprinter {
-  public static class WrappedException extends RuntimeException {
+  class WrappedException extends RuntimeException {
     private final IOException cause;
 
     public Throwable getCause() {

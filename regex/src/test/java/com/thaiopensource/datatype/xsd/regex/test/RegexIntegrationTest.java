@@ -15,22 +15,22 @@ class RegexIntegrationTest {
   @Test
   void regextestPassesForJavaEngine() throws Exception {
     TestDriver.RunResult result = TestDriver.runSuite(JAVA_ENGINE, testResourceUri("regextest.xml"));
-    assertEquals(0, result.failures);
-    assertTrue(result.tests > 0);
+    assertEquals(0, result.failures());
+    assertTrue(result.tests() > 0);
   }
 
   @Test
   void regextestPassesForXercesEngine() throws Exception {
     TestDriver.RunResult result = TestDriver.runSuite(XERCES_ENGINE, testResourceUri("regextest.xml"));
-    assertEquals(0, result.failures);
-    assertTrue(result.tests > 0);
+    assertEquals(0, result.failures());
+    assertTrue(result.tests() > 0);
   }
 
   @Test
   void hardtestPassesForJavaEngine() throws Exception {
     TestDriver.RunResult result = TestDriver.runSuite(JAVA_ENGINE, testResourceUri("hardtest.xml"));
-    assertEquals(0, result.failures);
-    assertTrue(result.tests > 0);
+    assertEquals(0, result.failures());
+    assertTrue(result.tests() > 0);
   }
 
 

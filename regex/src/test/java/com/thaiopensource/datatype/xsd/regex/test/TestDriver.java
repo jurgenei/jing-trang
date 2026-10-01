@@ -24,14 +24,7 @@ public class TestDriver extends DefaultHandler {
   private Locator loc;
   private final RegexEngine engine;
 
-  static final class RunResult {
-    final int tests;
-    final int failures;
-
-    RunResult(int tests, int failures) {
-      this.tests = tests;
-      this.failures = failures;
-    }
+  record RunResult(int tests, int failures) {
   }
 
   static public void main(String[] args) throws SAXException, IOException, ParserConfigurationException,
@@ -70,12 +63,12 @@ public class TestDriver extends DefaultHandler {
     this.loc = locator;
   }
 
-  public void characters(char ch[], int start, int length)
+  public void characters(char[] ch, int start, int length)
           throws SAXException {
     buf.append(ch, start, length);
   }
 
-  public void ignorableWhitespace(char ch[], int start, int length)
+  public void ignorableWhitespace(char[] ch, int start, int length)
           throws SAXException {
     buf.append(ch, start, length);
   }

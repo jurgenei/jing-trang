@@ -45,7 +45,7 @@ public class CharRepertoire {
 
   private boolean contains2(char c) {
     try {
-      String s = new String(new String(new char[]{ c }).getBytes(enc), enc);
+      String s = new String(String.valueOf(c).getBytes(enc), enc);
       return s.length() == 1 && s.charAt(0) == c;
     }
     catch (UnsupportedEncodingException e) {

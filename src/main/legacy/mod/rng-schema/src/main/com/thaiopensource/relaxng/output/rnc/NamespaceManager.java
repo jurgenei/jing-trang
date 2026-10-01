@@ -67,34 +67,19 @@ class NamespaceManager {
   };
 
 
-  static class Binding {
-    private final String prefix;
-    private final String namespaceUri;
-    Binding(String prefix, String namespaceUri) {
-      this.prefix = prefix;
-      this.namespaceUri = namespaceUri;
-    }
-
-    String getPrefix() {
-      return prefix;
-    }
-
-    String getNamespaceUri() {
-      return namespaceUri;
-    }
+  record Binding(String prefix, String namespaceUri) {
 
     public int hashCode() {
-      return prefix.hashCode() ^ namespaceUri.hashCode();
-    }
+        return prefix.hashCode() ^ namespaceUri.hashCode();
+      }
 
-    public boolean equals(Object obj) {
-      if (!(obj instanceof Binding))
-        return false;
-      Binding other = (Binding)obj;
-      return (this.prefix.equals(other.prefix)
-              && this.namespaceUri.equals(other.namespaceUri));
+      public boolean equals(Object obj) {
+        if (!(obj instanceof Binding(String prefix1, String uri)))
+          return false;
+        return (this.prefix.equals(prefix1)
+          && this.namespaceUri.equals(uri));
+      }
     }
-  }
 
 
   static class BindingUsage {
@@ -212,7 +197,7 @@ class NamespaceManager {
     }
     Iterator<String> iter = requiredNamespaces.keySet().iterator();
     for (int i = 1; iter.hasNext(); i++) {
-      String prefix = "ns" + Integer.toString(i);
+      String prefix = "ns" + i;
       if (prefixMap.get(prefix) == null) {
         String ns = iter.next();
         prefixMap.put(prefix, ns);

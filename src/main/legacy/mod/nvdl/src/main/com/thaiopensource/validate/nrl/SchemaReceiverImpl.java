@@ -31,7 +31,7 @@ class SchemaReceiverImpl implements SchemaReceiver {
   private final Name attributeOwner;
   private final SchemaReader autoSchemaReader;
   private Schema nrlSchema = null;
-  private static final PropertyId subSchemaProperties[] = {
+  private static final PropertyId[] subSchemaProperties = {
     ValidateProperty.ERROR_HANDLER,
     ValidateProperty.XML_READER_CREATOR,
     ValidateProperty.ENTITY_RESOLVER,

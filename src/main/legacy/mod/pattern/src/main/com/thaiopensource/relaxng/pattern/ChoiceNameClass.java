@@ -27,9 +27,8 @@ class ChoiceNameClass implements NameClass {
   }
 
   public boolean equals(Object obj) {
-    if (obj == null || !(obj instanceof ChoiceNameClass))
+    if (obj == null || !(obj instanceof ChoiceNameClass other))
       return false;
-    ChoiceNameClass other = (ChoiceNameClass)obj;
     return (nameClass1.equals(other.nameClass1)
 	    && nameClass2.equals(other.nameClass2));
   }

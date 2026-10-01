@@ -17,12 +17,12 @@ public class Localizer {
 
   public String message(String key, Object arg) {
     return MessageFormat.format(getBundle().getString(key),
-				new Object[]{arg});
+      arg);
   }
 
   public String message(String key, Object arg1, Object arg2) {
     return MessageFormat.format(getBundle().getString(key),
-				new Object[]{arg1, arg2});
+      arg1, arg2);
   }
 
   public String message(String key, Object[] args) {

@@ -360,7 +360,7 @@ public class Converter {
       // This takes care of duplicates within the group
       attributeNames = new HashSet<String>();
       Pattern pattern;
-      AttributeGroupMember[] members = attributeGroup.getMembers();
+      AttributeGroupMember[] members = attributeGroup.members();
       GroupPattern group = new GroupPattern();
       AttributeGroupVisitor agv = new AttributeGroupOutput(group);
       for (int i = 0; i < members.length; i++)
@@ -422,7 +422,7 @@ public class Converter {
 	  return;
       }
       catch (Exception e) {
-	throw (RuntimeException)e;
+	throw e;
       }
       if (sc.getSchemaDocumentMap().get(uri) != null) {
         // I don't think this can happen because the second and subsequent inclusions
@@ -509,7 +509,7 @@ public class Converter {
     }
 
     public void enumDatatype(EnumGroup enumGroup) throws Exception {
-      if (enumGroup.getMembers().length == 0)
+      if (enumGroup.members().length == 0)
         pattern = new NotAllowedPattern();
       else {
         ChoicePattern tem = new ChoicePattern();
@@ -819,9 +819,9 @@ public class Converter {
 	  return pattern;
       }
       // add another separator
-      metaPattern = (metaPattern.substring(0, 1)
-		     + metaPattern.substring(1, 2)
-		     + metaPattern.substring(1, 2)
+      metaPattern = (metaPattern.charAt(0)
+		     + metaPattern.charAt(1)
+		     + metaPattern.charAt(1)
 		     + metaPattern.substring(2));
     }
   }
@@ -985,11 +985,10 @@ public class Converter {
     int i = pattern.indexOf(ch);
     if (i < 0)
       return pattern;
-    StringBuffer buf = new StringBuffer();
-    buf.append(pattern.substring(0, i));
-    buf.append(value);
-    buf.append(pattern.substring(i + 1));
-    return buf.toString();
+    String buf = pattern.substring(0, i) +
+      value +
+      pattern.substring(i + 1);
+    return buf;
   }
 
   private void outputStart(List<Component> components) {

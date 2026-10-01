@@ -56,7 +56,7 @@ public class PatternValidator extends Context implements ContentHandler, DTDHand
     check(matcher.matchEndTag(new Name(namespaceURI, localName), qName, this));
   }
 
-  public void characters(char ch[], int start, int length) throws SAXException {
+  public void characters(char[] ch, int start, int length) throws SAXException {
     if (bufferingCharacters) {
       charBuf.append(ch, start, length);
       return;

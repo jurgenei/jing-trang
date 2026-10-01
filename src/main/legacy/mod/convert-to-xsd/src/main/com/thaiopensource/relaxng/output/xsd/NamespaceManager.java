@@ -103,9 +103,8 @@ public class NamespaceManager {
                   && n1.attributeCount > n2.attributeCount));
     }
     public boolean equals(Object obj) {
-      if (!(obj instanceof NamespaceUsage))
+      if (!(obj instanceof NamespaceUsage other))
         return false;
-      NamespaceUsage other = (NamespaceUsage)obj;
       return (elementCount == other.elementCount
               && attributeCount == other.attributeCount);
     }
@@ -441,7 +440,7 @@ public class NamespaceManager {
                 && getElementNameForGroupRef((GroupDefinition)def) != null))
           break;
       }
-      name = base + Integer.toString(n);
+      name = base + n;
     }
     movedStructureNameSet.add(name);
     return name;
@@ -539,8 +538,7 @@ public class NamespaceManager {
   }
 
   private boolean particleMembers(Particle child, List<Name> members) {
-    if (child instanceof Element) {
-      Element e = (Element)child;
+    if (child instanceof Element e) {
       if (!isGlobal(e))
         return false;
       members.add(e.getName());
@@ -666,9 +664,9 @@ public class NamespaceManager {
   }
 
   static String otherNamespace(Wildcard wc) {
-    if (wc.isPositive())
+    if (wc.positive())
       return null;
-    Set<String> namespaces = wc.getNamespaces();
+    Set<String> namespaces = wc.namespaces();
     switch (namespaces.size()) {
     case 2:
       if (!namespaces.contains(""))

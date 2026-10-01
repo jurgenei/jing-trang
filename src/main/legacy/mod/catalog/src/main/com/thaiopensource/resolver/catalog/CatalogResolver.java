@@ -39,7 +39,7 @@ public class CatalogResolver extends AbstractResolver {
   public CatalogResolver(List<String> catalogUris) {
     this(catalogUris, new SAXResolver());
   }
-  
+
   public synchronized void resolve(Identifier id, Input input) throws IOException, ResolverException {
     if (input.isResolved())
       return;
@@ -66,12 +66,10 @@ public class CatalogResolver extends AbstractResolver {
       if (resolved == null) {
         if (!isExternalIdentifier)
           resolved = catalog.resolveURI(id.getUriReference());
-        else if (id instanceof ExternalEntityIdentifier) {
-          ExternalEntityIdentifier xid = (ExternalEntityIdentifier)id;
+        else if (id instanceof ExternalEntityIdentifier xid) {
           resolved = catalog.resolveEntity(xid.getEntityName(), xid.getPublicId(), xid.getUriReference());
         }
-        else if (id instanceof ExternalDTDSubsetIdentifier) {
-          ExternalDTDSubsetIdentifier xid = (ExternalDTDSubsetIdentifier)id;
+        else if (id instanceof ExternalDTDSubsetIdentifier xid) {
           resolved = catalog.resolveDoctype(xid.getDoctypeName(), xid.getPublicId(), xid.getUriReference());
         }
         else {

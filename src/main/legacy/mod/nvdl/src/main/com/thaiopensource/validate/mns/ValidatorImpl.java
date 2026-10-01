@@ -56,16 +56,7 @@ class ValidatorImpl extends DefaultHandler implements Validator {
     }
   }
 
-  static private class PrefixMapping {
-    final String prefix;
-    final String uri;
-    final PrefixMapping parent;
-
-    PrefixMapping(String prefix, String uri, PrefixMapping parent) {
-      this.prefix = prefix;
-      this.uri = uri;
-      this.parent = parent;
-    }
+  private record PrefixMapping(String prefix, String uri, PrefixMapping parent) {
   }
 
   ValidatorImpl(SchemaImpl.Mode mode, PropertyMap properties) {
@@ -78,13 +69,13 @@ class ValidatorImpl extends DefaultHandler implements Validator {
     this.locator = locator;
   }
 
-  public void characters(char ch[], int start, int length)
+  public void characters(char[] ch, int start, int length)
           throws SAXException {
     for (Subtree st = subtrees; wantsEvent(st); st = st.parent)
       st.validator.getContentHandler().characters(ch, start, length);
   }
 
-  public void ignorableWhitespace(char ch[], int start, int length)
+  public void ignorableWhitespace(char[] ch, int start, int length)
           throws SAXException {
     for (Subtree st = subtrees; wantsEvent(st); st = st.parent)
       st.validator.getContentHandler().ignorableWhitespace(ch, start, length);

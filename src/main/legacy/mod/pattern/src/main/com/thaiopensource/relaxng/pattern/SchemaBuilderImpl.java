@@ -52,14 +52,7 @@ public class SchemaBuilderImpl extends AnnotationsImpl implements
   private final AttributeNameClassChecker attributeNameClassChecker = new AttributeNameClassChecker();
   static final Localizer localizer = new Localizer(SchemaBuilderImpl.class);
 
-  static class OpenIncludes {
-    final String uri;
-    final OpenIncludes parent;
-
-    OpenIncludes(String uri, OpenIncludes parent) {
-      this.uri = uri;
-      this.parent = parent;
-    }
+  record OpenIncludes(String uri, OpenIncludes parent) {
   }
 
   static public Pattern parse(Parseable<Pattern, NameClass, Locator, VoidValue, CommentListImpl, AnnotationsImpl> parseable,
@@ -849,18 +842,6 @@ public class SchemaBuilderImpl extends AnnotationsImpl implements
       throw new BuildException(e);
     }
   }
-
-  /*
-  private void warning(SAXParseException message) throws BuildException {
-    try {
-      if (eh != null)
-        eh.warning(message);
-    }
-    catch (SAXException e) {
-      throw new BuildException(e);
-    }
-  }
-  */
 
   private void error(String key, Locator loc) throws BuildException {
     error(new SAXParseException(localizer.message(key), loc));

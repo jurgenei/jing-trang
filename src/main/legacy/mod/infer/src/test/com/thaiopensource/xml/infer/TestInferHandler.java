@@ -119,7 +119,7 @@ public class TestInferHandler {
 		  AttributeDecl att = attEntry.getValue();
 		  Name attName = attEntry.getKey();
 		  if ("att".equals(attName.getLocalName())) {
-			Name typeName = att.getDatatype();
+			Name typeName = att.datatype();
 			assertEquals(type, typeName.getLocalName());
 		  }
 		}

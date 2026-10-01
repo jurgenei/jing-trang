@@ -59,9 +59,8 @@ class ElementPattern extends Pattern {
   }
 
   boolean samePattern(Pattern other) {
-    if (!(other instanceof ElementPattern))
+    if (!(other instanceof ElementPattern ep))
       return false;
-    ElementPattern ep = (ElementPattern)other;
     return nameClass.equals(ep.nameClass) && p == ep.p;
   }
 

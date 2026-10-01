@@ -13,7 +13,7 @@ class OverlapDetector implements NameClassVisitor {
     this.nc1 = nc1;
     this.nc2 = nc2;
     nc1.accept(this);
-    nc2.accept(this);      
+    nc2.accept(this);
   }
 
   private void probe(Name name) {
@@ -58,15 +58,13 @@ class OverlapDetector implements NameClassVisitor {
                            String messageForName,
                            String messageForNs,
                            String messageForOther) throws RestrictionViolationException {
-    if (nc2 instanceof SimpleNameClass) {
-      SimpleNameClass snc = (SimpleNameClass)nc2;
-      if (nc1.contains(snc.getName()))
-        throw new RestrictionViolationException(messageForName, snc.getName());
+    if (nc2 instanceof SimpleNameClass(Name name2)) {
+      if (nc1.contains(name2))
+        throw new RestrictionViolationException(messageForName, name2);
     }
-    else if (nc1 instanceof SimpleNameClass) {
-      SimpleNameClass snc = (SimpleNameClass)nc1;
-      if (nc2.contains(snc.getName()))
-        throw new RestrictionViolationException(messageForName, snc.getName());
+    else if (nc1 instanceof SimpleNameClass(Name name1)) {
+      if (nc2.contains(name1))
+        throw new RestrictionViolationException(messageForName, name1);
     }
     else {
       Name name = new OverlapDetector(nc1, nc2).overlapExample;

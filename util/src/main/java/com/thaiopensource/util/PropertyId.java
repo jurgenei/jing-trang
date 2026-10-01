@@ -34,6 +34,7 @@ public class PropertyId<T> {
   /**
    * @deprecated
    */
+  @Deprecated
   public T get(PropertyMap map) {
     return map.get(this);
   }
@@ -41,6 +42,7 @@ public class PropertyId<T> {
   /**
    * @deprecated
    */
+  @Deprecated
   public T put(PropertyMapBuilder builder, T value) {
     return builder.put(this, value);
   }

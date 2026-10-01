@@ -28,9 +28,8 @@ class ModeUsage {
   }
 
   public boolean equals(Object obj) {
-    if (!(obj instanceof ModeUsage))
+    if (!(obj instanceof ModeUsage other))
       return false;
-    ModeUsage other = (ModeUsage)obj;
     return this.mode == other.mode && this.currentMode == other.currentMode && Equal.equal(this.modeMap, other.modeMap);
   }
 

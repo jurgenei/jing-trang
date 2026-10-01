@@ -34,13 +34,14 @@ public class ParseException extends IOException {
     return location;
   }
 
+  @SuppressWarnings("removal")
   public String getMessage() {
     return localizer.message("MESSAGE",
 			     new Object[] {
 			       super.getMessage(),
 			       location,
-			       new Integer(lineNumber),
-			       new Integer(columnNumber) });
+             Integer.valueOf(lineNumber),
+             Integer.valueOf(columnNumber)});
   }
 
   public String getMessageBody() {

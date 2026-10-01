@@ -202,7 +202,7 @@ public class BasicBuilder {
 
   class OccursCalculator extends AbstractPatternVisitor<Occurs> {
     public Occurs visitOptional(OptionalPattern p) {
-      return new Occurs(0, p.getChild().accept(this).getMax());
+      return new Occurs(0, p.getChild().accept(this).max());
     }
 
     public Occurs visitZeroOrMore(ZeroOrMorePattern p) {
@@ -210,7 +210,7 @@ public class BasicBuilder {
     }
 
     public Occurs visitOneOrMore(OneOrMorePattern p) {
-      return new Occurs(p.getChild().accept(this).getMin(), Occurs.UNBOUNDED);
+      return new Occurs(p.getChild().accept(this).min(), Occurs.UNBOUNDED);
     }
 
     public Occurs visitData(DataPattern p) {
@@ -246,8 +246,8 @@ public class BasicBuilder {
       Occurs occ = children.get(0).accept(this);
       for (int i = 1, len = children.size(); i < len; i++) {
         Occurs tem = children.get(i).accept(this);
-        occ = new Occurs(Math.min(occ.getMin(), tem.getMin()),
-                         Math.max(occ.getMax(), tem.getMax()));
+        occ = new Occurs(Math.min(occ.min(), tem.min()),
+                         Math.max(occ.max(), tem.max()));
       }
       return occ;
     }
@@ -455,7 +455,7 @@ public class BasicBuilder {
     public AttributeUse visitMixed(MixedPattern p) {
       return p.getChild().accept(this);
     }
-    
+
     public AttributeUse visitZeroOrMore(ZeroOrMorePattern p) {
       return p.getChild().accept(optionalAttributeUseBuilder);
     }
@@ -674,16 +674,16 @@ public class BasicBuilder {
   private static Wildcard[] splitElementWildcard(Wildcard wc) {
     if (wc == null)
       return new Wildcard[0];
-    if (wc.isPositive() || wc.getNamespaces().contains("") || wc.getNamespaces().size() != 1)
+    if (wc.positive() || wc.namespaces().contains("") || wc.namespaces().size() != 1)
       return new Wildcard[] { wc };
     Set<String> positiveNamespaces = new HashSet<String>();
     positiveNamespaces.add("");
     Set<String> negativeNamespaces = new HashSet<String>();
-    negativeNamespaces.add(wc.getNamespaces().iterator().next());
+    negativeNamespaces.add(wc.namespaces().iterator().next());
     negativeNamespaces.add("");
     Set<Name> positiveExcludeNames = new HashSet<Name>();
     Set<Name> negativeExcludeNames = new HashSet<Name>();
-    for (Name name : wc.getExcludedNames())
+    for (Name name : wc.excludedNames())
       (name.getNamespaceUri().equals("") ? positiveExcludeNames : negativeExcludeNames).add(name);
     return new Wildcard[] {
       new Wildcard(false, negativeNamespaces, negativeExcludeNames),
@@ -696,9 +696,8 @@ public class BasicBuilder {
        p = si.getBody((RefPattern)p);
     if (p instanceof TextPattern)
       return true;
-    if (!(p instanceof DataPattern))
+    if (!(p instanceof DataPattern dp))
       return false;
-    DataPattern dp = (DataPattern)p;
     if (dp.getParams().size() != 0)
       return false;
     String lib = dp.getDatatypeLibrary();
@@ -716,8 +715,7 @@ public class BasicBuilder {
                                       : annotated.getChildElementAnnotations());
     for (AnnotationChild child : elements) {
       // child might be a Comment
-      if (child instanceof ElementAnnotation) {
-        ElementAnnotation element = (ElementAnnotation)child;
+      if (child instanceof ElementAnnotation element) {
         if (element.getNamespaceUri().equals(WellKnownNamespaces.RELAX_NG_COMPATIBILITY_ANNOTATIONS)
             && element.getLocalName().equals("documentation")) {
           String value = getAtomicValue(element);
@@ -786,8 +784,7 @@ public class BasicBuilder {
 
   private void addComments(List<? extends AnnotationChild> list) {
     for (AnnotationChild child : list) {
-      if (child instanceof Comment) {
-        Comment comment = (Comment)child;
+      if (child instanceof Comment comment) {
         schema.addComment(comment.getValue(), comment.getSourceLocation());
       }
     }
@@ -796,8 +793,7 @@ public class BasicBuilder {
   private static void copyComments(List<? extends AnnotationChild> fromList,
                                    List<com.thaiopensource.relaxng.output.xsd.basic.Comment> toList) {
     for (AnnotationChild child : fromList) {
-      if (child instanceof Comment) {
-        Comment comment = (Comment)child;
+      if (child instanceof Comment comment) {
         toList.add(new com.thaiopensource.relaxng.output.xsd.basic.Comment(comment.getSourceLocation(),
                                                                            comment.getValue()));
       }

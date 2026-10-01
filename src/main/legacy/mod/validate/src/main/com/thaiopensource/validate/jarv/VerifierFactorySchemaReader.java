@@ -48,9 +48,9 @@ public class VerifierFactorySchemaReader extends AbstractSchemaReader {
       return new SchemaImpl(vf.compileSchema(source.getInputSource()));
     }
     catch (SAXException e) {
-      System.err.println("compileSchema threw a SAXException class " + e.getClass().toString());
+      System.err.println("compileSchema threw a SAXException class " + e.getClass());
       if (e.getException() != null)
-        System.err.println("cause has class " + e.getException().getClass().toString());
+        System.err.println("cause has class " + e.getException().getClass());
       throw e;
     }
     catch (VerifierConfigurationException e) {

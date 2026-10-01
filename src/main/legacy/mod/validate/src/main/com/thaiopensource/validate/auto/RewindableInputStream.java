@@ -121,7 +121,7 @@ public class RewindableInputStream extends InputStream implements Rewindable {
     return c;
   }
 
-  public int read(byte b[], int off, int len) throws IOException {
+  public int read(byte[] b, int off, int len) throws IOException {
     if (curBlockAvail == 0 && !saving)
       return in.read(b, off, len);
     if (b == null)

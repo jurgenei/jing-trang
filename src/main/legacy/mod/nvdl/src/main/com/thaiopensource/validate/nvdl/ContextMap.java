@@ -10,23 +10,23 @@ import java.util.NoSuchElementException;
 /**
  * Keeps modes depending on context.
  * The structure of the context map is
- * 
- * stores the mode for 
+ *
+ * stores the mode for
  *  /  in rootValue
  *  "" in otherValue (this is for relative paths)
  * stores a hash with the last path elements as key and
  * ContextMap objects as values.
- * 
+ *
  * A path like a/b and mode x
  * will be represented by 3 ContextMap objects
  * ContextMap b ---> ContextMap a ---> ContextMap otherValue=x
- * 
+ *
  * Addind also /a/b and mode y will give
- * 
+ *
  * ContextMap b ---> ContextMap a ---> ContextMap (otherValue=x, rootValue=y)
- * 
+ *
  * Adding a2/b and mode w will give
- * 
+ *
  *  ContextMap b ---> ContextMap a ---> ContextMap (otherValue=x, rootValue=y)
  *                              a2 ---> ContextMap otherValue=w
  */
@@ -40,25 +40,25 @@ class ContextMap {
    */
   private Object otherValue;
   /**
-   * Stores a hash map with with the key the last local name and 
+   * Stores a hash map with with the key the last local name and
    * as values other ContextMap objects.
    */
   private final Hashtable nameTable = new Hashtable();
 
   /**
    * Get the mode matching a list of local names.
-   * A root more returned means an exact matching of the given local names 
-   * with the local names from the context map. Otherwise we can get either 
-   * a mode stored as otherValue or null if the given context does not match 
+   * A root more returned means an exact matching of the given local names
+   * with the local names from the context map. Otherwise we can get either
+   * a mode stored as otherValue or null if the given context does not match
    * any of the stored paths.
-   * @param context The list of local names that represent a section context 
+   * @param context The list of local names that represent a section context
    * (path from root local element names from the same namespace).
    * @return A mode or null.
-   */  
+   */
   Object get(Vector context) {
     return get(context, context.size());
   }
-  
+
   /**
    * Adds a single path (isRoot, names) and a mode to be used for this path = context.
    * @param isRoot True if the path starts with /
@@ -72,11 +72,11 @@ class ContextMap {
 
   /**
    * Get the mode matching a list of local names.
-   * A root more returned means an exact matching of the given local names 
-   * with the local names from the context map. Otherwise we can get either 
-   * a mode stored as otherValue or null if the given context does not match 
+   * A root more returned means an exact matching of the given local names
+   * with the local names from the context map. Otherwise we can get either
+   * a mode stored as otherValue or null if the given context does not match
    * any of the stored paths.
-   * @param context The list of local names that represent a section context 
+   * @param context The list of local names that represent a section context
    * (path from root local element names from the same namespace).
    * @param len The length we should take from the list.
    * @return A mode or null.
@@ -111,7 +111,7 @@ class ContextMap {
           return false;
         rootValue = value;
       }
-      // We followed all the paths, it is not root, 
+      // We followed all the paths, it is not root,
       // then we store the mode as the other value.
       else {
         if (otherValue != null)
@@ -140,9 +140,8 @@ class ContextMap {
    * a specified context map.
    */
   public boolean equals(Object obj) {
-    if (!(obj instanceof ContextMap))
+    if (!(obj instanceof ContextMap other))
       return false;
-    ContextMap other = (ContextMap)obj;
     if (!Equal.equal(this.rootValue, other.rootValue)
         || !Equal.equal(this.otherValue, other.otherValue))
       return false;
@@ -175,7 +174,7 @@ class ContextMap {
   }
 
   /**
-   * Creates an Enumeration implementation that enumerates all the 
+   * Creates an Enumeration implementation that enumerates all the
    * modes stored in this context map and in the nested context maps.
    */
   static private class Enumerator implements Enumeration {
@@ -183,17 +182,17 @@ class ContextMap {
      * Store this context map root value.
      */
     private Object rootValue;
-    
+
     /**
      * Store this context map other value.
      */
     private Object otherValue;
-    
+
     /**
      * Stores the enumeration of modes of the current subMap.
      */
     private Enumeration subMapValues;
-    
+
     /**
      * Stores the ContextMap objects from the nameTable.
      */
@@ -207,7 +206,7 @@ class ContextMap {
 
     /**
      * Advance to the next context map values
-     * in subMapValues and to the next element 
+     * in subMapValues and to the next element
      * in subMap enumeration, if needed.
      */
     private void prep() {

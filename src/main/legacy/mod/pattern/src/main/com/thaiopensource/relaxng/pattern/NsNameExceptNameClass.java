@@ -22,9 +22,8 @@ class NsNameExceptNameClass implements NameClass {
   }
 
   public boolean equals(Object obj) {
-    if (obj == null || !(obj instanceof NsNameExceptNameClass))
+    if (obj == null || !(obj instanceof NsNameExceptNameClass other))
       return false;
-    NsNameExceptNameClass other = (NsNameExceptNameClass)obj;
     return (namespaceURI.equals(other.namespaceURI)
 	    && nameClass.equals(other.nameClass));
   }

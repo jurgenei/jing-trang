@@ -8,7 +8,7 @@ class ElementsOrAttributes {
    * Flag for elements.
    */
   private static final int ELEMENTS_FLAG = 01;
-  
+
   /**
    * Flag for attributes.
    */
@@ -23,12 +23,12 @@ class ElementsOrAttributes {
    * Only elements is specified.
    */
   static final ElementsOrAttributes ELEMENTS = new ElementsOrAttributes(ELEMENTS_FLAG);
-  
+
   /**
    * Only attributes is specified.
    */
   static final ElementsOrAttributes ATTRIBUTES = new ElementsOrAttributes(ATTRIBUTES_FLAG);
-  
+
   /**
    * Bothe elements and attributes are specified.
    */
@@ -37,7 +37,7 @@ class ElementsOrAttributes {
   /**
    * All possible values.
    */
-  private static final ElementsOrAttributes values[] = {
+  private static final ElementsOrAttributes[] values = {
     NEITHER,
     ELEMENTS,
     ATTRIBUTES,
@@ -74,7 +74,7 @@ class ElementsOrAttributes {
   }
 
   /**
-   * Checks whether the attributes are matched or not. 
+   * Checks whether the attributes are matched or not.
    * @return true is attributes are matched.
    */
   boolean containsAttributes() {
@@ -82,7 +82,7 @@ class ElementsOrAttributes {
   }
 
   /**
-   * Checks whether the elements are matched or not. 
+   * Checks whether the elements are matched or not.
    * @return true is elements are matched.
    */
   boolean containsElements() {

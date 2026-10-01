@@ -26,7 +26,7 @@ import java.io.InputStream;
 import java.net.URL;
 
 /**
- * Schema receiver implementation for NVDL scripts. 
+ * Schema receiver implementation for NVDL scripts.
  *
  */
 class SchemaReceiverImpl implements SchemaReceiver {
@@ -43,33 +43,33 @@ class SchemaReceiverImpl implements SchemaReceiver {
    * Legacy type used for specifying RNC schemas.
    */
   static final String LEGACY_RNC_MEDIA_TYPE = "application/x-rnc";
-  
+
   /**
    * Properties.
    */
   private final PropertyMap properties;
-  
+
   /**
    * Property indicating if we need to check only attributes,
    * that means the root element is just a placeholder for the attributes.
    */
   private final Name attributeOwner;
-  
+
   /**
    * The schema reader capable of parsing the input schema file.
    * It will be an auto schema reader as NVDL is XML.
    */
   private final SchemaReader autoSchemaReader;
-  
+
   /**
    * Schema object created by this schema receiver.
    */
   private Schema nvdlSchema = null;
-  
+
   /**
    * Properties that will be passed to sub-schemas.
    */
-  private static final PropertyId subSchemaProperties[] = {
+  private static final PropertyId[] subSchemaProperties = {
     ValidateProperty.ERROR_HANDLER,
     ValidateProperty.XML_READER_CREATOR,
     ValidateProperty.ENTITY_RESOLVER,
@@ -80,7 +80,7 @@ class SchemaReceiverImpl implements SchemaReceiver {
 
   /**
    * Creates a schema receiver for NVDL schemas.
-   * 
+   *
    * @param properties Properties.
    */
   public SchemaReceiverImpl(PropertyMap properties) {
@@ -140,12 +140,12 @@ class SchemaReceiverImpl implements SchemaReceiver {
 
   /**
    * Creates a child schema. This schema is referred in a validate action.
-   * 
+   *
    * @param source the SAXSource for the schema.
    * @param schemaType the schema type.
    * @param options options specified for this schema in the NVDL script.
    * @param isAttributesSchema flag indicating if the schema should be modified
-   * to check attributes only. 
+   * to check attributes only.
    * @return
    * @throws IOException In case of IO problems.
    * @throws IncorrectSchemaException In case of invalid schema.
@@ -163,7 +163,7 @@ class SchemaReceiverImpl implements SchemaReceiver {
   /**
    * Get an option for the given URI.
    * @param uri The URI for an option.
-   * @return Either the option from the auto schema reader or 
+   * @return Either the option from the auto schema reader or
    * from the compact schema reader.
    */
   Option getOption(String uri) {

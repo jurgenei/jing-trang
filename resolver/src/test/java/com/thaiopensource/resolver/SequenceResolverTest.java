@@ -22,24 +22,17 @@ class SequenceResolverTest {
     assertEquals(List.of("first.resolve", "second.resolve", "first.open", "second.open"), calls);
   }
 
-  private static final class RecordingResolver implements Resolver {
-    private final String name;
-    private final List<String> calls;
+    private record RecordingResolver(String name, List<String> calls) implements Resolver {
 
-    private RecordingResolver(String name, List<String> calls) {
-      this.name = name;
-      this.calls = calls;
-    }
+        @Override
+        public void resolve(Identifier id, Input input) {
+            calls.add(name + ".resolve");
+        }
 
-    @Override
-    public void resolve(Identifier id, Input input) {
-      calls.add(name + ".resolve");
+        @Override
+        public void open(Input input) {
+            calls.add(name + ".open");
+        }
     }
-
-    @Override
-    public void open(Input input) {
-      calls.add(name + ".open");
-    }
-  }
 }
 

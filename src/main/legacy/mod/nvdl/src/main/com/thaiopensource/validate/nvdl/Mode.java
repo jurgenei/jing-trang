@@ -14,9 +14,9 @@ class Mode {
   static final int ATTRIBUTE_PROCESSING_NONE = 0;
   static final int ATTRIBUTE_PROCESSING_QUALIFIED = 1;
   static final int ATTRIBUTE_PROCESSING_FULL = 2;
-  
+
   /**
-   * A special mode. In a mode usage this will be 
+   * A special mode. In a mode usage this will be
    * resolved by the mode usage to the actual current mode
    * from that mode usage.
    */
@@ -26,27 +26,27 @@ class Mode {
    * Mode name prefix used for inline anonymous modes.
    */
   private static final String ANONYMOUS_MODE_NAME_PREFIX = "#anonymous#";
-  
+
   /**
    * Inline anonymous modes counter.
    */
   private static int anonymousModeCounter = 0;
-  
+
   /**
    * Flag for anonymous modes.
    */
   private boolean anonymous;
-  
+
   /**
    * The mode name.
    */
   private final String name;
-  
+
   /**
    * The base mode.
    */
   private Mode baseMode;
-  
+
   /**
    * Flag indicating if this mode is defined by the user
    * or is an automatically generated mode.
@@ -56,10 +56,10 @@ class Mode {
    * Locate the place where this mode is defined.
    */
   private Locator whereDefined;
-  
+
   /**
    * Locate the place this mode is first used.
-   * Useful to report with location errors like 
+   * Useful to report with location errors like
    * 'Mode "xxx" not defined'.
    */
   private Locator whereUsed;
@@ -76,16 +76,16 @@ class Mode {
    * Namespace specification attributes map.
    */
   private final Hashtable nssAttributeMap = new Hashtable();
-  
+
   /**
    * List with included modes.
    */
-  private List includedModes = new ArrayList();
-  
+  private final List includedModes = new ArrayList();
+
   void addIncludedMode(Mode mode) {
     includedModes.add(mode);
   }
-  
+
   /**
    * Creates a mode extending a base mode.
    * @param name The new mode name.
@@ -149,10 +149,10 @@ class Mode {
   /**
    * Look for element actions specifically specified
    * for this namespace. If the current mode does not have
-   * actions for that namespace look at base modes. If the actions 
+   * actions for that namespace look at base modes. If the actions
    * are defined in a base mode we need to get a copy of those actions
    * associated with this mode, so we call changeCurrentMode on them.
-   * 
+   *
    * @param ns The namespace
    * @return A set of element actions.
    */
@@ -180,11 +180,11 @@ class Mode {
         actions = includedMode.getElementActionsExplicit(ns);
       }
       if (actions != null) {
-        actions = actions.changeCurrentMode(this);                    
+        actions = actions.changeCurrentMode(this);
         elementMap.put(ns, actions);
       }
     }
-        
+
     // No actions specified, look into the base mode.
     if (actions == null && baseMode != null) {
       actions = baseMode.getElementActionsExplicit(ns);
@@ -197,7 +197,7 @@ class Mode {
     if (actions!=null && actions.getCancelNestedActions()) {
       actions = null;
     }
-    
+
     return actions;
   }
 
@@ -221,10 +221,10 @@ class Mode {
   /**
    * Look for attribute actions specifically specified
    * for this namespace. If the current mode does not have
-   * actions for that namespace look at base modes. If the actions 
+   * actions for that namespace look at base modes. If the actions
    * are defined in a base mode we need to get a copy of those actions
    * associated with this mode, so we call changeCurrentMode on them.
-   * 
+   *
    * @param ns The namespace
    * @return A set of attribute actions.
    */
@@ -255,13 +255,13 @@ class Mode {
         attributeMap.put(ns, actions);
       }
     }
-    
+
     if (actions == null && baseMode != null) {
       actions = baseMode.getAttributeActionsExplicit(ns);
       if (actions != null)
         attributeMap.put(ns, actions);
     }
-    
+
     if (actions!=null && actions.getCancelNestedActions()) {
       actions = null;
     }
@@ -271,11 +271,11 @@ class Mode {
   /**
    * Computes (if not already computed) the attributeProcessing
    * for this mode and returns it.
-   * If it find anything different than attach then we need to perform 
+   * If it find anything different than attach then we need to perform
    * attribute processing.
    * If only attributes for a specific namespace have actions then we only need to
    * process qualified attributes, otherwise we need to process all attributes.
-   * 
+   *
    * @return The attribute processing for this mode.
    */
   int getAttributeProcessing() {
@@ -299,7 +299,7 @@ class Mode {
   }
 
   /**
-   * Get the locator that points to the place the 
+   * Get the locator that points to the place the
    * mode is defined.
    * @return a locator.
    */
@@ -314,7 +314,7 @@ class Mode {
   boolean isDefined() {
     return defined;
   }
-  
+
   /**
    * Checks if a mode is anonymous.
    * @return true if anonymous.
@@ -353,12 +353,12 @@ class Mode {
   /**
    * Adds a set of element actions to be performed in this mode
    * for elements in a specified namespace.
-   *  
+   *
    * @param ns The namespace pattern.
    * @param wildcard The wildcard character.
    * @param actions The set of element actions.
    * @return true if successfully added, that is the namespace was
-   * not already present in the elementMap, otherwise false, the 
+   * not already present in the elementMap, otherwise false, the
    * caller should signal a script error in this case.
    */
   boolean bindElement(String ns, String wildcard, ActionSet actions) {
@@ -378,12 +378,12 @@ class Mode {
   /**
    * Adds a set of attribute actions to be performed in this mode
    * for attributes in a specified namespace.
-   *  
+   *
    * @param ns The namespace pattern.
    * @param wildcard The wildcard character.
    * @param actions The set of attribute actions.
    * @return true if successfully added, that is the namespace was
-   * not already present in the attributeMap, otherwise false, the 
+   * not already present in the attributeMap, otherwise false, the
    * caller should signal a script error in this case.
    */
   boolean bindAttribute(String ns, String wildcard, AttributeActionSet actions) {
@@ -397,6 +397,6 @@ class Mode {
       }
     }
     nssAttributeMap.put(nss, actions);
-    return true;    
+    return true;
   }
 }

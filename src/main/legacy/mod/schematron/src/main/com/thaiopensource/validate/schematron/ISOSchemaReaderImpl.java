@@ -343,7 +343,7 @@ class ISOSchemaReaderImpl extends AbstractSchemaReader {
     IfValidHandler ifValidHandler = new IfValidHandler();
     ifValidHandler.setErrorHandler(ceh);
     try {
-      SAXTransformerFactory factory = (SAXTransformerFactory)transformerFactoryClass.newInstance();
+      SAXTransformerFactory factory = transformerFactoryClass.newInstance();
       initTransformerFactory(factory);
       TransformerHandler transformerHandler = factory.newTransformerHandler(schematron);
       ifValidHandler.setDelegate(transformerHandler);
@@ -361,7 +361,7 @@ class ISOSchemaReaderImpl extends AbstractSchemaReader {
       XMLReader xr = source.getXMLReader();
       if (xr == null)
         xr = ResolverFactory.createResolver(properties).createXMLReader();
-      xr.setContentHandler(ifValidHandler);      
+      xr.setContentHandler(ifValidHandler);
       xr.setDTDHandler(validator.getDTDHandler());  // not strictly necessary
       factory.setErrorListener(new SAXErrorListener(ceh, systemId));
       TemplatesHandler templatesHandler = factory.newTemplatesHandler();
@@ -420,7 +420,7 @@ class ISOSchemaReaderImpl extends AbstractSchemaReader {
       return cleanupSAXException((SAXException)exception);
     if (exception instanceof TransformerException)
       return cleanupTransformerException((TransformerException)exception);
-    return saxException;     
+    return saxException;
   }
 
   private static SAXException cleanupTransformerException(TransformerException e) {
@@ -454,9 +454,8 @@ class ISOSchemaReaderImpl extends AbstractSchemaReader {
   }
 
   private static boolean exceptionHasLocation(SAXException saxException) {
-    if (!(saxException instanceof SAXParseException))
+    if (!(saxException instanceof SAXParseException pe))
       return false;
-    SAXParseException pe = (SAXParseException)saxException;
     return (pe.getPublicId() != null || pe.getSystemId() != null
             || pe.getLineNumber() >= 0 || pe.getColumnNumber() >= 0);
   }

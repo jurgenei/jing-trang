@@ -17,7 +17,7 @@ final class DataDerivFailure {
   private final String stringValue;
   private final Object value;
   // except non-null means it matched the except
-  private Pattern except;
+  private final Pattern except;
   // index where error occurred if known
   private int index;
   private int tokenIndex = -1;
@@ -77,9 +77,8 @@ final class DataDerivFailure {
   }
 
   public boolean equals(Object obj) {
-    if (!(obj instanceof DataDerivFailure))
+    if (!(obj instanceof DataDerivFailure other))
       return false;
-    DataDerivFailure other = (DataDerivFailure)obj;
     return (datatype == other.datatype
             && equal(message, other.message)
             && equal(stringValue, other.stringValue)

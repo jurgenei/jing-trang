@@ -252,7 +252,7 @@ public class ValidationDriver {
      * @throws IOException if an error occurs during processing.
      * @throws SAXException if a SAXException occurs when calling one of the handlers.
      */
-    public void produce(ContentHandler contentHandler, DTDHandler dtdHandler, ErrorHandler errorHandler)
+    void produce(ContentHandler contentHandler, DTDHandler dtdHandler, ErrorHandler errorHandler)
       throws IOException, SAXException;
   }
 }

@@ -4,22 +4,7 @@ import com.thaiopensource.xml.util.Naming;
 
 import java.util.Vector;
 
-class Path {
-  private final boolean root;
-  private final Vector names;
-
-  Path(boolean root, Vector names) {
-    this.root = root;
-    this.names = names;
-  }
-
-  boolean isRoot() {
-    return root;
-  }
-
-  Vector getNames() {
-    return names;
-  }
+record Path(boolean root, Vector names) {
 
   public String toString() {
     StringBuffer buf = new StringBuffer();
@@ -28,7 +13,7 @@ class Path {
     for (int i = 0, len = names.size(); i < len; i++) {
       if (i != 0)
         buf.append('/');
-      buf.append((String)names.elementAt(i));
+      buf.append((String) names.elementAt(i));
     }
     return buf.toString();
   }
@@ -60,70 +45,70 @@ class Path {
     for (int i = 0, len = str.length(); i < len; i++) {
       char c = str.charAt(i);
       switch (c) {
-      case ' ':
-      case '\r':
-      case '\n':
-      case '\t':
-        if (state == IN_NAME) {
-          names.addElement(makeName(str, nameStartIndex, i));
-          state = AFTER_NAME;
-        }
-        break;
-      case '/':
-        switch (state) {
-        case IN_NAME:
-          names.addElement(makeName(str, nameStartIndex, i));
+        case ' ':
+        case '\r':
+        case '\n':
+        case '\t':
+          if (state == IN_NAME) {
+            names.addElement(makeName(str, nameStartIndex, i));
+            state = AFTER_NAME;
+          }
           break;
-        case START:
-          root = true;
+        case '/':
+          switch (state) {
+            case IN_NAME:
+              names.addElement(makeName(str, nameStartIndex, i));
+              break;
+            case START:
+              root = true;
+              break;
+            case AFTER_SLASH:
+              throw new ParseException("unexpected_slash");
+          }
+          state = AFTER_SLASH;
           break;
-        case AFTER_SLASH:
-          throw new ParseException("unexpected_slash");
-        }
-        state = AFTER_SLASH;
-        break;
-      case '|':
-        switch (state) {
-        case START:
-          throw new ParseException("empty_path");
-        case AFTER_NAME:
+        case '|':
+          switch (state) {
+            case START:
+              throw new ParseException("empty_path");
+            case AFTER_NAME:
+              break;
+            case AFTER_SLASH:
+              throw new ParseException("expected_name");
+            case IN_NAME:
+              names.addElement(makeName(str, nameStartIndex, i));
+              break;
+          }
+          paths.addElement(new Path(root, names));
+          root = false;
+          names = new Vector();
+          state = START;
           break;
-        case AFTER_SLASH:
-          throw new ParseException("expected_name");
-        case IN_NAME:
-          names.addElement(makeName(str, nameStartIndex, i));
+        default:
+          switch (state) {
+            case AFTER_NAME:
+              throw new ParseException("expected_slash");
+            case AFTER_SLASH:
+            case START:
+              nameStartIndex = i;
+              state = IN_NAME;
+              break;
+            case IN_NAME:
+              break;
+          }
           break;
-        }
-        paths.addElement(new Path(root, names));
-        root = false;
-        names = new Vector();
-        state = START;
-        break;
-      default:
-        switch (state) {
-        case AFTER_NAME:
-          throw new ParseException("expected_slash");
-        case AFTER_SLASH:
-        case START:
-          nameStartIndex = i;
-          state = IN_NAME;
-          break;
-        case IN_NAME:
-          break;
-        }
-        break;
       }
     }
     switch (state) {
-    case START:
-      throw new ParseException("empty_path");
-    case AFTER_NAME:
-      break;
-    case AFTER_SLASH:
-      throw new ParseException("expected_name");
-    case IN_NAME:
-      names.addElement(makeName(str, nameStartIndex, str.length()));
-      break;
+      case START:
+        throw new ParseException("empty_path");
+      case AFTER_NAME:
+        break;
+      case AFTER_SLASH:
+        throw new ParseException("expected_name");
+      case IN_NAME:
+        names.addElement(makeName(str, nameStartIndex, str.length()));
+        break;
     }
     paths.addElement(new Path(root, names));
     return paths;
@@ -141,11 +126,11 @@ class Path {
     for (int i = 0; i < paths.size(); i++) {
       if (i != 0)
         System.out.println("---");
-      Path path = (Path)paths.elementAt(i);
-      if (path.isRoot())
+      Path path = (Path) paths.elementAt(i);
+      if (path.root())
         System.out.println("/");
-      for (int j = 0; j < path.getNames().size(); j++)
-        System.out.println(path.getNames().elementAt(j));
+      for (int j = 0; j < path.names().size(); j++)
+        System.out.println(path.names().elementAt(j));
     }
   }
 }
