@@ -77,42 +77,20 @@ class DateTimeDatatype extends RegexDatatype implements OrderRelation {
     return pattern.toString();
   }
 
-  static private class DateTime {
-    private final Date date;
-    private final int leapMilliseconds;
-    private final boolean hasTimeZone;
-
-    DateTime(Date date, int leapMilliseconds, boolean hasTimeZone) {
-      this.date = date;
-      this.leapMilliseconds = leapMilliseconds;
-      this.hasTimeZone = hasTimeZone;
-    }
+  private record DateTime(Date date, int leapMilliseconds, boolean hasTimeZone) {
 
     public boolean equals(Object obj) {
-      if (!(obj instanceof DateTime))
-        return false;
-      DateTime other = (DateTime)obj;
-      return (this.date.equals(other.date)
-              && this.leapMilliseconds == other.leapMilliseconds
-              && this.hasTimeZone == other.hasTimeZone);
-    }
+        if (!(obj instanceof DateTime(Date date1, int milliseconds, boolean timeZone)))
+          return false;
+        return (this.date.equals(date1)
+          && this.leapMilliseconds == milliseconds
+          && this.hasTimeZone == timeZone);
+      }
 
-    public int hashCode() {
-      return date.hashCode();
+      public int hashCode() {
+        return date.hashCode();
+      }
     }
-
-    Date getDate() {
-      return date;
-    }
-
-    int getLeapMilliseconds() {
-      return leapMilliseconds;
-    }
-
-    boolean getHasTimeZone() {
-      return hasTimeZone;
-    }
-  }
 
   // XXX Check leap second validity?
   // XXX Allow 24:00:00?
@@ -308,17 +286,17 @@ class DateTimeDatatype extends RegexDatatype implements OrderRelation {
   public boolean isLessThan(Object obj1, Object obj2) {
     DateTime dt1 = (DateTime)obj1;
     DateTime dt2 = (DateTime)obj2;
-    long t1 = dt1.getDate().getTime();
-    long t2 = dt2.getDate().getTime();
-    if (dt1.getHasTimeZone() == dt2.getHasTimeZone())
+    long t1 = dt1.date().getTime();
+    long t2 = dt2.date().getTime();
+    if (dt1.hasTimeZone() == dt2.hasTimeZone())
       return isLessThan(t1,
-                        dt1.getLeapMilliseconds(),
+                        dt1.leapMilliseconds(),
                         t2,
-                        dt2.getLeapMilliseconds());
-    else if (!dt2.getHasTimeZone())
-      return isLessThan(t1, dt1.getLeapMilliseconds(), t2 - TIME_ZONE_MAX, dt2.getLeapMilliseconds());
+                        dt2.leapMilliseconds());
+    else if (!dt2.hasTimeZone())
+      return isLessThan(t1, dt1.leapMilliseconds(), t2 - TIME_ZONE_MAX, dt2.leapMilliseconds());
     else
-      return isLessThan(t1 + TIME_ZONE_MAX, dt1.getLeapMilliseconds(), t2, dt2.getLeapMilliseconds());
+      return isLessThan(t1 + TIME_ZONE_MAX, dt1.leapMilliseconds(), t2, dt2.leapMilliseconds());
   }
 
   static private boolean isLessThan(long t1, int leapMillis1, long t2, int leapMillis2) {
@@ -326,8 +304,6 @@ class DateTimeDatatype extends RegexDatatype implements OrderRelation {
       return true;
     if (t1 > t2)
       return false;
-    if (leapMillis1 < leapMillis2)
-      return true;
-    return false;
+    return leapMillis1 < leapMillis2;
   }
 }

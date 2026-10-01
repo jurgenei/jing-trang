@@ -5,7 +5,7 @@ import com.thaiopensource.util.PropertyMap;
 import com.thaiopensource.validate.Option;
 
 public interface SchemaReceiverFactory {
-  static final PropertyId<SchemaReceiverFactory> PROPERTY
+  PropertyId<SchemaReceiverFactory> PROPERTY
           = PropertyId.newInstance("SCHEMA_RECEIVER_FACTORY", SchemaReceiverFactory.class);
   SchemaReceiver createSchemaReceiver(String namespaceUri,
                                       PropertyMap properties);

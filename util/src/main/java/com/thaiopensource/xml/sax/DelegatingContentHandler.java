@@ -66,13 +66,13 @@ public class DelegatingContentHandler implements ContentHandler {
       delegate.endElement(namespaceURI, localName, qName);
   }
 
-  public void characters (char ch[], int start, int length)
+  public void characters (char[] ch, int start, int length)
       throws SAXException {
     if (delegate != null)
       delegate.characters(ch, start, length);
   }
 
-  public void ignorableWhitespace (char ch[], int start, int length)
+  public void ignorableWhitespace (char[] ch, int start, int length)
       throws SAXException {
     if (delegate != null)
       delegate.ignorableWhitespace(ch, start, length);

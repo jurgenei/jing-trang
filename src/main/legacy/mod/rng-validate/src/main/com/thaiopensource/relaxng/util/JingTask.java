@@ -31,7 +31,7 @@ public class JingTask extends Task {
   private File schemaFile;
   private File src;
   private final List filesets = new ArrayList();
-  private PropertyMapBuilder properties = new PropertyMapBuilder();
+  private final PropertyMapBuilder properties = new PropertyMapBuilder();
   private boolean failOnError = true;
   private SchemaReader schemaReader = null;
 

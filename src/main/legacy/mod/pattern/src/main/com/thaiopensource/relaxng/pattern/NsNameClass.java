@@ -2,13 +2,7 @@ package com.thaiopensource.relaxng.pattern;
 
 import com.thaiopensource.xml.util.Name;
 
-class NsNameClass implements NameClass {
-
-  private final String namespaceUri;
-
-  NsNameClass(String namespaceUri) {
-    this.namespaceUri = namespaceUri;
-  }
+record NsNameClass(String namespaceUri) implements NameClass {
 
   public boolean contains(Name name) {
     return this.namespaceUri.equals(name.getNamespaceUri());
@@ -18,14 +12,10 @@ class NsNameClass implements NameClass {
     return contains(name) ? SPECIFICITY_NS_NAME : SPECIFICITY_NONE;
   }
 
-  public int hashCode() {
-    return namespaceUri.hashCode();
-  }
-
   public boolean equals(Object obj) {
     if (obj == null || !(obj instanceof NsNameClass))
       return false;
-    return namespaceUri.equals(((NsNameClass)obj).namespaceUri);
+    return namespaceUri.equals(((NsNameClass) obj).namespaceUri);
   }
 
   public void accept(NameClassVisitor visitor) {
@@ -34,9 +24,5 @@ class NsNameClass implements NameClass {
 
   public boolean isOpen() {
     return true;
-  }
-
-  public String getNamespaceUri() {
-    return namespaceUri;
   }
 }

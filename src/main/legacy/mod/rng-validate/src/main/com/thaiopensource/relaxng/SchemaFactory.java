@@ -30,9 +30,9 @@ import java.io.IOException;
  * @author <a href="mailto:jjc@jclark.com">James Clark</a>
  */
 public class SchemaFactory {
-  private PropertyMapBuilder properties = new PropertyMapBuilder();
+  private final PropertyMapBuilder properties = new PropertyMapBuilder();
   private boolean compactSyntax = false;
-  private SchemaReader autoSchemaLanguage = new AutoSchemaReader();
+  private final SchemaReader autoSchemaLanguage = new AutoSchemaReader();
 
   /**
    * Constructs a schema factory.
@@ -96,7 +96,7 @@ public class SchemaFactory {
    * @see #setXMLReaderCreator
    */
   public XMLReaderCreator getXMLReaderCreator() {
-    return (XMLReaderCreator)properties.get(ValidateProperty.XML_READER_CREATOR);
+    return properties.get(ValidateProperty.XML_READER_CREATOR);
   }
 
   /**
@@ -121,7 +121,7 @@ public class SchemaFactory {
    * @see #setErrorHandler
    */
   public ErrorHandler getErrorHandler() {
-    return (ErrorHandler)properties.get(ValidateProperty.ERROR_HANDLER);
+    return properties.get(ValidateProperty.ERROR_HANDLER);
   }
 
   /**
@@ -146,7 +146,7 @@ public class SchemaFactory {
    * @see #setDatatypeLibraryFactory
    */
   public DatatypeLibraryFactory getDatatypeLibraryFactory() {
-    return (DatatypeLibraryFactory)properties.get(RngProperty.DATATYPE_LIBRARY_FACTORY);
+    return properties.get(RngProperty.DATATYPE_LIBRARY_FACTORY);
   }
 
   /**

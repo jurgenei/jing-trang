@@ -23,7 +23,7 @@ class OutputHandler extends DefaultHandler {
     this.lineSeparator = System.getProperty("line.separator");
   }
 
-  public void characters(char ch[], int start, int length)
+  public void characters(char[] ch, int start, int length)
           throws SAXException {
     if (inMessage) {
       for (int i = 0; i < length; i++) {
@@ -44,7 +44,7 @@ class OutputHandler extends DefaultHandler {
     }
   }
 
-  public void ignorableWhitespace(char ch[], int start, int length)
+  public void ignorableWhitespace(char[] ch, int start, int length)
           throws SAXException {
     characters(ch, start, length);
   }

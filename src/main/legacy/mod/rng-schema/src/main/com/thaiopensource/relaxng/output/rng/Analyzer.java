@@ -57,8 +57,7 @@ class Analyzer extends AbstractVisitor {
   private void visitAnnotationChildren(List<AnnotationChild> list) {
     for (int i = 0, len = list.size(); i < len; i++) {
       AnnotationChild ac = list.get(i);
-      if (ac instanceof ElementAnnotation) {
-        ElementAnnotation elem = (ElementAnnotation)ac;
+      if (ac instanceof ElementAnnotation elem) {
         if (elem.getPrefix() != null)
           noteNs(elem.getPrefix(), elem.getNamespaceUri());
         visitAnnotationAttributes(elem.getAttributes());

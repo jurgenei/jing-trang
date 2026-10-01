@@ -37,7 +37,7 @@ class Driver {
 
   private boolean timing = false;
   private String encoding = null;
-  private Localizer localizer = new Localizer(Driver.class);
+  private final Localizer localizer = new Localizer(Driver.class);
 
   public int doMain(String[] args) {
     ErrorHandlerImpl eh = new ErrorHandlerImpl(System.out);

@@ -60,11 +60,10 @@ public class PatternMatcher implements Cloneable, Matcher {
   public Matcher start() {
     return new PatternMatcher(shared.builder.getPatternMemo(shared.start), shared);
   }
-  
+
   public boolean equals(Object obj) {
-    if (!(obj instanceof PatternMatcher))
+    if (!(obj instanceof PatternMatcher other))
       return false;
-    PatternMatcher other = (PatternMatcher)obj;
     // don't need to test equality of shared, because the memos can only be ==
     // if the shareds are ==.
     return (memo == other.memo
@@ -337,7 +336,7 @@ public class PatternMatcher implements Cloneable, Matcher {
     errorMessage = localizer().message(key, args);
     return false;
   }
-   
+
   private String errorArgQName(String qName, Name name, MatchContext context, boolean isAttribute) {
     if (ignoreError())
       return null;
@@ -360,7 +359,7 @@ public class PatternMatcher implements Cloneable, Matcher {
 
   static private final int UNDEFINED_TOKEN_INDEX = -3;
   static private final int INCONSISTENT_TOKEN_INDEX = -2;
-  
+
   private String formatDataDerivFailures(String str, MatchContext context) {
     if (ignoreError())
       return null;
@@ -500,7 +499,7 @@ public class PatternMatcher implements Cloneable, Matcher {
     return localizer().message("expected", formatList(expected, "or"));
   }
 
-  static final String GENERATED_PREFIXES[] = { "ns", "ns-", "ns_", "NS", "NS-", "NS_"};
+  static final String[] GENERATED_PREFIXES = { "ns", "ns-", "ns_", "NS", "NS-", "NS_"};
 
   // Values for flags parameter of formatNames
   static private final int FORMAT_NAMES_ELEMENT = 0x0;

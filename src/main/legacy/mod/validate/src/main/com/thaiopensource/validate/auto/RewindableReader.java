@@ -126,7 +126,7 @@ public class RewindableReader extends Reader implements Rewindable {
     return c;
   }
 
-  public int read(char b[], int off, int len) throws IOException {
+  public int read(char[] b, int off, int len) throws IOException {
     if (curBlockAvail == 0 && !saving)
       return in.read(b, off, len);
     if (b == null)

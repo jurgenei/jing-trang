@@ -70,36 +70,28 @@ public abstract class SchemaReaderImpl extends AbstractSchemaReader {
     return RngProperty.getOption(uri);
   }
 
-  static private class SimplifiedSchemaPropertyMap implements PropertyMap {
-    private final PropertyMap base;
-    private final Pattern start;
+    private record SimplifiedSchemaPropertyMap(PropertyMap base, Pattern start) implements PropertyMap {
 
-    SimplifiedSchemaPropertyMap(PropertyMap base, Pattern start) {
-      this.base = base;
-      this.start = start;
-    }
+        public <T> T get(PropertyId<T> pid) {
+            if (pid == RngProperty.SIMPLIFIED_SCHEMA) {
+                String simplifiedSchema = PatternDumper.toString(start);
+                return pid.getValueClass().cast(simplifiedSchema);
+            } else
+                return base.get(pid);
+        }
 
-    public <T> T get(PropertyId<T> pid) {
-      if (pid == RngProperty.SIMPLIFIED_SCHEMA) {
-        String simplifiedSchema = PatternDumper.toString(start);
-        return pid.getValueClass().cast(simplifiedSchema);
-      }
-      else
-        return base.get(pid);
-    }
+        public PropertyId<?> getKey(int i) {
+            return i == base.size() ? RngProperty.SIMPLIFIED_SCHEMA : base.getKey(i);
+        }
 
-    public PropertyId<?> getKey(int i) {
-      return i == base.size() ? RngProperty.SIMPLIFIED_SCHEMA : base.getKey(i);
-    }
+        public int size() {
+            return base.size() + 1;
+        }
 
-    public int size() {
-      return base.size() + 1;
+        public boolean contains(PropertyId<?> pid) {
+            return base.contains(pid) || pid == RngProperty.SIMPLIFIED_SCHEMA;
+        }
     }
-
-    public boolean contains(PropertyId<?> pid) {
-      return base.contains(pid) || pid == RngProperty.SIMPLIFIED_SCHEMA;
-    }
-  }
 
   static Schema wrapPattern(Pattern start, SchemaPatternBuilder spb, PropertyMap properties) throws SAXException, IncorrectSchemaException {
     if (properties.contains(RngProperty.FEASIBLE))

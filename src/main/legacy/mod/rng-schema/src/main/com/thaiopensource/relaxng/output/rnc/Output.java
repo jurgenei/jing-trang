@@ -97,8 +97,7 @@ class Output {
   static private final Set<String> keywordSet = new HashSet<String>();
 
   static {
-    for (int i = 0; i < keywords.length; i++)
-      keywordSet.add(keywords[i]);
+    Collections.addAll(keywordSet, keywords);
   }
 
   static void output(Pattern p, String encoding, String sourceUri, OutputDirectory od, ErrorReporter er) throws IOException {
@@ -122,8 +121,8 @@ class Output {
         && !encoding.equalsIgnoreCase("US-ASCII"))
       encoding = null;
     OutputDirectory.Stream stream = od.open(sourceUri, encoding);
-    this.cr = stream.getCharRepertoire();
-    this.pp = new StreamingPrettyprinter(od.getLineLength(), od.getLineSeparator(), stream.getWriter());
+    this.cr = stream.charRepertoire();
+    this.pp = new StreamingPrettyprinter(od.getLineLength(), od.getLineSeparator(), stream.writer());
     this.nsb = nsb;
     char[] tem = new char[od.getIndent()];
     for (int i = 0; i < tem.length; i++)
@@ -461,7 +460,7 @@ class Output {
       endAnnotations(p);
     }
   }
-  
+
   class PatternOutput implements PatternVisitor<VoidValue> {
     private final boolean alwaysUseParens;
 
@@ -732,7 +731,7 @@ class Output {
           pp.text(")");
         if (!params.isEmpty())
           pp.endGroup();
-        // close the parentheses on data except 
+        // close the parentheses on data except
         pp.text(")");
       }
       endAnnotations(p);
@@ -954,9 +953,8 @@ class Output {
   }
 
   private static String documentationString(AnnotationChild child) {
-    if (!(child instanceof ElementAnnotation))
+    if (!(child instanceof ElementAnnotation elem))
      return null;
-    ElementAnnotation elem = (ElementAnnotation)child;
     if (!elem.getLocalName().equals("documentation"))
       return null;
     if (!elem.getNamespaceUri().equals(WellKnownNamespaces.RELAX_NG_COMPATIBILITY_ANNOTATIONS))
@@ -1121,7 +1119,7 @@ class Output {
       case '\r':
       case '\n':
         if (start < i)
-          encodeBuf.append(str.substring(start, i));
+          encodeBuf.append(str, start, i);
         escape(c);
         start = i + 1;
         break;
@@ -1129,7 +1127,7 @@ class Output {
         if (Utf16.isSurrogate(c)) {
           if (!cr.contains(c, str.charAt(i + 1))) {
             if (start < i)
-              encodeBuf.append(str.substring(start, i));
+              encodeBuf.append(str, start, i);
             escape(Utf16.scalarValue(c, str.charAt(i + 1)));
             start = i + 2;
           }
@@ -1137,7 +1135,7 @@ class Output {
         }
         else if (!cr.contains(c)) {
           if (start < i)
-            encodeBuf.append(str.substring(start, i));
+            encodeBuf.append(str, start, i);
           escape(c);
           start = i + 1;
         }
@@ -1147,7 +1145,7 @@ class Output {
     if (start == 0)
       return str;
     if (start != len)
-      encodeBuf.append(str.substring(start, len));
+      encodeBuf.append(str, start, len);
     str = encodeBuf.toString();
     encodeBuf.setLength(0);
     return str;

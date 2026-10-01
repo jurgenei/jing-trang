@@ -41,12 +41,12 @@ public class TestDriver {
         if (!ns.equals(""))
           System.out.print("{" + ns + "}");
         System.out.print(attName.getLocalName());
-        Name typeName = att.getDatatype();
+        Name typeName = att.datatype();
         if (typeName == null)
           System.out.print(" string");
         else
           System.out.print(" xsd:" + typeName.getLocalName());
-        if (att.isOptional())
+        if (att.optional())
           System.out.println(" optional");
         else
           System.out.println(" required");

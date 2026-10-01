@@ -39,7 +39,7 @@ class ValidatorImpl extends Validator2 {
   private boolean needReset = false;
 
   private static final String LEXICAL_HANDLER_PROPERTY = "http://xml.org/sax/properties/lexical-handler";
-  
+
   public ValidatorImpl(ValidatorHandler2 handler) {
     this.handler = handler;
   }
@@ -85,12 +85,6 @@ class ValidatorImpl extends Validator2 {
     }
   }
 
-//  private void doValidate(StAXSource source, StAXResult result)
-//          throws SAXException, IOException, TransformerException {
-//    // XXX transform source and result
-//    throw new IllegalArgumentException();
-//  }
-
   private void doValidate(DOMSource source, DOMResult result)
           throws SAXException, IOException, TransformerException {
     // XXX transform source and result
@@ -108,8 +102,7 @@ class ValidatorImpl extends Validator2 {
           throws SAXException, IOException, TransformerConfigurationException {
     if (result == null)
       doValidate(source, null, null, null);
-    else if (result instanceof SAXResult) {
-      SAXResult saxResult = (SAXResult)result;
+    else if (result instanceof SAXResult saxResult) {
       doValidate(source, saxResult.getHandler(), saxResult.getLexicalHandler(), null);
     }
     else {

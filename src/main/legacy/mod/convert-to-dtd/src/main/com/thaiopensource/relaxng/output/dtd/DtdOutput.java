@@ -52,9 +52,9 @@ import java.util.Vector;
 class DtdOutput {
   private final boolean warnDatatypes;
   private final String sourceUri;
-  private Writer writer;
-  private String encoding;
-  private CharRepertoire charRepertoire;
+  private final Writer writer;
+  private final String encoding;
+  private final CharRepertoire charRepertoire;
   private final int indent;
   private final int lineLength;
   private final String lineSep;
@@ -98,9 +98,9 @@ class DtdOutput {
     this.part = analysis.getGrammarPart(sourceUri);
     try {
       OutputDirectory.Stream stream = od.open(sourceUri, analysis.getEncoding(sourceUri));
-      this.encoding = stream.getEncoding();
-      this.writer = stream.getWriter();
-      this.charRepertoire = stream.getCharRepertoire();
+      this.encoding = stream.encoding();
+      this.writer = stream.writer();
+      this.charRepertoire = stream.charRepertoire();
     }
     catch (IOException e) {
       throw new WrappedIOException(e);
@@ -161,7 +161,7 @@ class DtdOutput {
       return VoidValue.VOID;
     }
   }
-  
+
   class ContentModelOutput extends AbstractVisitor {
     public VoidValue visitName(NameNameClass nc) {
       String prefix = analysis.getElementPrefixForNamespaceUri(nc.getNamespaceUri());
@@ -208,9 +208,9 @@ class DtdOutput {
     public VoidValue visitOneOrMore(OneOrMorePattern p) {
       p.getChild().accept(occurContentModelOutput);
       ContentType t = getContentType(p);
-      if (t.isA(ContentType.MIXED_MODEL)) 
+      if (t.isA(ContentType.MIXED_MODEL))
         buf.append('*');
-      else 
+      else
         buf.append('+');
       return VoidValue.VOID;
     }
@@ -327,9 +327,9 @@ class DtdOutput {
       p.getChild().accept(nestedContentModelOutput);
       buf.append(')');
       ContentType t = getContentType(p);
-      if (t.isA(ContentType.MIXED_MODEL)) 
+      if (t.isA(ContentType.MIXED_MODEL))
         buf.append('*');
-      else 
+      else
         buf.append('+');
       return VoidValue.VOID;
     }
@@ -467,7 +467,7 @@ class DtdOutput {
       p.getChild().accept(nestedContentModelOutput);
       return VoidValue.VOID;
     }
-    
+
     public VoidValue visitMixed(MixedPattern p) {
       if (getContentType(p.getChild()) == ContentType.EMPTY)
         buf.append("#PCDATA");
@@ -841,7 +841,7 @@ class DtdOutput {
       outputLeadingComments(grammarPattern);
       outputInitialChildComments(grammarPattern);
       grammarOutput.visitContainer(grammarPattern);
-      
+
       outputFollowingComments(grammarPattern);
     }
     close();
@@ -919,7 +919,7 @@ class DtdOutput {
 
   void outputRequiredComponents() {
     for (int i=0; i < requiredParamEntities.size(); i++) {
-      String name = requiredParamEntities.get(i); 
+      String name = requiredParamEntities.get(i);
       Component c = part.getWhereProvided(name);
       if (c == null)
         externallyRequiredParamEntities.add(name);
@@ -994,7 +994,7 @@ class DtdOutput {
       entityName = "ent";
     if (!reserveEntityName(entityName)) {
       for (int i = 1;; i++) {
-        String tem = entityName + Integer.toString(i);
+        String tem = entityName + i;
         if (reserveEntityName(tem)) {
           entityName = tem;
           break;

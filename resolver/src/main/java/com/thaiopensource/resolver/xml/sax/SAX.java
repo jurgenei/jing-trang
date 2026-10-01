@@ -57,7 +57,7 @@ public class SAX {
       // XXX if this is HTTP and we've been redirected, should do input.setURI with the new URI
       input.setByteStream(url.openStream());
     }
-    
+
     public void resolve(Identifier id, Input input) throws IOException, ResolverException {
       if (input.isResolved())
         return;
@@ -132,7 +132,7 @@ public class SAX {
     }
     return new ResolverException(e);
   }
-  
+
   public static SAXException toSAXException(ResolverException e) {
     Throwable cause = e.getCause();
     if (cause != null && cause instanceof SAXException)
@@ -167,53 +167,46 @@ public class SAX {
     return inputSource;
   }
 
-  static private class EntityResolverImpl implements EntityResolver2 {
-    private final Resolver resolver;
-
-    private EntityResolverImpl(Resolver resolver) {
-      this.resolver = resolver;
-    }
+  private record EntityResolverImpl(Resolver resolver) implements EntityResolver2 {
 
     public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException {
-      if (systemId == null)
+        if (systemId == null)
+          return null;
+        ExternalIdentifier id = new ExternalIdentifier(systemId, null, publicId);
+        Input input = new Input();
+        try {
+          resolver.resolve(id, input);
+        } catch (ResolverException e) {
+          throw toSAXException(e);
+        }
+        if (input.isResolved())
+          return createInputSource(id, input);
         return null;
-      ExternalIdentifier id = new ExternalIdentifier(systemId, null, publicId);
-      Input input = new Input();
-      try {
-        resolver.resolve(id, input);
       }
-      catch (ResolverException e) {
-        throw toSAXException(e);
-      }
-      if (input.isResolved())
-        return createInputSource(id, input);
-      return null;
-    }
 
-    public InputSource resolveEntity(String name, String publicId, String base, String systemId) throws SAXException, IOException {
-      if (systemId == null)
+      public InputSource resolveEntity(String name, String publicId, String base, String systemId) throws SAXException, IOException {
+        if (systemId == null)
+          return null;
+        ExternalIdentifier id;
+        if ("[doc]".equals(name))
+          id = new ExternalDTDSubsetIdentifier(systemId, base, publicId, null);
+        else if (name == null || name.indexOf('[') >= 0 || name.indexOf('#') >= 0)
+          id = new ExternalIdentifier(systemId, base, publicId);
+        else
+          id = new ExternalEntityIdentifier(systemId, base, publicId, name);
+        Input input = new Input();
+        try {
+          resolver.resolve(id, input);
+        } catch (ResolverException e) {
+          throw toSAXException(e);
+        }
+        if (input.isResolved())
+          return createInputSource(id, input);
         return null;
-      ExternalIdentifier id;
-      if ("[doc]".equals(name))
-        id = new ExternalDTDSubsetIdentifier(systemId, base, publicId, null);
-      else if (name == null || name.indexOf('[') >= 0 || name.indexOf('#') >= 0)
-        id = new ExternalIdentifier(systemId, base, publicId);
-      else
-        id = new ExternalEntityIdentifier(systemId, base, publicId, name);
-      Input input = new Input();
-      try {
-        resolver.resolve(id, input);
       }
-      catch (ResolverException e) {
-        throw toSAXException(e);
-      }
-      if (input.isResolved())
-        return createInputSource(id, input);
-      return null;
-    }
 
-    public InputSource getExternalSubset(String name, String base) throws SAXException, IOException {
-      return null;
+      public InputSource getExternalSubset(String name, String base) throws SAXException, IOException {
+        return null;
+      }
     }
-  }
 }

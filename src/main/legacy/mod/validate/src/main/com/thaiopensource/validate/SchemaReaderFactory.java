@@ -23,7 +23,7 @@ public interface SchemaReaderFactory {
    * if this SchemaReaderFactory cannot create a SchemaReader for the specified
    * schema language
    */
-  public SchemaReader createSchemaReader(String namespaceUri);
+  SchemaReader createSchemaReader(String namespaceUri);
 
   Option getOption(String uri);
 }

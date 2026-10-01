@@ -7,41 +7,33 @@ public class PropertyMapBuilder {
   private Map<PropertyId<?>, Object> map;
   private PropertyId<?>[] keys;
 
-  private static class PropertyMapImpl implements PropertyMap {
-    private final Map<PropertyId<?>, Object> map;
-    private final PropertyId<?>[] keys;
-
-    private PropertyMapImpl(Map<PropertyId<?>, Object> map, PropertyId<?>[] keys) {
-      this.map = map;
-      this.keys = keys;
-    }
+  private record PropertyMapImpl(Map<PropertyId<?>, Object> map, PropertyId<?>[] keys) implements PropertyMap {
 
     public <T> T get(PropertyId<T> pid) {
-      return pid.getValueClass().cast(map.get(pid));
-    }
+        return pid.getValueClass().cast(map.get(pid));
+      }
 
-    public int size() {
-      return keys.length;
-    }
+      public int size() {
+        return keys.length;
+      }
 
-    public boolean contains(PropertyId<?> pid) {
-      return map.get(pid) != null;
-    }
+      public boolean contains(PropertyId<?> pid) {
+        return map.get(pid) != null;
+      }
 
-    public PropertyId<?> getKey(int i) {
-      return keys[i];
+      public PropertyId<?> getKey(int i) {
+        return keys[i];
+      }
     }
-  }
 
   public PropertyMapBuilder() {
     this.map = new HashMap<PropertyId<?>, Object>();
   }
 
   public PropertyMapBuilder(PropertyMap pm) {
-    if (pm instanceof PropertyMapImpl) {
-      PropertyMapImpl pmi = (PropertyMapImpl)pm;
-      this.map = pmi.map;
-      this.keys = pmi.keys;
+    if (pm instanceof PropertyMapImpl(Map<PropertyId<?>, Object> map1, PropertyId<?>[] keys1)) {
+      this.map = map1;
+      this.keys = keys1;
     }
     else {
       this.map = new HashMap<PropertyId<?>, Object>();
@@ -53,7 +45,7 @@ public class PropertyMapBuilder {
    for (int i = 0, len = pm.size(); i < len; i++)
      copy(pm.getKey(i), pm);
   }
-  
+
   private <T> void copy(PropertyId<T> pid, PropertyMap pm) {
     put(pid, pm.get(pid));
   }

@@ -9,7 +9,7 @@ class ElementsOrAttributes {
   static final ElementsOrAttributes ATTRIBUTES = new ElementsOrAttributes(ATTRIBUTES_FLAG);
   static final ElementsOrAttributes BOTH = new ElementsOrAttributes(ELEMENTS_FLAG|ATTRIBUTES_FLAG);
 
-  private static final ElementsOrAttributes values[] = {
+  private static final ElementsOrAttributes[] values = {
     NEITHER,
     ELEMENTS,
     ATTRIBUTES,

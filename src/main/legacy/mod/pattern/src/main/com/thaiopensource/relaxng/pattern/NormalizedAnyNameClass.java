@@ -45,9 +45,8 @@ public class NormalizedAnyNameClass extends NormalizedNameClass {
   }
 
   public boolean equals(Object obj) {
-    if (!(obj instanceof NormalizedAnyNameClass))
+    if (!(obj instanceof NormalizedAnyNameClass other))
       return false;
-    NormalizedAnyNameClass other = (NormalizedAnyNameClass)obj;
     if (!(excludedNamespaces.equals(other.excludedNamespaces)))
       return false;
      if (!(excludedNames.equals(other.excludedNames)))

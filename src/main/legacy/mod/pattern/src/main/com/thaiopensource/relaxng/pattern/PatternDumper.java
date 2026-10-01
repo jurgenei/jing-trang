@@ -70,7 +70,7 @@ public class PatternDumper {
     if (name == null) {
       NameClass nc = p.getNameClass();
       if (nc instanceof SimpleNameClass) {
-        String localName = ((SimpleNameClass)nc).getName().getLocalName();
+        String localName = ((SimpleNameClass)nc).name().getLocalName();
         Integer i = localNamePatternCount.get(localName);
         if (i == null) {
           i = 1;
@@ -79,7 +79,7 @@ public class PatternDumper {
           int u = name.lastIndexOf('_');
           if (u >= 0) {
             try {
-              if (Integer.valueOf(name.substring(u + 1, name.length())) > 0)
+              if (Integer.valueOf(name.substring(u + 1)) > 0)
                 // it can, so transform it so that it cannot
                 name += "_1";
             }
@@ -175,7 +175,7 @@ public class PatternDumper {
       }
     }
   }
-      
+
   private void endElement() {
     --level;
     if (startTagOpen) {
@@ -287,7 +287,7 @@ public class PatternDumper {
 
     protected void outputName(NameClass nc) {
       if (nc instanceof SimpleNameClass) {
-        Name name = ((SimpleNameClass)nc).getName();
+        Name name = ((SimpleNameClass)nc).name();
         attribute("name", name.getLocalName());
         attribute("ns", name.getNamespaceUri());
       }
@@ -324,7 +324,7 @@ public class PatternDumper {
     }
 
     public VoidValue caseValue(ValuePattern p) {
-      startElement("value");      
+      startElement("value");
       Name dtName = p.getDatatypeName();
       attribute("type", dtName.getLocalName());
       attribute("datatypeLibrary", dtName.getNamespaceUri());
@@ -336,7 +336,7 @@ public class PatternDumper {
         ns = ((Name)value).getNamespaceUri();
         int colonIndex = stringValue.indexOf(':');
         if (colonIndex < 0)
-          stringValue = stringValue.substring(colonIndex + 1, stringValue.length());
+          stringValue = stringValue.substring(colonIndex + 1);
       }
       attribute("ns", ns);
       data(stringValue);
@@ -475,7 +475,7 @@ public class PatternDumper {
       startElement("error");
       endElement();
     }
-    
+
     public void visitNull() {
       visitAnyName();
     }

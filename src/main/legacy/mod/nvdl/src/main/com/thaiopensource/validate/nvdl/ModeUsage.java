@@ -13,12 +13,12 @@ class ModeUsage {
    * The use mode.
    */
   private final Mode mode;
-  
+
   /**
    * The current mode used until now.
    */
   private final Mode currentMode;
-  
+
   /**
    * Modes depending on context.
    */
@@ -60,9 +60,8 @@ class ModeUsage {
    * Check to see if this mode usage is equals with another mode usage.
    */
   public boolean equals(Object obj) {
-    if (!(obj instanceof ModeUsage))
+    if (!(obj instanceof ModeUsage other))
       return false;
-    ModeUsage other = (ModeUsage)obj;
     return this.mode == other.mode && this.currentMode == other.currentMode && Equal.equal(this.modeMap, other.modeMap);
   }
 
@@ -85,7 +84,7 @@ class ModeUsage {
    * @return Either the current mode mode usage or the same mode passed as argument.
    */
   private Mode resolve(Mode mode) {
-    if (mode == Mode.CURRENT) { 
+    if (mode == Mode.CURRENT) {
       return currentMode;
     }
     // For an action that does not specify the useMode attribute

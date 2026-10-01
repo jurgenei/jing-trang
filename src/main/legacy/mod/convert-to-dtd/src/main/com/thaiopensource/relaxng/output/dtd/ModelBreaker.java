@@ -138,7 +138,7 @@ class ModelBreaker {
       modelPos = nextModelPos;
       return nested.nextLine();
     }
-    buf.append(model.substring(modelPos, breakPos));
+    buf.append(model, modelPos, breakPos);
     if (nextModelPos == model.length()) {
       done = true;
       buf.append(suffix);

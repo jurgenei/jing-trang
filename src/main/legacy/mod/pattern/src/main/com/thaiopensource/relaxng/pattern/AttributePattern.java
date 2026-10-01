@@ -3,6 +3,8 @@ package com.thaiopensource.relaxng.pattern;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
+import java.util.Objects;
+
 class AttributePattern extends Pattern {
   private final NameClass nameClass;
   private final Pattern p;
@@ -60,11 +62,9 @@ class AttributePattern extends Pattern {
   }
 
   boolean samePattern(Pattern other) {
-    if (!(other instanceof AttributePattern))
+    if (!(other instanceof AttributePattern ap))
       return false;
-    AttributePattern ap = (AttributePattern)other;
-    boolean sameDefaults = defaultValue == ap.defaultValue ? true :
-        (defaultValue != null ? defaultValue.equals(ap.defaultValue) : false);
+    boolean sameDefaults = Objects.equals(defaultValue, ap.defaultValue);
     return nameClass.equals(ap.nameClass)&& p == ap.p && sameDefaults;
   }
 
@@ -90,5 +90,5 @@ class AttributePattern extends Pattern {
   String getDefaultValue() {
     return defaultValue;
   }
-  
+
 }

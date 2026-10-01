@@ -86,9 +86,8 @@ public class Compare {
     }
 
     public boolean equals(Object obj) {
-      if (!(obj instanceof Attribute))
+      if (!(obj instanceof Attribute other))
         return false;
-      Attribute other = (Attribute)obj;
       return qName.equals(other.qName) && value.equals(other.value);
     }
   }
@@ -142,9 +141,7 @@ public class Compare {
     }
 
     boolean merge(char[] chars, int start, int count) {
-      StringBuffer buf = new StringBuffer(value);
-      buf.append(chars, start, count);
-      value = buf.toString();
+      value = value + String.valueOf(chars, start, count);
       return true;
     }
   }

@@ -66,11 +66,11 @@ dependencyLocking {
 subprojects {
     apply(plugin = "jacoco")
 
-    tasks.withType<org.gradle.api.tasks.testing.Test>().configureEach {
+    tasks.withType<Test>().configureEach {
         finalizedBy("jacocoTestReport")
     }
 
-    tasks.withType<org.gradle.testing.jacoco.tasks.JacocoReport>().configureEach {
+    tasks.withType<JacocoReport>().configureEach {
         reports {
             xml.required.set(true)
             html.required.set(true)
@@ -133,7 +133,7 @@ dependencyCheck {
     nvd.apiKey = providers.environmentVariable("NVD_API_KEY").orNull
 }
 
-tasks.withType<org.gradle.api.tasks.testing.Test>().configureEach {
+tasks.withType<Test>().configureEach {
     useJUnitPlatform()
     testLogging {
         events("failed", "skipped")
@@ -153,9 +153,9 @@ tasks.withType<com.github.spotbugs.snom.SpotBugsTask>().configureEach {
     }
 }
 
-tasks.named<org.gradle.api.tasks.wrapper.Wrapper>("wrapper") {
+tasks.named<Wrapper>("wrapper") {
     gradleVersion = "9.5.1"
-    distributionType = org.gradle.api.tasks.wrapper.Wrapper.DistributionType.BIN
+    distributionType = Wrapper.DistributionType.BIN
 }
 
 publishing {
@@ -208,7 +208,7 @@ publishing {
 }
 
 signing {
-    tasks.withType<org.gradle.plugins.signing.Sign>().configureEach {
+    tasks.withType<Sign>().configureEach {
         onlyIf {
             !gradle.startParameter.taskNames.any { name -> name.contains("publishToMavenLocal") }
         }
@@ -283,7 +283,7 @@ val generateCentralBundleChecksums = tasks.register("generateCentralBundleChecks
             throw GradleException("Expected staged repo directory not found: $stagedRepoDir")
         }
 
-        fun checksum(file: java.io.File, algorithm: String): String {
+        fun checksum(file: File, algorithm: String): String {
             val digest = MessageDigest.getInstance(algorithm)
             file.inputStream().use { input ->
                 val buffer = ByteArray(8192)

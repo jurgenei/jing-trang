@@ -7,15 +7,7 @@ import com.thaiopensource.xml.em.ExternalId;
 import com.thaiopensource.xml.dtd.om.*;
 
 class Entity {
-  static class Reference {
-    Reference(Entity entity, int start, int end) {
-      this.entity = entity;
-      this.start = start;
-      this.end = end;
-    }
-    final Entity entity;
-    final int start;
-    final int end;
+  record Reference(Entity entity, int start, int end) {
   }
 
   final String name;
@@ -176,14 +168,14 @@ class Entity {
   int textIndexToAtomIndex(int ti) {
     int nAtoms = atoms.size();
     int len = 0;
-    int atomIndex = 0;      
+    int atomIndex = 0;
     for (;;) {
       if (len == ti)
 	return atomIndex;
       if (atomIndex >= nAtoms)
 	break;
       Atom a = (Atom)atoms.elementAt(atomIndex);
-      len += a.getToken().length();
+      len += a.token().length();
       if (len > ti)
 	break;
       atomIndex++;
@@ -246,10 +238,10 @@ class Entity {
     if (overrides != null)
       overrides.unexpandEntities();
   }
-  
+
   private static Atom[] splitAtom(Atom atom) {
     Atom[] split = new Atom[2];
-    switch (atom.getTokenType()) {
+    switch (atom.tokenType()) {
     case Tokenizer.TOK_NAME_QUESTION:
       split[1] = new Atom(Tokenizer.TOK_CLOSE_PAREN_QUESTION, ")?");
       break;
@@ -267,17 +259,17 @@ class Entity {
       return split;
     }
     split[0] = new Atom(Tokenizer.TOK_NAME,
-			atom.getToken().substring(0,
-						  atom.getToken().length() - 1));
+			atom.token().substring(0,
+						  atom.token().length() - 1));
     return split;
   }
-	
+
   private boolean atomsAreProperlyNested(int start,
 					 int end,
 					 boolean allowConnectors) {
     int level = 0;
     for (int i = start; i < end; i++)
-      switch (((Atom)atoms.elementAt(i)).getTokenType()) {
+      switch (((Atom)atoms.elementAt(i)).tokenType()) {
       case Tokenizer.TOK_COND_SECT_OPEN:
       case Tokenizer.TOK_OPEN_PAREN:
       case Tokenizer.TOK_OPEN_BRACKET:
@@ -308,7 +300,7 @@ class Entity {
 
   private boolean atomMaybePasted(int i) {
     if (i > 0) {
-      switch (((Atom)atoms.elementAt(i - 1)).getTokenType()) {
+      switch (((Atom)atoms.elementAt(i - 1)).tokenType()) {
       case Tokenizer.TOK_NAME:
       case Tokenizer.TOK_PREFIXED_NAME:
       case Tokenizer.TOK_NMTOKEN:
@@ -316,7 +308,7 @@ class Entity {
       }
     }
     if (i < atoms.size()) {
-      switch (((Atom)atoms.elementAt(i)).getTokenType()) {
+      switch (((Atom)atoms.elementAt(i)).tokenType()) {
       case Tokenizer.TOK_NAME:
       case Tokenizer.TOK_PREFIXED_NAME:
       case Tokenizer.TOK_NAME_QUESTION:
@@ -491,7 +483,7 @@ class Entity {
     problem = UNKNOWN_SEMANTIC_PROBLEM;
   }
 
-  static final int GROUP_MODEL_GROUP_FLAGS 
+  static final int GROUP_MODEL_GROUP_FLAGS
     = GROUP_CONTAINS_PCDATA|GROUP_CONTAINS_GROUP|GROUP_CONTAINS_ELEMENT_NAME;
 
   private void analyzeEmptySemanticParticle() {

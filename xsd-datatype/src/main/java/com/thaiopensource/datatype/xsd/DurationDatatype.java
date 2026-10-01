@@ -81,9 +81,8 @@ class DurationDatatype extends RegexDatatype implements OrderRelation {
     }
 
     public boolean equals(Object obj) {
-      if (!(obj instanceof Duration))
+      if (!(obj instanceof Duration other))
         return false;
-      Duration other = (Duration)obj;
       return (this.years.equals(other.years)
               && this.months.equals(other.months)
               && this.days.equals(other.days)

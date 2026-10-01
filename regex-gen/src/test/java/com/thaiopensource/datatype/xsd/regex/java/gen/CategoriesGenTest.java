@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.StringReader;
 import java.io.StringWriter;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CategoriesGenTest {
@@ -31,7 +32,7 @@ class CategoriesGenTest {
     assertTrue(text.contains("Ll"));
     assertTrue(text.contains("0x10000, 0x10001"));
     assertTrue(text.contains("0x10002, 0x10003"));
-    assertTrue(!text.contains("0x41"));
+    assertFalse(text.contains("0x41"));
   }
 
   @Test

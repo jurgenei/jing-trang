@@ -37,14 +37,14 @@ public class ResolverUriEntityManager extends UriEntityManager {
     if (isParameterEntity)
       resolverEntityName = "%" + entityName;
     try {
-      resolver.resolve(new ExternalEntityIdentifier(xid.getSystemId(),
-                                                    xid.getBaseUri(),
-                                                    xid.getPublicId(),
+      resolver.resolve(new ExternalEntityIdentifier(xid.systemId(),
+                                                    xid.baseUri(),
+                                                    xid.publicId(),
                                                     resolverEntityName),
                        input);
       if (input.isResolved())
         return open(input);
-      else 
+      else
         return super.open(xid, isParameterEntity, entityName);
     }
     catch (ResolverException e) {

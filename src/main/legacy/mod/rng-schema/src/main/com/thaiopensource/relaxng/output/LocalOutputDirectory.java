@@ -75,7 +75,7 @@ public class LocalOutputDirectory implements OutputDirectory {
       base = filename;
     filename = base + outputExtension;
     for (int i = 1; uriMap.containsValue(filename); i++)
-      filename = base + Integer.toString(i) + outputExtension;
+      filename = base + i + outputExtension;
     return filename;
   }
 
@@ -90,7 +90,7 @@ public class LocalOutputDirectory implements OutputDirectory {
   public void setLineLength(int lineLength) {
     this.lineLength = lineLength;
   }
-  
+
   public int getIndent() {
     return indent;
   }

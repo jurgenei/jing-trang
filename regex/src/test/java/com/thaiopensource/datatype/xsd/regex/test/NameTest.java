@@ -8,8 +8,8 @@ import com.thaiopensource.xml.util.Naming;
 
 public class NameTest {
 
-  private Regex nameRegex;
-  private Regex nameStartRegex;
+  private final Regex nameRegex;
+  private final Regex nameStartRegex;
 
   public static void main(String[] args) throws ReflectiveOperationException, RegexSyntaxException {
       if (args.length != 1) {
@@ -35,7 +35,7 @@ public class NameTest {
   int run() {
     int nFail = 0;
     for (int i = 0; i < 0x10000; i++) {
-      String s = new String(new char[]{(char)i});
+      String s = String.valueOf((char) i);
       if (nameRegex.matches(s) != Naming.isNmtoken(s)) {
         System.out.println("Failed for " + Integer.toHexString(i) + "; expected name == " + Naming.isNmtoken(s));
         nFail++;

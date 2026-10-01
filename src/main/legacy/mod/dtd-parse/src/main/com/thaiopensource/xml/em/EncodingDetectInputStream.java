@@ -17,7 +17,7 @@ public class EncodingDetectInputStream extends InputStream {
     this.in = in;
   }
 
-  private static final short[] detectProg = { 
+  private static final short[] detectProg = {
     // num bytes, bytes,..., loByteIndex, bytesPerChar, bomLength, encType,
     4, 0x00, 0x00, 0xFE, 0xFF, 3, 4, 4, 0,
     4, 0xFF, 0xFE, 0x00, 0x00, 0, 4, 4, 0,
@@ -76,7 +76,7 @@ public class EncodingDetectInputStream extends InputStream {
     int chIndex = 0;
     boolean prevCharQuestion = false;
     boolean gotXmlDecl = false;
-    
+
     while (makeAvailable((chIndex + 1)*bytesPerChar + bomLength)) {
       byte b = buf[start + bomLength +chIndex*bytesPerChar + loByteIndex];
       for (int i = 0; i < bytesPerChar; i++)
@@ -91,7 +91,7 @@ public class EncodingDetectInputStream extends InputStream {
       }
       else if (ch == '?')
 	prevCharQuestion = true;
-      else if (ch =='>' && prevCharQuestion == true) {
+      else if (ch =='>' && prevCharQuestion) {
 	gotXmlDecl = true;
 	chIndex++;
 	break;
@@ -211,5 +211,5 @@ public class EncodingDetectInputStream extends InputStream {
   public static void main(String[] args) throws Exception {
     System.out.println(new EncodingDetectInputStream(new java.io.FileInputStream(args[0])).detectEncoding());
   }
-  
+
 }

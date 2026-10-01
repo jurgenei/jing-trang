@@ -20,7 +20,7 @@ public class DtdParserImpl implements DtdParser {
     db.createDecls();
     db.analyzeSemantics();
     return new DtdImpl(db.createTopLevel(),
-		       entity.getBaseUri(),
-		       entity.getEncoding());
+		       entity.baseUri(),
+		       entity.encoding());
   }
 }

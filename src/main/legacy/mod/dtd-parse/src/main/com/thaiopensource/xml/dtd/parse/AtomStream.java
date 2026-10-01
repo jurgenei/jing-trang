@@ -27,9 +27,9 @@ class AtomStream {
       return false;
     }
     Atom a = (Atom)v.elementAt(i);
-    token = a.getToken();
-    tokenType = a.getTokenType();
-    entity = a.getEntity();
+    token = a.token();
+    tokenType = a.tokenType();
+    entity = a.entity();
     i++;
     return true;
   }

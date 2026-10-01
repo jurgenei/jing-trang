@@ -18,6 +18,7 @@ import org.xml.sax.ErrorHandler;
  * @see ValidationDriver
  * @deprecated
  */
+@Deprecated
 public class ValidationEngine extends ValidationDriver {
 
   /**

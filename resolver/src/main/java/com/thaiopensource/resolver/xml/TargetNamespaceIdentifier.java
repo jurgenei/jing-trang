@@ -7,5 +7,5 @@ package com.thaiopensource.resolver.xml;
  * of the schema.
  */
 public interface TargetNamespaceIdentifier {
-  public String getTargetNamespace();
+  String getTargetNamespace();
 }

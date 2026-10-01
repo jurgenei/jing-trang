@@ -21,14 +21,13 @@ class Particle {
 
   final int type;
   char occur;			// * ? + or 0
-  Vector particles; 
+  Vector particles;
   Entity entity;
   String value;
 
   public boolean equals(Object obj) {
-    if (obj == null || !(obj instanceof Particle))
+    if (obj == null || !(obj instanceof Particle other))
       return false;
-    Particle other = (Particle)obj;
     if (this.type != other.type)
       return false;
     if (this.occur != other.occur)

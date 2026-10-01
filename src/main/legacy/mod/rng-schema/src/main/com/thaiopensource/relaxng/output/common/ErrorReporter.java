@@ -106,9 +106,9 @@ public class ErrorReporter {
       return new SAXParseException(message, null);
     return new SAXParseException(message,
                                  null,
-                                 loc.getUri(),
-                                 loc.getLineNumber(),
-                                 loc.getColumnNumber());
+                                 loc.uri(),
+                                 loc.lineNumber(),
+                                 loc.columnNumber());
   }
 
   public Localizer getLocalizer() {

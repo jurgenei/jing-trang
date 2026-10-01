@@ -172,7 +172,7 @@ public class PrefixManager implements SourceUriGenerator {
       prefix = tryUseUri(namespace);
     if (prefix == null) {
       do {
-        prefix = "ns" + Integer.toString(nextGenIndex++);
+        prefix = "ns" + nextGenIndex++;
       } while (!tryUsePrefix(prefix, namespace));
     }
     return prefix;

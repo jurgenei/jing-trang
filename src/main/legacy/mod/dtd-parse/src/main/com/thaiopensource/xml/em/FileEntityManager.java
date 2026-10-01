@@ -6,10 +6,10 @@ import java.io.IOException;
 
 public class FileEntityManager extends EntityManager {
   public OpenEntity open(ExternalId xid, boolean isParameterEntity, String entityName) throws IOException {
-    String systemId = xid.getSystemId();
+    String systemId = xid.systemId();
     File file = new File(systemId);
     if (!file.isAbsolute()) {
-      String baseUri = xid.getBaseUri();
+      String baseUri = xid.baseUri();
       if (baseUri != null) {
 	String dir = new File(baseUri).getParent();
 	if (dir != null)

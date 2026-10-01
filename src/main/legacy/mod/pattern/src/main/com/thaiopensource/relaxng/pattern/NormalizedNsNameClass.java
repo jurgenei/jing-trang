@@ -43,9 +43,8 @@ public class NormalizedNsNameClass extends NormalizedNameClass {
   }
 
   public boolean equals(Object obj) {
-    if (!(obj instanceof NormalizedNsNameClass))
+    if (!(obj instanceof NormalizedNsNameClass other))
       return false;
-    NormalizedNsNameClass other = (NormalizedNsNameClass)obj;
     if (!nsMap.equals(other.nsMap))
       return false;
     return equal(this, other);

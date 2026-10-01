@@ -273,7 +273,7 @@ class Inferrer {
       int n = 1;
       for (String ns : namespacesInDefines) {
         for (; ;) {
-          String prefix = "ns" + Integer.toString(n++);
+          String prefix = "ns" + n++;
           if (!prefixMap.containsKey(prefix)) {
             prefixMap.put(ns, prefix);
             break;
@@ -327,12 +327,12 @@ class Inferrer {
       for (Name attName : attributeNames) {
         AttributeDecl att = attributeDecls.get(attName);
         Pattern tem;
-        if (att.getDatatype() == null)
+        if (att.datatype() == null)
           tem = new TextPattern();
         else
-          tem = makeDatatype(att.getDatatype());
+          tem = makeDatatype(att.datatype());
         tem = new AttributePattern(makeNameClass(attName), tem);
-        if (att.isOptional())
+        if (att.optional())
           tem = new OptionalPattern(tem);
         group.getChildren().add(tem);
       }

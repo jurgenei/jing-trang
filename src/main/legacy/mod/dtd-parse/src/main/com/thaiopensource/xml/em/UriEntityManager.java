@@ -5,8 +5,8 @@ import java.net.URL;
 
 public class UriEntityManager extends EntityManager {
   public OpenEntity open(ExternalId xid, boolean isParameterEntity, String entityName) throws IOException {
-    String systemId = xid.getSystemId();
-    String baseUri = xid.getBaseUri();
+    String systemId = xid.systemId();
+    String baseUri = xid.baseUri();
     URL u;
     if (baseUri != null)
       u = new URL(new URL(baseUri), systemId);

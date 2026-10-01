@@ -1,7 +1,7 @@
 package com.thaiopensource.relaxng.edit;
 
 public class DefineComponent extends Component {
-  public final static String START = new String("#start");
+  public final static String START = "#start";
   private String name;
   private Pattern body;
   private Combine combine;

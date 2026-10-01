@@ -56,16 +56,7 @@ class SchemaImpl extends AbstractSchema {
     }
   }
 
-  static private class MustSupportOption {
-    private final String name;
-    private final PropertyId pid;
-    private final Locator locator;
-
-    MustSupportOption(String name, PropertyId pid, Locator locator) {
-      this.name = name;
-      this.pid = pid;
-      this.locator = locator;
-    }
+  private record MustSupportOption(String name, PropertyId pid, Locator locator) {
   }
 
   private class Handler extends DelegatingContentHandler implements SchemaFuture {
@@ -429,7 +420,7 @@ class SchemaImpl extends AbstractSchema {
         if (modeUsage != null) {
           for (int i = 0, len = paths.size(); i < len; i++) {
             Path path = (Path)paths.elementAt(i);
-            if (!modeUsage.addContext(path.isRoot(), path.getNames(), mode))
+            if (!modeUsage.addContext(path.root(), path.names(), mode))
               error("duplicate_path", path.toString());
           }
         }

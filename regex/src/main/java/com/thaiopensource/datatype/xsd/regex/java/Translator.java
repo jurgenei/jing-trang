@@ -321,36 +321,21 @@ public class Translator {
   static final String SURROGATES2_CLASS = "[\uDC00-\uDFFF]";
   static final String NOT_ALLOWED_CLASS = "[\u0000&&[^\u0000]]";
 
-  static final class Range implements Comparable {
-    private final int min;
-    private final int max;
-
-    Range(int min, int max) {
-      this.min = min;
-      this.max = max;
-    }
-
-    int getMin() {
-      return min;
-    }
-
-    int getMax() {
-      return max;
-    }
+  record Range(int min, int max) implements Comparable {
 
     public int compareTo(Object o) {
-      Range other = (Range)o;
-      if (this.min < other.min)
-        return -1;
-      if (this.min > other.min)
-        return 1;
-      if (this.max > other.max)
-        return -1;
-      if (this.max < other.max)
-        return 1;
-      return 0;
+        Range other = (Range) o;
+        if (this.min < other.min)
+          return -1;
+        if (this.min > other.min)
+          return 1;
+        if (this.max > other.max)
+          return -1;
+        if (this.max < other.max)
+          return 1;
+        return 0;
+      }
     }
-  }
 
   static abstract class CharClass  {
 
@@ -472,10 +457,10 @@ public class Translator {
       StringBuffer highRanges = new StringBuffer();
       for (int i = 0, len = ranges.size(); i < len; i++) {
         Range r = (Range)ranges.get(i);
-        char min1 = Utf16.surrogate1(r.getMin());
-        char min2 = Utf16.surrogate2(r.getMin());
-        char max1 = Utf16.surrogate1(r.getMax());
-        char max2 = Utf16.surrogate2(r.getMax());
+        char min1 = Utf16.surrogate1(r.min());
+        char min2 = Utf16.surrogate2(r.min());
+        char max1 = Utf16.surrogate1(r.max());
+        char max2 = Utf16.surrogate2(r.max());
         if (min2 != SURROGATE2_MIN)
           min1++;
         if (max2 != SURROGATE2_MAX)
@@ -492,10 +477,10 @@ public class Translator {
       StringBuffer lowRanges = new StringBuffer();
       for (int i = 0, len = ranges.size(); i < len; i++) {
         Range r = (Range)ranges.get(i);
-        char min1 = Utf16.surrogate1(r.getMin());
-        char min2 = Utf16.surrogate2(r.getMin());
-        char max1 = Utf16.surrogate1(r.getMax());
-        char max2 = Utf16.surrogate2(r.getMax());
+        char min1 = Utf16.surrogate1(r.min());
+        char min2 = Utf16.surrogate2(r.min());
+        char max1 = Utf16.surrogate1(r.max());
+        char max2 = Utf16.surrogate2(r.max());
         if (min1 == max1) {
           if (min2 != SURROGATE2_MIN || max2 != SURROGATE2_MAX) {
             lowRanges.append(min1);
@@ -537,16 +522,16 @@ public class Translator {
       int len = ranges.size();
       while (fromIndex < len) {
         Range r = (Range)ranges.get(fromIndex);
-        int min = r.getMin();
-        int max = r.getMax();
+        int min = r.min();
+        int max = r.max();
         while (++fromIndex < len) {
           Range r2 = (Range)ranges.get(fromIndex);
-          if (r2.getMin() > max + 1)
+          if (r2.min() > max + 1)
             break;
-          if (r2.getMax() > max)
-            max = r2.getMax();
+          if (r2.max() > max)
+            max = r2.max();
         }
-        if (max != r.getMax())
+        if (max != r.max())
           r = new Range(min, max);
         ranges.set(toIndex++, r);
       }
@@ -738,28 +723,28 @@ public class Translator {
         negRange = null;
       for (int i = 0, len = posList.size(); i < len; i++) {
         Range posRange = (Range)posList.get(i);
-        while (negRange != null && negRange.getMax() < posRange.getMin()) {
+        while (negRange != null && negRange.max() < posRange.min()) {
           if (negIter.hasNext())
             negRange = (Range)negIter.next();
           else
             negRange = null;
         }
         // if negRange != null, negRange.max >= posRange.min
-        int min = posRange.getMin();
-        while (negRange != null && negRange.getMin() <= posRange.getMax()) {
-          if (min < negRange.getMin()) {
-            ranges.add(new Range(min, negRange.getMin() - 1));
+        int min = posRange.min();
+        while (negRange != null && negRange.min() <= posRange.max()) {
+          if (min < negRange.min()) {
+            ranges.add(new Range(min, negRange.min() - 1));
           }
-          min = negRange.getMax() + 1;
-          if (min > posRange.getMax())
+          min = negRange.max() + 1;
+          if (min > posRange.max())
             break;
           if (negIter.hasNext())
             negRange = (Range)negIter.next();
           else
             negRange = null;
         }
-        if (min <= posRange.getMax())
-          ranges.add(new Range(min, posRange.getMax()));
+        if (min <= posRange.max())
+          ranges.add(new Range(min, posRange.max()));
       }
     }
   }
@@ -773,8 +758,7 @@ public class Translator {
 
     static private List toList(CharClass[] v) {
       List members = new Vector();
-      for (int i = 0; i < v.length; i++)
-        members.add(v[i]);
+      Collections.addAll(members, v);
       return members;
     }
 
@@ -873,9 +857,9 @@ public class Translator {
       int c = NONBMP_MIN;
       for (int i = 0, len = tem.size(); i < len; i++) {
         Range r = (Range)tem.get(i);
-        if (r.getMin() > c)
-          ranges.add(new Range(c, r.getMin() - 1));
-        c = r.getMax() + 1;
+        if (r.min() > c)
+          ranges.add(new Range(c, r.min() - 1));
+        c = r.max() + 1;
       }
       if (c != NONBMP_MAX + 1)
         ranges.add(new Range(c, NONBMP_MAX));
@@ -1081,14 +1065,12 @@ public class Translator {
       return true;
     if ('A' <= c && c <= 'Z')
       return true;
-    if ('0' <= c && c <= '9')
-      return true;
-    return false;
+    return '0' <= c && c <= '9';
   }
 
   private void expect(char c) throws RegexSyntaxException {
     if (curChar != c)
-      throw makeException("expected", new String(new char[]{c}));
+      throw makeException("expected", String.valueOf(c));
   }
 
   private CharClass parseCharClassExpr() throws RegexSyntaxException {
@@ -1149,7 +1131,7 @@ public class Translator {
     case '[':
     case ']':
     case '-':
-      throw makeException("should_quote", new String(new char[]{curChar}));
+      throw makeException("should_quote", String.valueOf(curChar));
     }
     CharClass tem;
     if (Utf16.isSurrogate(curChar)) {
@@ -1220,7 +1202,7 @@ public class Translator {
 
   static private CharClass computeCategoryCharClass(char code) {
     List classes = new Vector();
-    classes.add(new Property(new String(new char[] { code })));
+    classes.add(new Property(String.valueOf(code)));
     if (!surrogatesDirect) {
       for (int ci = Categories.CATEGORY_NAMES.indexOf(code); ci >= 0; ci = Categories.CATEGORY_NAMES.indexOf(code, ci + 1)) {
         int[] addRanges = Categories.CATEGORY_RANGES[ci/2];

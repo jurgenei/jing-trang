@@ -3,6 +3,7 @@ package com.thaiopensource.util;
 import org.junit.jupiter.api.Test;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
@@ -20,7 +21,7 @@ public class Utf8Test {
         chars = new char[] { (char)i };
       else
       chars = new char[] { Utf16.surrogate1(i), Utf16.surrogate2(i) };
-      assertArrayEquals(new String(chars).getBytes("UTF-8"), Utf8.encode(i));
+      assertArrayEquals(new String(chars).getBytes(StandardCharsets.UTF_8), Utf8.encode(i));
     }
   }
 

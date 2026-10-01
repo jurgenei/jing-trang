@@ -38,16 +38,7 @@ class ValidatorImpl extends DefaultHandler implements Validator {
   private Attributes filteredAttributes;
   private final Mode startMode;
 
-  static private class PrefixMapping {
-    final String prefix;
-    final String uri;
-    final PrefixMapping parent;
-
-    PrefixMapping(String prefix, String uri, PrefixMapping parent) {
-      this.prefix = prefix;
-      this.uri = uri;
-      this.parent = parent;
-    }
+  private record PrefixMapping(String prefix, String uri, PrefixMapping parent) {
   }
 
   private class Section implements SectionState {
@@ -130,14 +121,7 @@ class ValidatorImpl extends DefaultHandler implements Validator {
 
   }
 
-  static private class Program {
-    final ModeUsage modeUsage;
-    final ContentHandler handler;
-
-    Program(ModeUsage modeUsage, ContentHandler handler) {
-      this.modeUsage = modeUsage;
-      this.handler = handler;
-    }
+  private record Program(ModeUsage modeUsage, ContentHandler handler) {
   }
 
   ValidatorImpl(Mode mode, PropertyMap properties) {
@@ -156,14 +140,14 @@ class ValidatorImpl extends DefaultHandler implements Validator {
     this.locator = locator;
   }
 
-  public void characters(char ch[], int start, int length)
+  public void characters(char[] ch, int start, int length)
           throws SAXException {
     for (int i = 0, len = currentSection.activeHandlers.size(); i < len; i++)
       ((ContentHandler)(currentSection.activeHandlers.elementAt(i))).characters(ch, start, length);
 
   }
 
-  public void ignorableWhitespace(char ch[], int start, int length)
+  public void ignorableWhitespace(char[] ch, int start, int length)
           throws SAXException {
     for (int i = 0, len = currentSection.activeHandlers.size(); i < len; i++)
       ((ContentHandler)(currentSection.activeHandlers.elementAt(i))).ignorableWhitespace(ch, start, length);

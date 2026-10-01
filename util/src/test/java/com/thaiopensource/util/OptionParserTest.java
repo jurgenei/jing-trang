@@ -5,10 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class OptionParserTest {
   @Test
@@ -28,10 +25,10 @@ class OptionParserTest {
   void parsesAttachedOptionArgument() throws Exception {
     OptionParser parser = new OptionParser("c:", new String[]{"-cinline", "rest"});
 
-    assertEquals(true, parser.moveToNextOption());
+    assertTrue(parser.moveToNextOption());
     assertEquals('c', parser.getOptionChar());
     assertEquals("inline", parser.getOptionArg());
-    assertEquals(false, parser.moveToNextOption());
+    assertFalse(parser.moveToNextOption());
     assertArrayEquals(new String[]{"rest"}, parser.getRemainingArgs());
   }
 
@@ -39,10 +36,10 @@ class OptionParserTest {
   void stopsAtDoubleDash() throws Exception {
     OptionParser parser = new OptionParser("a", new String[]{"-a", "--", "-a", "tail"});
 
-    assertEquals(true, parser.moveToNextOption());
+    assertTrue(parser.moveToNextOption());
     assertEquals('a', parser.getOptionChar());
     assertNull(parser.getOptionArg());
-    assertEquals(false, parser.moveToNextOption());
+    assertFalse(parser.moveToNextOption());
     assertArrayEquals(new String[]{"-a", "tail"}, parser.getRemainingArgs());
   }
 
@@ -64,7 +61,7 @@ class OptionParserTest {
     OptionParser parser = new OptionParser("a", source);
     source[0] = "--";
 
-    assertEquals(true, parser.moveToNextOption());
+    assertTrue(parser.moveToNextOption());
     assertEquals('a', parser.getOptionChar());
   }
 }

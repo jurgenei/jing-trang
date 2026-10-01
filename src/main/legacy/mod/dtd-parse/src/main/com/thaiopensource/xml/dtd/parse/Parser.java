@@ -42,7 +42,7 @@ class Parser extends Token {
   private final EntityManager entityManager;
   // for error messages
   private String location;
-  
+
   private final Hashtable atomTable;
   private final Hashtable elementTable;
 
@@ -52,9 +52,9 @@ class Parser extends Token {
   }
 
   Parser(OpenEntity entity, EntityManager entityManager) {
-    this.in = entity.getReader();
-    this.baseUri = entity.getBaseUri();
-    this.location = entity.getLocation();
+    this.in = entity.reader();
+    this.baseUri = entity.baseUri();
+    this.location = entity.location();
     this.entityManager = entityManager;
     this.buf = new char[READSIZE * 2];
     this.valueBuf = new ReplacementTextBuffer();
@@ -66,9 +66,9 @@ class Parser extends Token {
   }
 
   private Parser(OpenEntity entity, Parser parent) {
-    this.in = entity.getReader();
-    this.baseUri = entity.getBaseUri();
-    this.location = entity.getLocation();
+    this.in = entity.reader();
+    this.baseUri = entity.baseUri();
+    this.location = entity.location();
     this.entityManager = parent.entityManager;
     this.parent = parent;
     this.buf = new char[READSIZE * 2];
@@ -138,7 +138,7 @@ class Parser extends Token {
     throws IOException, PrologSyntaxException {
     Atom a = makeAtom(tok, currentTokenStart, bufStart);
     addAtom(a);
-    String token = a.getToken();
+    String token = a.token();
     int action = pp.action(tok, token);
     switch (action) {
     case PrologParser.ACTION_IGNORE_SECT:
@@ -293,8 +293,8 @@ class Parser extends Token {
                            entity.isParameter, entity.name);
     if (openEntity == null)
       return null;
-    entity.encoding = openEntity.getEncoding();
-    entity.uri = openEntity.getBaseUri();
+    entity.encoding = openEntity.encoding();
+    entity.uri = openEntity.baseUri();
     Parser p = new Parser(openEntity, this);
     p.skipTextDecl();
     return p;
@@ -540,7 +540,7 @@ class Parser extends Token {
 	}
 	v.addElement(new Atom(tok,
 			      new String(text, start, tokenEnd - start)));
-	
+
 	start = tokenEnd;
       }
     }
@@ -580,7 +580,7 @@ class Parser extends Token {
 	  buf[bufEnd - keep + i] = buf[bufStart + i];
       }
       else {
-	char newBuf[] = new char[buf.length << 1];
+	char[] newBuf = new char[buf.length << 1];
 	bufEnd = buf.length;
 	System.arraycopy(buf, bufStart, newBuf, bufEnd - keep, keep);
 	buf = newBuf;
@@ -602,7 +602,7 @@ class Parser extends Token {
   private void fatal(String key, String arg) throws ParseException {
     doFatal(localizer.message(key, arg));
   }
-  
+
   private void fatal(String key) throws ParseException {
     doFatal(localizer.message(key));
   }
@@ -634,8 +634,8 @@ class Parser extends Token {
 
   private void setLastAtomEntity(Entity e) {
     Atom a = (Atom)atoms.elementAt(atoms.size() - 1);
-    atoms.setElementAt(new Atom(a.getTokenType(),
-				a.getToken(),
+    atoms.setElementAt(new Atom(a.tokenType(),
+				a.token(),
 				e),
 		       atoms.size() - 1);
   }

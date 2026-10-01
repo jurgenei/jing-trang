@@ -75,7 +75,7 @@ public class PrologParser implements Cloneable {
   public static final int ACTION_NOTATION_GROUP_OPEN = ACTION_ENUM_GROUP_OPEN + 1;
   public static final int ACTION_SECTION_STATUS_IGNORE = ACTION_NOTATION_GROUP_OPEN + 1;
   public static final int ACTION_SECTION_STATUS_INCLUDE = ACTION_SECTION_STATUS_IGNORE + 1;
-  
+
   private static final byte prolog0 = 0;
   private static final byte prolog1 = prolog0 + 1;
   private static final byte prolog2 = prolog1 + 1;
@@ -129,8 +129,8 @@ public class PrologParser implements Cloneable {
   private byte state;
   private int groupLevel;
   private int includeLevel;
-  private byte connector[] = new byte[2];
-  private boolean documentEntity;
+  private byte[] connector = new byte[2];
+  private final boolean documentEntity;
 
   public static final byte PROLOG = 0;
   public static final byte EXTERNAL_ENTITY = 1;
@@ -749,11 +749,9 @@ public class PrologParser implements Cloneable {
   }
 
   public boolean isCompatible(PrologParser orig) {
-    if (groupLevel > 0
-	&& connector[groupLevel - 1] != 0
-	&& connector[groupLevel - 1] != orig.connector[groupLevel - 1])
-      return false;
-    return true;
+    return groupLevel <= 0
+      || connector[groupLevel - 1] == 0
+      || connector[groupLevel - 1] == orig.connector[groupLevel - 1];
   }
 
   public final int getGroupLevel() {

@@ -15,7 +15,7 @@ import java.util.List;
 public class NamingExceptionsGen {
   static public void main(String[] args) throws IOException {
     if (args.length != 2) {
-      System.err.println("Usage: " + NamingExceptionsGen.class.toString() + " className srcDir");
+      System.err.println("Usage: " + NamingExceptionsGen.class + " className srcDir");
       System.exit(1);
     }
     String className = args[0];

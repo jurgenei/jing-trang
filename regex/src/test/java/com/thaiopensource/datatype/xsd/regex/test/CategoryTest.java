@@ -93,10 +93,10 @@ public class CategoryTest {
     if (ch > 0xFFFF)
       str = new String(new char[]{ Utf16.surrogate1(ch), Utf16.surrogate2(ch) });
     else
-      str = new String(new char[]{ (char)ch });
+      str = String.valueOf((char) ch);
     if (pos.matches(str) != inPos )
       fail(ch, cat);
-    if (neg.matches(str) != !inPos)
+    if (neg.matches(str) == inPos)
       fail(ch, "-" + cat);
   }
 
@@ -116,9 +116,7 @@ public class CategoryTest {
     default:
       if (code < 0x20)
         return false;
-      if (code >= 0xD800 && code < 0xE000)
-        return false;
-      return true;
+      return code < 0xD800 || code >= 0xE000;
     }
   }
 }

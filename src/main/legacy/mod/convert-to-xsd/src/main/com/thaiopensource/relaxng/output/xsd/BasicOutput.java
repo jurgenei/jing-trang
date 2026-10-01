@@ -182,20 +182,20 @@ public class BasicOutput {
       xw.endElement();
       if (!occ.equals(Occurs.ZERO_OR_MORE)) {
         xw.endElement();
-        if (occ.getMin() == occ.getMax()) {
+        if (occ.min() == occ.max()) {
           xw.startElement(xs("length"));
-          xw.attribute("value", Integer.toString(occ.getMin()));
+          xw.attribute("value", Integer.toString(occ.min()));
           xw.endElement();
         }
         else {
-          if (occ.getMin() != 0) {
+          if (occ.min() != 0) {
             xw.startElement(xs("minLength"));
-            xw.attribute("value", Integer.toString(occ.getMin()));
+            xw.attribute("value", Integer.toString(occ.min()));
             xw.endElement();
           }
-          if (occ.getMax() != Occurs.UNBOUNDED) {
+          if (occ.max() != Occurs.UNBOUNDED) {
             xw.startElement(xs("maxLength"));
-            xw.attribute("value", Integer.toString(occ.getMax()));
+            xw.attribute("value", Integer.toString(occ.max()));
             xw.endElement();
           }
         }
@@ -398,11 +398,11 @@ public class BasicOutput {
     }
 
     void outputOccurAttributes() {
-      if (occ.getMin() != 1)
-        xw.attribute("minOccurs", Integer.toString(occ.getMin()));
-      if (occ.getMax() != 1)
+      if (occ.min() != 1)
+        xw.attribute("minOccurs", Integer.toString(occ.min()));
+      if (occ.max() != 1)
         xw.attribute("maxOccurs",
-                     occ.getMax() == Occurs.UNBOUNDED ? "unbounded" : Integer.toString(occ.getMax()));
+                     occ.max() == Occurs.UNBOUNDED ? "unbounded" : Integer.toString(occ.max()));
       occ = Occurs.EXACTLY_ONE;
     }
   }
@@ -799,9 +799,9 @@ public class BasicOutput {
     this.xsPrefix = pm.getPrefix(WellKnownNamespaces.XML_SCHEMA);
     this.options = options;
     OutputDirectory.Stream stream = od.open(schema.getUri(), schema.getEncoding());
-    xw = new XmlWriter(stream.getWriter(),
-                       stream.getEncoding(),
-                       stream.getCharRepertoire(),
+    xw = new XmlWriter(stream.writer(),
+                       stream.encoding(),
+                       stream.charRepertoire(),
                        od.getLineSeparator(),
                        od.getIndent(),
                        new String[0]);
@@ -863,9 +863,9 @@ public class BasicOutput {
   }
 
   private void namespaceAttribute(Wildcard wc) {
-    if (wc.isPositive()) {
+    if (wc.positive()) {
       StringBuffer buf = new StringBuffer();
-      List<String> namespaces = new Vector<String>(wc.getNamespaces());
+      List<String> namespaces = new Vector<String>(wc.namespaces());
       Collections.sort(namespaces);
       for (String ns : namespaces) {
         if (buf.length() > 0)
@@ -1045,7 +1045,7 @@ public class BasicOutput {
     if (annotation == null)
       return;
     xw.startElement(xs("annotation"));
-    String documentation = annotation.getDocumentation();
+    String documentation = annotation.documentation();
     if (documentation != null) {
       xw.startElement(xs("documentation"));
       xw.text(documentation);

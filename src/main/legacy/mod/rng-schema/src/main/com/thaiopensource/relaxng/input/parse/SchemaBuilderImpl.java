@@ -151,42 +151,40 @@ class SchemaBuilderImpl implements
     return finishPattern(new ElementPattern(nc, p), loc, anno);
   }
 
-  private static class TraceValidationContext implements ValidationContext {
-    private final Map<String, String> map;
-    private final ValidationContext vc;
-    private final String ns;
-    TraceValidationContext(Map<String, String> map, ValidationContext vc, String ns) {
-      this.map = map;
-      this.vc = vc;
-      this.ns = ns.length() == 0 ? null : ns;
-    }
-
-    public String resolveNamespacePrefix(String prefix) {
-      String result;
-      if (prefix.length() == 0)
-        result = ns;
-      else {
-        result = vc.resolveNamespacePrefix(prefix);
-        if (result == SchemaBuilder.INHERIT_NS)
-          return null;
+  private record TraceValidationContext(Map<String, String> map, ValidationContext vc,
+                                        String ns) implements ValidationContext {
+      private TraceValidationContext(Map<String, String> map, ValidationContext vc, String ns) {
+        this.map = map;
+        this.vc = vc;
+        this.ns = ns.length() == 0 ? null : ns;
       }
-      if (result != null)
-        map.put(prefix, result);
-      return result;
-    }
 
-    public String getBaseUri() {
-      return vc.getBaseUri();
-    }
+      public String resolveNamespacePrefix(String prefix) {
+        String result;
+        if (prefix.length() == 0)
+          result = ns;
+        else {
+          result = vc.resolveNamespacePrefix(prefix);
+          if (result == SchemaBuilder.INHERIT_NS)
+            return null;
+        }
+        if (result != null)
+          map.put(prefix, result);
+        return result;
+      }
 
-    public boolean isUnparsedEntity(String entityName) {
-      return vc.isUnparsedEntity(entityName);
-    }
+      public String getBaseUri() {
+        return vc.getBaseUri();
+      }
 
-    public boolean isNotation(String notationName) {
-      return vc.isNotation(notationName);
+      public boolean isUnparsedEntity(String entityName) {
+        return vc.isUnparsedEntity(entityName);
+      }
+
+      public boolean isNotation(String notationName) {
+        return vc.isNotation(notationName);
+      }
     }
-  }
 
   public Pattern makeValue(String datatypeLibrary, String type, String value, Context context,
                                  String ns, SourceLocation loc, AnnotationsImpl anno) throws BuildException {
@@ -619,19 +617,19 @@ class SchemaBuilderImpl implements
       public int getColumnNumber() {
         if (loc == null)
           return -1;
-        return loc.getColumnNumber();
+        return loc.columnNumber();
       }
 
       public String getSystemId() {
         if (loc == null)
           return null;
-        return loc.getUri();
+        return loc.uri();
       }
 
       public int getLineNumber() {
         if (loc == null)
           return -1;
-        return loc.getLineNumber();
+        return loc.lineNumber();
       }
     };
   }

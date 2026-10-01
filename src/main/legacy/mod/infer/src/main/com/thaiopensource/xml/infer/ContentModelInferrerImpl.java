@@ -176,31 +176,29 @@ class ContentModelInferrerImpl extends ContentModelInferrer {
     }
   }
 
-  private static class ParticleMerger {
-    private final boolean[] done;
-
-    private ParticleMerger(int nNodes) {
-      this.done = new boolean[nNodes];
-    }
-
-    void merge(ParticleNode node) {
-      if (done[node.index])
-        return;
-      done[node.index] = true;
-      if (node.particle != null) {
-        while (node.followingNodes.size() == 1) {
-          ParticleNode follower = node.followingNodes.iterator().next();
-          if (follower.refCount != 1 || follower.particle == null)
-            break;
-          node.particle = new SequenceParticle(node.particle, follower.particle);
-          node.followingNodes = follower.followingNodes;
+    private record ParticleMerger(boolean[] done) {
+        private ParticleMerger(int nNodes) {
+            this(new boolean[nNodes]);
         }
-      }
-      for (ParticleNode follower : node.followingNodes)
-        merge(follower);
-    }
 
-  }
+        void merge(ParticleNode node) {
+            if (done[node.index])
+                return;
+            done[node.index] = true;
+            if (node.particle != null) {
+                while (node.followingNodes.size() == 1) {
+                    ParticleNode follower = node.followingNodes.iterator().next();
+                    if (follower.refCount != 1 || follower.particle == null)
+                        break;
+                    node.particle = new SequenceParticle(node.particle, follower.particle);
+                    node.followingNodes = follower.followingNodes;
+                }
+            }
+            for (ParticleNode follower : node.followingNodes)
+                merge(follower);
+        }
+
+    }
 
   ContentModelInferrerImpl() {
     startNode = lookup(START);
