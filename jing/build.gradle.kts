@@ -31,7 +31,7 @@ dependencies {
     implementation("xalan:xalan:2.7.3")
     implementation("xerces:xercesImpl:2.12.2")
     implementation("isorelax:isorelax:20030108")
-    compileOnly("org.apache.ant:ant:1.10.15")
+    compileOnly("org.apache.ant:ant:1.10.18")
 }
 
 val javacc = configurations.create("javacc")
